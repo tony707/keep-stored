@@ -1,5 +1,6 @@
 *.o
 *.core
 keep-stored.app
+keep-stored.pro.user
 Makefile
 auto
