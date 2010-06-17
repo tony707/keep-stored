@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 {
 	QApplication application(argc, argv);
 
-	application.setApplicationName("KeepStored");
+	application.setApplicationName("keep-stored");
 
 	// Create the main window.
 	MainWindow mainWindow;

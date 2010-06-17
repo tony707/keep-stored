@@ -1,0 +1,4 @@
+*.o
+*.core
+keep-stored.app
+Makefile

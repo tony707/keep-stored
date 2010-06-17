@@ -12,7 +12,7 @@
 MainWindow::MainWindow(QWidget* parent) :
 	QMainWindow(parent)
 {
-	setWindowTitle(tr("KeepStored"));
+	setWindowTitle(tr("keep-stored"));
 	show();
 }
 

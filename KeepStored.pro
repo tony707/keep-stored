@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = KeepStored
+TARGET = keep-stored
 VERSION = 1.0.0
 CONFIG += qt warn_on
 QT += gui
