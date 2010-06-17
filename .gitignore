@@ -2,3 +2,4 @@
 *.core
 keep-stored.app
 Makefile
+auto
