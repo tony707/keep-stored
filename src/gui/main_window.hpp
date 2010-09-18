@@ -11,8 +11,8 @@
 
 class ConfigurationWindow;
 
-class QTimer;
-class QAction;
+class QTreeView;
+class QListView;
 
 class MainWindow : public QMainWindow
 {
@@ -28,19 +28,38 @@ class MainWindow : public QMainWindow
 
 	private:
 		/**
-		 * \brief Build Application's File Menu.
-		 */
-		 void buildFileMenu();
-
-		/**
 		 * \brief Build Application's Menu Bar.
 		 */
 		 void buildMenuBar();
 
 		/**
+		 * \brief Build Application's Tool Bar.
+		 */
+		 void buildToolBar();
+
+		/**
 		 * \brief Build MainWindows Widgets.
 		 */
 		 void buildWidgets();
+
+		 /**
+			* \brief The category list.
+			*/
+		 QTreeView* d_category_list;
+
+		 /**
+			* \brief The resource list.
+			*/
+		 QListView* d_resource_list;
+
+		 /**
+			* \brief The resource list.
+			*/
+		 QWidget* d_resource_preview;
+
+		 QAction* d_add_action;
+		 QAction* d_edit_action;
+		 QAction* d_remove_action;
 
 };
 
