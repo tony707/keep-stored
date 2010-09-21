@@ -9,8 +9,9 @@
 
 #include <QMainWindow>
 
-class ConfigurationWindow;
+#include <boost/shared_ptr.hpp>
 
+class Configuration;
 class QTreeView;
 class QListView;
 
@@ -42,15 +43,17 @@ class MainWindow : public QMainWindow
 		 */
 		 void buildWidgets();
 
+		 void closeEvent(QCloseEvent* event);
+
 		 /**
 			* \brief The category list.
 			*/
-		 QTreeView* d_category_list;
+		 QTreeView* d_category_list_view;
 
 		 /**
 			* \brief The resource list.
 			*/
-		 QListView* d_resource_list;
+		 QListView* d_resource_list_view;
 
 		 /**
 			* \brief The resource list.
@@ -58,8 +61,12 @@ class MainWindow : public QMainWindow
 		 QWidget* d_resource_preview;
 
 		 QAction* d_add_action;
+
 		 QAction* d_edit_action;
+
 		 QAction* d_remove_action;
+
+		 boost::shared_ptr<Configuration> d_configuration;
 
 };
 

@@ -26,3 +26,18 @@ HEADERS += src/gui/*.hpp \
 FORMS +=
 RESOURCES += resources/icons.qrc
 
+unix {
+	# FreeBSD and Mac OS X
+	INCLUDEPATH += /usr/local/include
+	INCLUDEPATH += /usr/local/include/libxml2
+	INCLUDEPATH += /usr/local/include/xmlsec1
+	INCLUDEPATH += /usr/include/libxml2
+	INCLUDEPATH += /usr/include/xmlsec1
+}
+
+!windows {
+	LIBS += -lxml2 \
+					-lsystools \
+					-lxmlsec1 \
+					-lxmlsec1-openssl
+}

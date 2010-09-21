@@ -7,3 +7,4 @@ auto
 *.swp
 Info.plist
 *.xcodeproj
+.DS_Store

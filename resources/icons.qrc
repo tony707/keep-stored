@@ -1,5 +1,8 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource prefix="/resources">
+			<file>add.png</file>
+			<file>edit.png</file>
+			<file>delete.png</file>
     </qresource>
 </RCC>
