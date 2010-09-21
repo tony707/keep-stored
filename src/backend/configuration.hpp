@@ -28,12 +28,12 @@ class Configuration
 		 /**
 			* \brief Load the application configuration.
 			*/
-		 void loadConfigurationFile();
+		 QList<boost::shared_ptr<Category> > loadConfigurationFile();
 
 		 /**
 			* \brief Load the application configuration.
 			*/
-		 void saveConfigurationFile();
+		 void saveConfigurationFile(QList<boost::shared_ptr<Category> > category_list);
 
 	private:
 
@@ -46,11 +46,6 @@ class Configuration
 		 * \brief Get the root configuration directory.
 		 */
 		std::string configurationFilePath();
-
-		/**
-		 * \brief The category list.
-		 */
-		std::list<boost::shared_ptr<Category> > d_category_list;
 
 };
 

@@ -14,6 +14,7 @@
 class Configuration;
 class QTreeView;
 class QListView;
+class CategoryListModel;
 
 class MainWindow : public QMainWindow
 {
@@ -54,6 +55,11 @@ class MainWindow : public QMainWindow
 			* \brief The resource list.
 			*/
 		 QListView* d_resource_list_view;
+
+		 /**
+			* \brief The resource list.
+			*/
+		 CategoryListModel* d_category_list_model;
 
 		 /**
 			* \brief The resource list.

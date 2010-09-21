@@ -7,6 +7,8 @@
 #ifndef KEEP_STORED_CATEGORY_HPP
 #define KEEP_STORED_CATEGORY_HPP
 
+#include <QMetaType>
+
 #include <boost/shared_ptr.hpp>
 
 #include <list>
@@ -30,6 +32,11 @@ class Category
 		static void saveToXml(boost::shared_ptr<Category> category, boost::shared_ptr<systools::xml::XmlWriter> xml_writer);
 
 		static boost::shared_ptr<Category> createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+
+		/**
+		 * \brief Constructor.
+		 */
+		Category();
 
 		/**
 		 * \brief Constructor.
@@ -59,6 +66,8 @@ class Category
 		std::list<boost::shared_ptr<AbstractResource> > d_resource_list;
 
 };
+
+Q_DECLARE_METATYPE(Category)
 
 #endif /* KEEP_STORED_CATEGORY_HPP */
 

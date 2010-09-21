@@ -21,7 +21,6 @@
 
 Configuration::Configuration()
 {
-	loadConfigurationFile();
 }
 
 QDir Configuration::rootConfigurationDirectory()
@@ -65,24 +64,29 @@ std::string Configuration::configurationFilePath()
 	return rootConfigurationDirectory().path().toStdString() + "/" + CONFIGURATION_FILE;
 }
 
-void Configuration::loadConfigurationFile()
+QList<boost::shared_ptr<Category> > Configuration::loadConfigurationFile()
 {
+	QList<boost::shared_ptr<Category> > category_list;
+
 	if (rootConfigurationDirectory().exists(QString::fromStdString(CONFIGURATION_FILE)))
 	{
 		boost::shared_ptr<systools::xml::XmlDocument> xml_document = systools::xml::XmlDocument::createFromFile(configurationFilePath());
 
 		xml_document->getXPath()->registerNamespace("ks", KEEPSTORED_XML_NAMESPACE);
 
-		std::list<boost::shared_ptr<systools::xml::XmlNode> > category_list = xml_document->getXPath()->evaluate("/ks:configuration/ks:category");
+		std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list = xml_document->getXPath()->evaluate("/ks:configuration/ks:category");
 
-		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category, category_list)
+
+		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category, category_node_list)
 		{
-			d_category_list.push_back(Category::createFromXmlNode(category));
+			category_list.push_back(Category::createFromXmlNode(category));
 		}
 	}
+
+	return category_list;
 }
 
-void Configuration::saveConfigurationFile()
+void Configuration::saveConfigurationFile(QList<boost::shared_ptr<Category> > category_list)
 {
 	boost::shared_ptr<systools::xml::XmlDocumentWriter> xml_writer(new systools::xml::XmlDocumentWriter);
 
@@ -90,7 +94,7 @@ void Configuration::saveConfigurationFile()
 	xml_writer->startElement("configuration");
 	xml_writer->writeAttribute("xmlns", KEEPSTORED_XML_NAMESPACE);
 
-	BOOST_FOREACH(boost::shared_ptr<Category> category, d_category_list)
+	BOOST_FOREACH(boost::shared_ptr<Category> category, category_list)
 	{
 		Category::saveToXml(category, xml_writer);
 	}

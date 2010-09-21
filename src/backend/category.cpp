@@ -38,6 +38,10 @@ void Category::saveToXml(boost::shared_ptr<Category> category, boost::shared_ptr
 	}
 }
 
+Category::Category()
+{
+}
+
 Category::Category(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
 	assert(xml_node);
