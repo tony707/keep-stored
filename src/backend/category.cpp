@@ -13,7 +13,7 @@
 
 #include <boost/foreach.hpp>
 
-#include <qDebug>
+#include <QDebug>
 
 boost::shared_ptr<Category> Category::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
