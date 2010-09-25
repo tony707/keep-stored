@@ -8,6 +8,7 @@
 #define KEEP_STORED_CATEGORY_HPP
 
 #include <QList>
+#include <QMetaType>
 
 #include <boost/shared_ptr.hpp>
 

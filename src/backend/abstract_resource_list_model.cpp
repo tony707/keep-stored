@@ -109,17 +109,22 @@ bool AbstractResourceListModel::removeRows(int position, int rows, const QModelI
 	return true;
 }
 
-void AbstractResourceListModel::addResource(boost::shared_ptr<AbstractResource> resource)
+boost::shared_ptr<Category> AbstractResourceListModel::category()
 {
-	beginInsertRows(QModelIndex(), rowCount()-1, rowCount());
-
-	d_category->addResource(resource);
-
-	endInsertRows();
+	return d_category;
 }
 
 boost::shared_ptr<AbstractResource> AbstractResourceListModel::resource(int row)
 {
 	return d_category->resourceList().at(row);
+}
+
+void AbstractResourceListModel::addResource(boost::shared_ptr<AbstractResource> resource)
+{
+	beginInsertRows(QModelIndex(), rowCount()-1, rowCount()-1);
+
+	d_category->addResource(resource);
+
+	endInsertRows();
 }
 

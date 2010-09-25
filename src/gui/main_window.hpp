@@ -12,11 +12,13 @@
 
 #include <boost/shared_ptr.hpp>
 
+class Category;
 class Configuration;
 class QTableView;
 class CategoryListView;
 class ResourceListView;
 class CategoryListModel;
+class AbstractResource;
 class AbstractResourceListModel;
 class ResourceView;
 
@@ -37,6 +39,8 @@ class MainWindow : public QMainWindow
 		void showAddMenu();
 
 		void updateResourceList(const QItemSelection & selected, const QItemSelection & deselected);
+
+		void addResource(boost::shared_ptr<Category> category, boost::shared_ptr<AbstractResource> resource);
 
 		void editResource(int row);
 

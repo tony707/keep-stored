@@ -9,6 +9,8 @@
 #include "resource_list_view.hpp"
 #include "resource_view.hpp"
 
+#include "../backend/abstract_resource.hpp"
+#include "../backend/category.hpp"
 #include "../backend/configuration.hpp"
 #include "../backend/category_list_model.hpp"
 #include "../backend/abstract_resource_list_model.hpp"
@@ -19,8 +21,7 @@
 
 MainWindow::MainWindow(QWidget* parent) :
 	QMainWindow(parent),
-	d_configuration(new Configuration()),
-	d_resource_view(new ResourceView())
+	d_configuration(new Configuration())
 {
 	setWindowTitle(tr("Welcome on KeepStored"));
 
@@ -45,6 +46,7 @@ void MainWindow::buildWidgets()
 	d_category_list_view = new CategoryListView();
 	d_category_list_view->setModel(d_category_list_model);
 	d_resource_list_view = new ResourceListView();
+	d_resource_view = new ResourceView(category_list);
 	d_resource_preview = new QWidget;
 
 	QSplitter* vsplitter = new QSplitter(Qt::Vertical);
@@ -117,9 +119,23 @@ void MainWindow::updateResourceList(const QItemSelection & selected, const QItem
 	d_resource_list_view->resizeColumnsToContents();
 	d_resource_list_view->resizeRowsToContents();
 	d_resource_list_view->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+	connect(d_resource_view, SIGNAL(resourceAdded(boost::shared_ptr<Category>, boost::shared_ptr<AbstractResource>)), this, SLOT(addResource(boost::shared_ptr<Category>, boost::shared_ptr<AbstractResource>)), Qt::UniqueConnection);
+}
+
+void MainWindow::addResource(boost::shared_ptr<Category> category, boost::shared_ptr<AbstractResource> resource)
+{
+
+	if (d_resource_list_model->category() == category)
+	{
+		d_resource_list_model->addResource(resource);
+	}
+	else
+	{
+		category->addResource(resource);
+	}
 }
 
 void MainWindow::editResource(int row)
 {
-	d_resource_view->loadResource(d_resource_list_model->resource(row));
+	d_resource_view->loadResource(d_resource_list_model->resource(row), d_resource_list_model->category());
 }

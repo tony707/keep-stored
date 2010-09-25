@@ -7,22 +7,34 @@
 #include "resource_view.hpp"
 
 #include "../backend/abstract_resource.hpp"
+#include "../backend/category.hpp"
 
 #include <QLabel>
 #include <QLineEdit>
 #include <QFormLayout>
 #include <QPushButton>
+#include <QComboBox>
 
-ResourceView::ResourceView(QWidget* parent) :
+#include <boost/foreach.hpp>
+
+ResourceView::ResourceView(QList<boost::shared_ptr<Category> > category_list, QWidget* parent) :
 	QWidget(parent),
 	d_title_edit(new QLineEdit()),
 	d_author_edit(new QLineEdit()),
 	d_location_edit(new QLineEdit()),
-	d_submit_button(new QPushButton(tr("Submit")))
+	d_submit_button(new QPushButton(tr("Submit"))),
+	d_combo_category_list(new QComboBox()),
+	d_category_list(category_list)
 {
 	setWindowTitle(tr("Add a resource"));
 
+	BOOST_FOREACH(boost::shared_ptr<Category> category, d_category_list)
+	{
+		d_combo_category_list->addItem(QIcon(":/resources/category.png"), QString::fromStdString(category->title()));
+	}
+
 	QFormLayout *layout = new QFormLayout;
+  layout->addRow(new QLabel(tr("Category")), d_combo_category_list);
   layout->addRow(new QLabel(tr("Title")), d_title_edit);
   layout->addRow(new QLabel(tr("Author(s)")), d_author_edit);
   layout->addRow(new QLabel(tr("Location")), d_location_edit);
@@ -35,10 +47,11 @@ ResourceView::ResourceView(QWidget* parent) :
   setLayout(layout);
 }
 
-void ResourceView::loadResource(boost::shared_ptr<AbstractResource> resource)
+void ResourceView::loadResource(boost::shared_ptr<AbstractResource> resource, boost::shared_ptr<Category> category)
 {
 	d_resource = resource;
 
+	d_combo_category_list->setCurrentIndex(d_category_list.indexOf(category));
 	d_title_edit->setText(QString::fromStdString(d_resource->title()));
 	d_author_edit->setText(QString::fromStdString(d_resource->author()));
 	d_location_edit->setText(QString::fromStdString(d_resource->location()));
@@ -67,13 +80,24 @@ void ResourceView::save()
 		resource->setAuthor(author);
 		resource->setLocation(location);
 
-		//resourceAdded(resource);
+		emit resourceAdded(d_category_list.at(d_combo_category_list->currentIndex()), resource);
 	}
 
 	d_title_edit->setText("");
 	d_author_edit->setText("");
 	d_location_edit->setText("");
+	d_combo_category_list->setCurrentIndex(0);
 
 	hide();
+}
+
+void ResourceView::updateCategoryList(QList<boost::shared_ptr<Category> > category_list)
+{
+	d_category_list = category_list;
+	d_combo_category_list->clear();
+	BOOST_FOREACH(boost::shared_ptr<Category> category, d_category_list)
+	{
+		d_combo_category_list->addItem(QIcon(":/resources/category.png"), QString::fromStdString(category->title()));
+	}
 }
 
