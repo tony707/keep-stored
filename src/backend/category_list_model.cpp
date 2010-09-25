@@ -6,7 +6,7 @@
 
 #include "category_list_model.hpp"
 
-#include "Category.hpp"
+#include "category.hpp"
 
 CategoryListModel::CategoryListModel(QList<boost::shared_ptr<Category> > category_list, QObject *parent) :
 	QAbstractListModel(parent),
