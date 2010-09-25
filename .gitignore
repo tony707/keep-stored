@@ -8,3 +8,4 @@ auto
 Info.plist
 *.xcodeproj
 .DS_Store
+*.un~

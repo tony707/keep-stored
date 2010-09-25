@@ -19,6 +19,10 @@ boost::shared_ptr<AbstractResource> AbstractResource::createFromXmlNode(boost::s
 	return boost::shared_ptr<AbstractResource>(new AbstractResource(xml_node));
 }
 
+AbstractResource::AbstractResource()
+{
+}
+
 AbstractResource::AbstractResource(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
 	assert(xml_node);
@@ -90,3 +94,19 @@ std::string AbstractResource::location()
 {
 	return d_location;
 }
+
+void AbstractResource::setTitle(std::string title)
+{
+	d_title = title;
+}
+
+void AbstractResource::setAuthor(std::string author)
+{
+	d_author = author;
+}
+
+void AbstractResource::setLocation(std::string location)
+{
+	d_location = location;
+}
+

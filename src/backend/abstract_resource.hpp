@@ -35,6 +35,11 @@ class AbstractResource
 		/**
 		 * \brief Constructor.
 		 */
+		AbstractResource();
+
+		/**
+		 * \brief Constructor.
+		 */
 		AbstractResource(boost::shared_ptr<systools::xml::XmlNode> xml_node);
 
 		static boost::shared_ptr<AbstractResource> createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node);
@@ -50,6 +55,12 @@ class AbstractResource
 		std::string author();
 
 		std::string location();
+
+		void setTitle(std::string title);
+
+		void setAuthor(std::string author);
+
+		void setLocation(std::string location);
 
 	private:
 
@@ -72,11 +83,6 @@ class AbstractResource
 		 * \brief The location.
 		 */
 		std::string d_location;
-
-		/**
-		 * \brief The associated tags.
-		 */
-		std::list<std::string> d_tags;
 
 };
 

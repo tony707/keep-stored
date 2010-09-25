@@ -7,7 +7,7 @@
 #ifndef KEEP_STORED_CATEGORY_HPP
 #define KEEP_STORED_CATEGORY_HPP
 
-#include <QMetaType>
+#include <QList>
 
 #include <boost/shared_ptr.hpp>
 
@@ -49,9 +49,18 @@ class Category
 		std::string title();
 
 		/**
+		 * \brief Set the title.
+		 */
+		void setTitle(std::string title);
+
+		/**
 		 * \brief Get the resource list.
 		 */
-		std::list<boost::shared_ptr<AbstractResource> > resourceList();
+		QList<boost::shared_ptr<AbstractResource> > resourceList();
+
+		void addResource(boost::shared_ptr<AbstractResource> resource);
+
+		void removeResource(int row);
 
 	private:
 
@@ -63,11 +72,9 @@ class Category
 		/**
 		 * \brief The associated resource list.
 		 */
-		std::list<boost::shared_ptr<AbstractResource> > d_resource_list;
+		QList<boost::shared_ptr<AbstractResource> > d_resource_list;
 
 };
-
-Q_DECLARE_METATYPE(Category)
 
 #endif /* KEEP_STORED_CATEGORY_HPP */
 

@@ -8,13 +8,17 @@
 #define KEEP_STORED_MAIN_WINDOW_HPP
 
 #include <QMainWindow>
+#include <QItemSelection>
 
 #include <boost/shared_ptr.hpp>
 
 class Configuration;
-class QTreeView;
-class QListView;
+class QTableView;
+class CategoryListView;
+class ResourceListView;
 class CategoryListModel;
+class AbstractResourceListModel;
+class ResourceView;
 
 class MainWindow : public QMainWindow
 {
@@ -27,6 +31,14 @@ class MainWindow : public QMainWindow
 		 * \param parent The parent widget.
 		 */
 		MainWindow(QWidget* parent = NULL);
+
+	public slots:
+
+		void showAddMenu();
+
+		void updateResourceList(const QItemSelection & selected, const QItemSelection & deselected);
+
+		void editResource(int row);
 
 	private:
 		/**
@@ -44,35 +56,67 @@ class MainWindow : public QMainWindow
 		 */
 		 void buildWidgets();
 
+		 void setupActions();
+
 		 void closeEvent(QCloseEvent* event);
+
+	private:
 
 		 /**
 			* \brief The category list.
 			*/
-		 QTreeView* d_category_list_view;
+		 CategoryListView* d_category_list_view;
 
 		 /**
 			* \brief The resource list.
 			*/
-		 QListView* d_resource_list_view;
+		 ResourceListView* d_resource_list_view;
 
 		 /**
-			* \brief The resource list.
+			* \brief The word list.
 			*/
 		 CategoryListModel* d_category_list_model;
 
 		 /**
-			* \brief The resource list.
+			* \brief The resource list model.
+			*/
+		 AbstractResourceListModel* d_resource_list_model;
+
+		 /**
+			* \brief The resource preview.
 			*/
 		 QWidget* d_resource_preview;
 
+		 /**
+			* \brief The add menu.
+			*/
+		 QMenu* d_add_menu;
+
+		 /**
+			* \brief The configuration.
+			*/
+		 boost::shared_ptr<Configuration> d_configuration;
+
+		 /**
+			* \brief The resource view (new/edit).
+			*/
+		 ResourceView* d_resource_view;
+
+	private:
+
 		 QAction* d_add_action;
+
+		 QAction* d_add_category;
+
+		 QAction* d_add_resource;
 
 		 QAction* d_edit_action;
 
 		 QAction* d_remove_action;
 
-		 boost::shared_ptr<Configuration> d_configuration;
+		 QAction* d_setting_action;
+
+		 QAction* d_search_action;
 
 };
 

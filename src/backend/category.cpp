@@ -60,7 +60,23 @@ std::string Category::title()
 	return d_title;
 }
 
-std::list<boost::shared_ptr<AbstractResource> > Category::resourceList()
+void Category::setTitle(std::string title)
+{
+	d_title = title;
+}
+
+QList<boost::shared_ptr<AbstractResource> > Category::resourceList()
 {
 	return d_resource_list;
 }
+
+void Category::addResource(boost::shared_ptr<AbstractResource> resource)
+{
+	d_resource_list.push_back(resource);
+}
+
+void Category::removeResource(int row)
+{
+	d_resource_list.removeAt(row);
+}
+

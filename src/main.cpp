@@ -7,6 +7,7 @@
 #include "gui/main_window.hpp"
 
 #include <QApplication>
+#include <QMessageBox>
 
 int main(int argc, char** argv)
 {
@@ -17,5 +18,16 @@ int main(int argc, char** argv)
 	// Create the main window.
 	MainWindow mainWindow;
 
-	return application.exec();
+	int result = 0;
+
+	try
+	{
+		result = application.exec();
+	}
+	catch (std::exception& ex)
+	{
+		QMessageBox::critical(NULL, QObject::tr("Ooops!"), QObject::tr("An unexpected exception was thrown. The program must now terminate.\n\nWe apologize for the inconvenience. You may report this problem by writing to freelan-gui-users@lists.sourceforge.net.\n\nThe error was:\n\n%1").arg(QString(ex.what())));
+	}
+
+	return result;
 }

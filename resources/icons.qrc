@@ -5,5 +5,7 @@
 			<file>edit.png</file>
 			<file>delete.png</file>
 			<file>search.png</file>
+			<file>category.png</file>
+			<file>settings.png</file>
     </qresource>
 </RCC>
