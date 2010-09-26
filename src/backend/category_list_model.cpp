@@ -35,7 +35,7 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
-		return QString::fromStdString(d_category_list.at(index.row())->title());
+		return QString::fromUtf8(d_category_list.at(index.row())->title().c_str());
 	}
 
 	if (role == Qt::DecorationRole)
@@ -62,7 +62,8 @@ bool CategoryListModel::setData(const QModelIndex &index, const QVariant &value,
 {
 	if (index.isValid() && role == Qt::EditRole)
 	{
-		d_category_list.at(index.row())->setTitle(value.toString().toStdString());
+		QByteArray utf8_value = value.toString().toUtf8();
+		d_category_list.at(index.row())->setTitle(std::string(utf8_value.constData(), utf8_value.size()));
 		emit dataChanged(index, index);
 		return true;
 	}

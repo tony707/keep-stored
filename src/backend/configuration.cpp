@@ -88,7 +88,7 @@ QList<boost::shared_ptr<Category> > Configuration::loadConfigurationFile()
 
 void Configuration::saveConfigurationFile(QList<boost::shared_ptr<Category> > category_list)
 {
-	boost::shared_ptr<systools::xml::XmlDocumentWriter> xml_writer(new systools::xml::XmlDocumentWriter);
+	boost::shared_ptr<systools::xml::XmlDocumentWriter> xml_writer(new systools::xml::XmlDocumentWriter("UTF-8"));
 
 	xml_writer->startDocument();
 	xml_writer->startElement("configuration");

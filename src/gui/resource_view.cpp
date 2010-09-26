@@ -30,7 +30,7 @@ ResourceView::ResourceView(QList<boost::shared_ptr<Category> > category_list, QW
 
 	BOOST_FOREACH(boost::shared_ptr<Category> category, d_category_list)
 	{
-		d_combo_category_list->addItem(QIcon(":/resources/category.png"), QString::fromStdString(category->title()));
+		d_combo_category_list->addItem(QIcon(":/resources/category.png"), QString::fromUtf8(category->title().c_str()));
 	}
 
 	QFormLayout *layout = new QFormLayout;
@@ -52,18 +52,21 @@ void ResourceView::loadResource(boost::shared_ptr<AbstractResource> resource, bo
 	d_resource = resource;
 
 	d_combo_category_list->setCurrentIndex(d_category_list.indexOf(category));
-	d_title_edit->setText(QString::fromStdString(d_resource->title()));
-	d_author_edit->setText(QString::fromStdString(d_resource->author()));
-	d_location_edit->setText(QString::fromStdString(d_resource->location()));
+	d_title_edit->setText(QString::fromUtf8(d_resource->title().c_str()));
+	d_author_edit->setText(QString::fromUtf8(d_resource->author().c_str()));
+	d_location_edit->setText(QString::fromUtf8(d_resource->location().c_str()));
 
 	show();
 }
 
 void ResourceView::save()
 {
-	std::string title = d_title_edit->text().toStdString();
-	std::string author = d_author_edit->text().toStdString();
-	std::string location = d_location_edit->text().toStdString();
+	QByteArray utf8_title = d_title_edit->text().toUtf8();
+	QByteArray utf8_author = d_author_edit->text().toUtf8();
+	QByteArray utf8_location = d_location_edit->text().toUtf8();
+	std::string title = std::string(utf8_title.constData(), utf8_title.size());
+	std::string author = std::string(utf8_author.constData(), utf8_author.size());
+	std::string location = std::string(utf8_location.constData(), utf8_location.size());
 
 	if (d_resource)
 	{
@@ -97,7 +100,7 @@ void ResourceView::updateCategoryList(QList<boost::shared_ptr<Category> > catego
 	d_combo_category_list->clear();
 	BOOST_FOREACH(boost::shared_ptr<Category> category, d_category_list)
 	{
-		d_combo_category_list->addItem(QIcon(":/resources/category.png"), QString::fromStdString(category->title()));
+		d_combo_category_list->addItem(QIcon(":/resources/category.png"), QString::fromUtf8(category->title().c_str()));
 	}
 }
 

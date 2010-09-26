@@ -46,13 +46,13 @@ QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) con
 		switch(index.column())
 		{
 			case 0:
-				return QString::fromStdString(d_category->resourceList().at(index.row())->title());
+				return QString::fromUtf8(d_category->resourceList().at(index.row())->title().c_str());
 				break;
 			case 1:
-				return QString::fromStdString(d_category->resourceList().at(index.row())->author());
+				return QString::fromUtf8(d_category->resourceList().at(index.row())->author().c_str());
 				break;
 			case 2:
-				return QString::fromStdString(d_category->resourceList().at(index.row())->location());
+				return QString::fromUtf8(d_category->resourceList().at(index.row())->location().c_str());
 				break;
 		}
 	}

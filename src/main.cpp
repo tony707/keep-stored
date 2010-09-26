@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	}
 	catch (std::exception& ex)
 	{
-		QMessageBox::critical(NULL, QObject::tr("Ooops!"), QObject::tr("An unexpected exception was thrown. The program must now terminate.\n\nWe apologize for the inconvenience. You may report this problem by writing to freelan-gui-users@lists.sourceforge.net.\n\nThe error was:\n\n%1").arg(QString(ex.what())));
+		QMessageBox::critical(NULL, QObject::tr("Ooops!"), QObject::tr("An unexpected exception was thrown. The program must now terminate.\n\nWe apologize for the inconvenience. You may report this problem by writing to tinou@tinou.fr.\n\nThe error was:\n\n%1").arg(QString(ex.what())));
 	}
 
 	return result;
