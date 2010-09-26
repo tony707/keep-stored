@@ -61,6 +61,9 @@ std::string AbstractResource::resourceTypeToString(ResourceType type)
 
 	switch(type)
 	{
+		case Default:
+			str_type = "Default";
+			break;
 		case Book:
 			str_type = "Book";
 			break;

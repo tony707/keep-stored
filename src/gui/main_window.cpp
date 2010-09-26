@@ -8,6 +8,8 @@
 #include "category_list_view.hpp"
 #include "resource_list_view.hpp"
 #include "resource_view.hpp"
+#include "abstract_resource_preview.hpp"
+#include "default_resource_preview.hpp"
 
 #include "../backend/abstract_resource.hpp"
 #include "../backend/category.hpp"
@@ -47,7 +49,13 @@ void MainWindow::buildWidgets()
 	d_category_list_view->setModel(d_category_list_model);
 	d_resource_list_view = new ResourceListView();
 	d_resource_view = new ResourceView(category_list);
-	d_resource_preview = new QWidget;
+
+	// Put each resource type in stack
+	d_resource_preview = new QStackedWidget;
+	d_resource_preview->addWidget(new DefaultResourcePreview());
+	d_resource_preview->addWidget(new DefaultResourcePreview());
+	d_resource_preview->addWidget(new DefaultResourcePreview());
+	d_resource_preview->addWidget(new DefaultResourcePreview());
 
 	QSplitter* vsplitter = new QSplitter(Qt::Vertical);
 	vsplitter->addWidget(d_resource_list_view);
@@ -120,6 +128,20 @@ void MainWindow::updateResourceList(const QItemSelection & selected, const QItem
 	d_resource_list_view->resizeRowsToContents();
 	d_resource_list_view->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 	connect(d_resource_view, SIGNAL(resourceAdded(boost::shared_ptr<Category>, boost::shared_ptr<AbstractResource>)), this, SLOT(addResource(boost::shared_ptr<Category>, boost::shared_ptr<AbstractResource>)), Qt::UniqueConnection);
+	connect(d_resource_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourcePreview(const QItemSelection &, const QItemSelection &)));
+
+	static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->reset();
+}
+
+void MainWindow::updateResourcePreview(const QItemSelection & selected, const QItemSelection & deselected)
+{
+	Q_UNUSED(deselected);
+
+	QModelIndex selected_index = selected.indexes().front();
+	boost::shared_ptr<AbstractResource> resource = d_resource_list_model->resource(selected_index.row());
+
+	d_resource_preview->setCurrentIndex((int)resource->type());
+	static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->updateResourceInformation(resource);
 }
 
 void MainWindow::addResource(boost::shared_ptr<Category> category, boost::shared_ptr<AbstractResource> resource)

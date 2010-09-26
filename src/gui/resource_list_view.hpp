@@ -38,6 +38,7 @@ class ResourceListView : public QTableView
 
 	signals:
 		void resourceEdited(int row);
+		void resourceSelected(boost::shared_ptr<AbstractResource> resource);
 
 	public slots:
 

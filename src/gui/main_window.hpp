@@ -21,6 +21,7 @@ class CategoryListModel;
 class AbstractResource;
 class AbstractResourceListModel;
 class ResourceView;
+class QStackedWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -39,6 +40,8 @@ class MainWindow : public QMainWindow
 		void showAddMenu();
 
 		void updateResourceList(const QItemSelection & selected, const QItemSelection & deselected);
+
+		void updateResourcePreview(const QItemSelection &, const QItemSelection &);
 
 		void addResource(boost::shared_ptr<Category> category, boost::shared_ptr<AbstractResource> resource);
 
@@ -89,7 +92,7 @@ class MainWindow : public QMainWindow
 		 /**
 			* \brief The resource preview.
 			*/
-		 QWidget* d_resource_preview;
+		 QStackedWidget* d_resource_preview;
 
 		 /**
 			* \brief The add menu.

@@ -23,6 +23,7 @@ namespace systools
 
 enum ResourceType
 {
+	Default,
 	Book,
 	Ebook,
 	Url
