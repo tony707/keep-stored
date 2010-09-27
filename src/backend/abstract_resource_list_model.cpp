@@ -60,6 +60,33 @@ QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) con
 	return QVariant();
 }
 
+bool AbstractResourceListModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (index.isValid() && role == Qt::EditRole)
+	{
+		QByteArray utf8_value = value.toString().toUtf8();
+		std::string value = std::string(utf8_value.constData(), utf8_value.size());
+
+		switch(index.column())
+		{
+			case 0:
+				d_category->resourceList().at(index.row())->setTitle(value);
+				break;
+			case 1:
+				d_category->resourceList().at(index.row())->setAuthor(value);
+				break;
+			case 2:
+				d_category->resourceList().at(index.row())->setLocation(value);
+				break;
+		}
+
+		emit dataChanged(index, index);
+		return true;
+	}
+
+	return false;
+}
+
 QVariant AbstractResourceListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role != Qt::DisplayRole)
@@ -119,12 +146,17 @@ boost::shared_ptr<AbstractResource> AbstractResourceListModel::resource(int row)
 	return d_category->resourceList().at(row);
 }
 
-void AbstractResourceListModel::addResource(boost::shared_ptr<AbstractResource> resource)
+void AbstractResourceListModel::addResource(boost::shared_ptr<AbstractResource> resource, QStringList& values)
 {
 	beginInsertRows(QModelIndex(), rowCount()-1, rowCount()-1);
 
 	d_category->addResource(resource);
 
 	endInsertRows();
+
+	for (int row = 0; row < values.count(); ++row)
+	{
+		setData(index(rowCount()-1, row), values.at(row), Qt::EditRole);
+	}
 }
 

@@ -43,10 +43,6 @@ class MainWindow : public QMainWindow
 
 		void updateResourcePreview(const QItemSelection &, const QItemSelection &);
 
-		void addResource(boost::shared_ptr<Category> category, boost::shared_ptr<AbstractResource> resource);
-
-		void editResource(int row);
-
 	private:
 		/**
 		 * \brief Build Application's Menu Bar.

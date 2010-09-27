@@ -37,7 +37,7 @@ class ResourceListView : public QTableView
 		QAction* d_delete_action;
 
 	signals:
-		void resourceEdited(int row);
+		void resourceAboutToEdit(int row);
 		void resourceSelected(boost::shared_ptr<AbstractResource> resource);
 
 	public slots:

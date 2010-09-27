@@ -14,8 +14,9 @@
 class QLineEdit;
 class QPushButton;
 class QComboBox;
-class AbstractResource;
-class Category;
+class QItemSelection;
+class AbstractResourceListModel;
+class CategoryListModel;
 
 class ResourceView : public QWidget
 {
@@ -26,29 +27,28 @@ class ResourceView : public QWidget
 		/**
 		 * \brief Constructor.
 		 */
-		ResourceView(QList<boost::shared_ptr<Category> > category_list, QWidget* parent = 0);
+		ResourceView(CategoryListModel* category_list_model, QWidget* parent = 0);
+
+		void setResourceListModel(AbstractResourceListModel* resource_list_model);
 
 	private:
+
+		int d_row;
 
 		QLineEdit* d_title_edit;
 		QLineEdit* d_author_edit;
 		QLineEdit* d_location_edit;
 		QPushButton* d_submit_button;
 		QComboBox* d_combo_category_list;
-		boost::shared_ptr<AbstractResource> d_resource;
-		QList<boost::shared_ptr<Category> > d_category_list;
 
-signals:
-		void resourceAdded(boost::shared_ptr<Category> category, boost::shared_ptr<AbstractResource> resource);
+		CategoryListModel* d_category_list_model;
+		AbstractResourceListModel* d_resource_list_model;
 
 public slots:
 
 	void save();
 
-	void loadResource(boost::shared_ptr<AbstractResource> resource, boost::shared_ptr<Category> category);
-
-	void updateCategoryList(QList<boost::shared_ptr<Category> > category_list);
-
+	void loadResource(int row);
 };
 
 #endif /* KEEP_STORED_RESOURCE_VIEW_HPP */

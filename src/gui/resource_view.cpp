@@ -6,31 +6,37 @@
 
 #include "resource_view.hpp"
 
+#include "../backend/abstract_resource_list_model.hpp"
+#include "../backend/category_list_model.hpp"
 #include "../backend/abstract_resource.hpp"
-#include "../backend/category.hpp"
 
 #include <QLabel>
 #include <QLineEdit>
 #include <QFormLayout>
 #include <QPushButton>
 #include <QComboBox>
+#include <QItemSelection>
 
 #include <boost/foreach.hpp>
 
-ResourceView::ResourceView(QList<boost::shared_ptr<Category> > category_list, QWidget* parent) :
+ResourceView::ResourceView(CategoryListModel* category_list_model, QWidget* parent) :
 	QWidget(parent),
+	d_row(-1),
 	d_title_edit(new QLineEdit()),
 	d_author_edit(new QLineEdit()),
 	d_location_edit(new QLineEdit()),
 	d_submit_button(new QPushButton(tr("Submit"))),
 	d_combo_category_list(new QComboBox()),
-	d_category_list(category_list)
+	d_category_list_model(category_list_model)
 {
 	setWindowTitle(tr("Add a resource"));
 
-	BOOST_FOREACH(boost::shared_ptr<Category> category, d_category_list)
+	for (int row = 0; row < d_category_list_model->rowCount(); ++row)
 	{
-		d_combo_category_list->addItem(QIcon(":/resources/category.png"), QString::fromUtf8(category->title().c_str()));
+		d_combo_category_list->addItem(
+				d_category_list_model->data(d_category_list_model->index(row, 0), Qt::DecorationRole).value<QIcon>(),
+				d_category_list_model->data(d_category_list_model->index(row, 0), Qt::DisplayRole).toString()
+		);
 	}
 
 	QFormLayout *layout = new QFormLayout;
@@ -40,67 +46,52 @@ ResourceView::ResourceView(QList<boost::shared_ptr<Category> > category_list, QW
   layout->addRow(new QLabel(tr("Location")), d_location_edit);
   layout->addRow(d_submit_button);
 
-	d_resource.reset();
-
 	connect(d_submit_button, SIGNAL(clicked()), this, SLOT(save()));
 
   setLayout(layout);
 }
 
-void ResourceView::loadResource(boost::shared_ptr<AbstractResource> resource, boost::shared_ptr<Category> category)
+void ResourceView::setResourceListModel(AbstractResourceListModel* resource_list_model)
 {
-	d_resource = resource;
+	d_resource_list_model = resource_list_model;
+	d_combo_category_list->setCurrentIndex(d_category_list_model->categoryList().indexOf(d_resource_list_model->category()));
+}
 
-	d_combo_category_list->setCurrentIndex(d_category_list.indexOf(category));
-	d_title_edit->setText(QString::fromUtf8(d_resource->title().c_str()));
-	d_author_edit->setText(QString::fromUtf8(d_resource->author().c_str()));
-	d_location_edit->setText(QString::fromUtf8(d_resource->location().c_str()));
+void ResourceView::loadResource(int row)
+{
+	d_row = row;
+	d_title_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 0), Qt::DisplayRole).toString());
+	d_author_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 1), Qt::DisplayRole).toString());
+	d_location_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 2), Qt::DisplayRole).toString());
 
 	show();
 }
 
 void ResourceView::save()
 {
-	QByteArray utf8_title = d_title_edit->text().toUtf8();
-	QByteArray utf8_author = d_author_edit->text().toUtf8();
-	QByteArray utf8_location = d_location_edit->text().toUtf8();
-	std::string title = std::string(utf8_title.constData(), utf8_title.size());
-	std::string author = std::string(utf8_author.constData(), utf8_author.size());
-	std::string location = std::string(utf8_location.constData(), utf8_location.size());
+	QString title = d_title_edit->text();
+	QString author = d_author_edit->text();
+	QString location = d_location_edit->text();
 
-	if (d_resource)
+	if (d_row >= 0)
 	{
-		d_resource->setTitle(title);
-		d_resource->setAuthor(author);
-		d_resource->setLocation(location);
-
-		d_resource.reset();
+		d_resource_list_model->setData(d_resource_list_model->index(d_row, 0), title, Qt::EditRole);
+		d_resource_list_model->setData(d_resource_list_model->index(d_row, 1), author, Qt::EditRole);
+		d_resource_list_model->setData(d_resource_list_model->index(d_row, 2), location, Qt::EditRole);
 	}
 	else
 	{
 		boost::shared_ptr<AbstractResource> resource(new AbstractResource());
-		resource->setTitle(title);
-		resource->setAuthor(author);
-		resource->setLocation(location);
-
-		emit resourceAdded(d_category_list.at(d_combo_category_list->currentIndex()), resource);
+		QStringList values;
+		values << title << author << location;
+		d_resource_list_model->addResource(resource, values);
 	}
 
 	d_title_edit->setText("");
 	d_author_edit->setText("");
 	d_location_edit->setText("");
-	d_combo_category_list->setCurrentIndex(0);
+	d_row = -1;
 
 	hide();
-}
-
-void ResourceView::updateCategoryList(QList<boost::shared_ptr<Category> > category_list)
-{
-	d_category_list = category_list;
-	d_combo_category_list->clear();
-	BOOST_FOREACH(boost::shared_ptr<Category> category, d_category_list)
-	{
-		d_combo_category_list->addItem(QIcon(":/resources/category.png"), QString::fromUtf8(category->title().c_str()));
-	}
 }
 
