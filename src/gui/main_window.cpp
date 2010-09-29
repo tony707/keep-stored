@@ -150,6 +150,6 @@ void MainWindow::updateResourcePreview(const QItemSelection & selected, const QI
 
 	boost::shared_ptr<AbstractResource> resource = d_resource_list_model->resource(selected_index.row());
 	d_resource_preview->setCurrentIndex((int)resource->type());
-	static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->updateResourceInformation(resource);
+	static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->updateResourceInformation(d_resource_list_model, selected_index.row());
 }
 

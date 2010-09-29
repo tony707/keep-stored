@@ -7,27 +7,65 @@
 #include "default_resource_preview.hpp"
 
 #include "../backend/abstract_resource.hpp"
+#include "../backend/abstract_resource_list_model.hpp"
 
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QFormLayout>
+#include <QPushButton>
+#include <QUrl>
+#include <QDesktopServices>
 
 DefaultResourcePreview::DefaultResourcePreview(AbstractResourcePreview* parent) :
 	AbstractResourcePreview(parent),
-	d_title(new QLabel())
+	d_title_label(new QLabel(tr("Title :"))),
+	d_author_label(new QLabel(tr("Author(s) :"))),
+	d_location_label(new QLabel(tr("Location :"))),
+	d_title(new QLabel("")),
+	d_author(new QLabel("")),
+	d_location(new QLabel("")),
+	d_open_button(new QPushButton("Open Resource"))
 {
-	QVBoxLayout* layout = new QVBoxLayout();
+	QVBoxLayout* vlayout = new QVBoxLayout();
 
-	layout->addWidget(d_title);
+	QFormLayout* form_layout = new QFormLayout();
 
-	setLayout(layout);
+	form_layout->addRow(d_title_label, d_title);
+	form_layout->addRow(d_author_label, d_author);
+	form_layout->addRow(d_location_label, d_location);
+
+	vlayout->addLayout(form_layout);
+	vlayout->addWidget(d_open_button);
+
+	setLayout(vlayout);
+
+	connect(d_open_button, SIGNAL(clicked()), this, SLOT(open()));
 }
 
-void DefaultResourcePreview::updateResourceInformation(boost::shared_ptr<AbstractResource> resource)
+void DefaultResourcePreview::updateResourceInformation(AbstractResourceListModel* model, int row)
 {
-	d_title->setText(QString::fromUtf8(resource->title().c_str()));
+	d_resource_model_list = model;
+	d_current_row = row;
+	d_title->setText(model->data(model->index(row, 0), Qt::DisplayRole).toString());
+	d_author->setText(model->data(model->index(row, 1), Qt::DisplayRole).toString());
+	d_location->setText(model->data(model->index(row, 2), Qt::DisplayRole).toString());
 }
 
 void DefaultResourcePreview::reset()
 {
 	d_title->setText("");
+	d_author->setText("");
+	d_location->setText("");
+	d_resource_model_list = NULL;
+}
+
+void DefaultResourcePreview::open()
+{
+	if (d_current_row >= 0)
+	{
+		QString url_string = d_resource_model_list->data(d_resource_model_list->index(d_current_row, 2), Qt::DisplayRole).toString();
+		url_string.prepend("file://");
+		QUrl url = QUrl(url_string);
+		QDesktopServices::openUrl(url);
+	}
 }

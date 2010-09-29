@@ -27,6 +27,11 @@ class CategoryListView : public QListView
 
 	private:
 
+		void dragEnterEvent(QDragEnterEvent *event);
+		void dragMoveEvent(QDragMoveEvent *event);
+		void dropEvent(QDropEvent *event);
+
+
 		QMenu* d_context_menu;
 
 		QItemSelectionModel* d_selection_model;

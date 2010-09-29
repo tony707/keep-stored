@@ -12,6 +12,7 @@
 #include <boost/shared_ptr.hpp>
 
 class AbstractResource;
+class AbstractResourceListModel;
 
 class AbstractResourcePreview : public QWidget
 {
@@ -24,11 +25,18 @@ class AbstractResourcePreview : public QWidget
 		 */
 		AbstractResourcePreview(QWidget* parent = 0);
 
-		virtual void updateResourceInformation(boost::shared_ptr<AbstractResource> resource) = 0;
+		virtual void updateResourceInformation(AbstractResourceListModel* model, int row) = 0;
 
 		virtual void reset() = 0;
 
-	private:
+	protected:
+
+		AbstractResourceListModel* d_resource_model_list;
+		int d_current_row;
+
+	public slots:
+
+		virtual void open() = 0;
 
 };
 

@@ -7,6 +7,8 @@
 #include "abstract_resource_preview.hpp"
 
 AbstractResourcePreview::AbstractResourcePreview(QWidget* parent) :
-	QWidget(parent)
+	QWidget(parent),
+	d_resource_model_list(NULL),
+	d_current_row(-1)
 {
 }
