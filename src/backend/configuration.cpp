@@ -72,9 +72,9 @@ QList<boost::shared_ptr<Category> > Configuration::loadConfigurationFile()
 	{
 		boost::shared_ptr<systools::xml::XmlDocument> xml_document = systools::xml::XmlDocument::createFromFile(configurationFilePath());
 
-		xml_document->getXPath()->registerNamespace("ks", KEEPSTORED_XML_NAMESPACE);
+		xml_document->xpath()->registerNamespace("ks", KEEPSTORED_XML_NAMESPACE);
 
-		std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list = xml_document->getXPath()->evaluate("/ks:configuration/ks:category");
+		std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list = xml_document->xpath()->evaluate("/ks:configuration/ks:category");
 
 
 		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category, category_node_list)
@@ -88,7 +88,7 @@ QList<boost::shared_ptr<Category> > Configuration::loadConfigurationFile()
 
 void Configuration::saveConfigurationFile(QList<boost::shared_ptr<Category> > category_list)
 {
-	boost::shared_ptr<systools::xml::XmlDocumentWriter> xml_writer(new systools::xml::XmlDocumentWriter("UTF-8"));
+	boost::shared_ptr<systools::xml::XmlDocumentWriter> xml_writer(new systools::xml::XmlDocumentWriter());
 
 	xml_writer->startDocument();
 	xml_writer->startElement("configuration");

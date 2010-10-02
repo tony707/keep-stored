@@ -99,6 +99,7 @@ void MainWindow::setupActions()
 
 	connect(d_category_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourceList(const QItemSelection &, const QItemSelection &)));
 	connect(d_resource_list_view, SIGNAL(resourceAboutToEdit(int)), d_resource_view, SLOT(loadResource(int)));
+	connect(d_category_list_view, SIGNAL(resourceDropped(QString)), this, SLOT(addDroppedResource(QString)));
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -118,19 +119,29 @@ void MainWindow::updateResourceList(const QItemSelection & selected, const QItem
 {
 	Q_UNUSED(deselected);
 
-	QModelIndex selected_index = selected.indexes().front();
+	QModelIndex selected_index;
 
-	QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
-	d_resource_list_model = new AbstractResourceListModel(d_category_list_model->categoryList().at(selected_index.row()));
-	filterModel->setSourceModel(d_resource_list_model);
-	d_resource_list_view->setModel(filterModel);
-	d_resource_list_view->resizeColumnsToContents();
-	d_resource_list_view->resizeRowsToContents();
-	d_resource_list_view->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-	connect(d_resource_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourcePreview(const QItemSelection &, const QItemSelection &)));
+	if (selected.indexes().count() > 0)
+	{
+		selected_index = selected.indexes().front();
+	}
+	else
+	{
+		selected_index = d_category_list_view->currentIndex();
+	}
 
-	static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->reset();
-	d_resource_view->setResourceListModel(d_resource_list_model);
+	if (selected_index.row() >= 0)
+	{
+		QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
+		d_resource_list_model = new AbstractResourceListModel(d_category_list_model->categoryList().at(selected_index.row()));
+		filterModel->setSourceModel(d_resource_list_model);
+		d_resource_list_view->setModel(filterModel);
+		d_resource_list_view->resizeRowsToContents();
+		connect(d_resource_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourcePreview(const QItemSelection &, const QItemSelection &)));
+
+		static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->reset();
+		d_resource_view->setResourceListModel(d_resource_list_model);
+	}
 }
 
 void MainWindow::updateResourcePreview(const QItemSelection & selected, const QItemSelection & deselected)
@@ -148,8 +159,17 @@ void MainWindow::updateResourcePreview(const QItemSelection & selected, const QI
 		selected_index = d_resource_list_view->currentIndex();
 	}
 
-	boost::shared_ptr<AbstractResource> resource = d_resource_list_model->resource(selected_index.row());
-	d_resource_preview->setCurrentIndex((int)resource->type());
-	static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->updateResourceInformation(d_resource_list_model, selected_index.row());
+	if (selected_index.row() >= 0)
+	{
+		boost::shared_ptr<AbstractResource> resource = d_resource_list_model->resource(selected_index.row());
+		d_resource_preview->setCurrentIndex((int)resource->type());
+		static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->updateResourceInformation(d_resource_list_model, selected_index.row());
+	}
+}
+
+void MainWindow::addDroppedResource(QString path)
+{
+	AbstractResourceListModel::prepareResourceAddition(d_resource_list_model, path);
+	d_resource_list_view->resizeRowsToContents();
 }
 

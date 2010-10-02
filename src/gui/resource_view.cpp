@@ -9,6 +9,8 @@
 #include "../backend/abstract_resource_list_model.hpp"
 #include "../backend/category_list_model.hpp"
 #include "../backend/abstract_resource.hpp"
+#include "../backend/default_resource.hpp"
+#include "../backend/string_tools.hpp"
 
 #include <QLabel>
 #include <QLineEdit>
@@ -81,10 +83,13 @@ void ResourceView::save()
 	}
 	else
 	{
-		boost::shared_ptr<AbstractResource> resource(new AbstractResource());
-		QStringList values;
-		values << title << author << location;
-		d_resource_list_model->addResource(resource, values);
+		boost::shared_ptr<AbstractResource> resource(new DefaultResource());
+
+		resource->setTitle(fromQString(title));
+		resource->setAuthor(fromQString(author));
+		resource->setLocation(fromQString(location));
+
+		d_resource_list_model->addResource(resource);
 	}
 
 	d_title_edit->setText("");

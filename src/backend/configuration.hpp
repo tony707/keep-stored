@@ -11,8 +11,10 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <systools/string.hpp>
+
 static const std::string CONFIGURATION_FILE = "configuration.xml";
-static const std::string KEEPSTORED_XML_NAMESPACE = "http://github.com/tinoutinou/keep-stored";
+static const systools::String KEEPSTORED_XML_NAMESPACE = "http://github.com/tinoutinou/keep-stored";
 
 class Category;
 

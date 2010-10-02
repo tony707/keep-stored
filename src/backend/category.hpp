@@ -13,7 +13,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <list>
-#include <string>
+#include <systools/string.hpp>
 
 namespace systools
 {
@@ -47,12 +47,12 @@ class Category
 		/**
 		 * \brief Get the title.
 		 */
-		std::string title();
+		systools::String title();
 
 		/**
 		 * \brief Set the title.
 		 */
-		void setTitle(std::string title);
+		void setTitle(systools::String title);
 
 		/**
 		 * \brief Get the resource list.
@@ -68,7 +68,7 @@ class Category
 		/**
 		 * \brief The title.
 		 */
-		std::string d_title;
+		systools::String d_title;
 
 		/**
 		 * \brief The associated resource list.

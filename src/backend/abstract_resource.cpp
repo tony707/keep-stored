@@ -6,6 +6,11 @@
 
 #include "abstract_resource.hpp"
 
+#include "default_resource.hpp"
+#include "book_resource.hpp"
+#include "ebook_resource.hpp"
+#include "url_resource.hpp"
+
 #include <systools/xml_node.hpp>
 #include <systools/xml_writer.hpp>
 #include <systools/xml_xpath.hpp>
@@ -16,7 +21,30 @@
 
 boost::shared_ptr<AbstractResource> AbstractResource::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
-	return boost::shared_ptr<AbstractResource>(new AbstractResource(xml_node));
+	int int_type;
+	std::istringstream iss(xml_node->getAttributeValue("type").toStdString());
+	iss >> int_type;
+	ResourceType type = static_cast<ResourceType>(type);
+
+	boost::shared_ptr<AbstractResource> resource;
+
+	switch(type)
+	{
+		case Default:
+			resource.reset(new DefaultResource(xml_node));
+			break;
+		case Book:
+			resource.reset(new BookResource(xml_node));
+			break;
+		case Ebook:
+			resource.reset(new EbookResource(xml_node));
+			break;
+		case Url:
+			resource.reset(new UrlResource(xml_node));
+			break;
+
+	}
+	return resource;
 }
 
 AbstractResource::AbstractResource()
@@ -27,13 +55,9 @@ AbstractResource::AbstractResource(boost::shared_ptr<systools::xml::XmlNode> xml
 {
 	assert(xml_node);
 
-	int tmp_type;
-	std::istringstream iss(xml_node->getAttributeValue("type"));
-	iss >> tmp_type;
-	d_type = (ResourceType)tmp_type;
-	d_title = xml_node->getXPath()->evaluateAsString("string(ks:title)");
-	d_author = xml_node->getXPath()->evaluateAsString("string(ks:author)");
-	d_location = xml_node->getXPath()->evaluateAsString("string(ks:location)");
+	d_title = xml_node->xpath()->evaluateAsString("string(ks:title)");
+	d_author = xml_node->xpath()->evaluateAsString("string(ks:author)");
+	d_location = xml_node->xpath()->evaluateAsString("string(ks:location)");
 
 }
 
@@ -83,32 +107,32 @@ ResourceType AbstractResource::type()
 	return d_type;
 }
 
-std::string AbstractResource::title()
+systools::String AbstractResource::title()
 {
 	return d_title;
 }
 
-std::string AbstractResource::author()
+systools::String AbstractResource::author()
 {
 	return d_author;
 }
 
-std::string AbstractResource::location()
+systools::String AbstractResource::location()
 {
 	return d_location;
 }
 
-void AbstractResource::setTitle(std::string title)
+void AbstractResource::setTitle(systools::String title)
 {
 	d_title = title;
 }
 
-void AbstractResource::setAuthor(std::string author)
+void AbstractResource::setAuthor(systools::String author)
 {
 	d_author = author;
 }
 
-void AbstractResource::setLocation(std::string location)
+void AbstractResource::setLocation(systools::String location)
 {
 	d_location = location;
 }

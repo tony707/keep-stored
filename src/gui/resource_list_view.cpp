@@ -20,6 +20,7 @@ ResourceListView::ResourceListView(QWidget* parent) :
 	verticalHeader()->hide();
 	setSelectionBehavior(QAbstractItemView::SelectRows);
 	setSortingEnabled(true);
+	horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
 	d_context_menu = new QMenu();
 	d_edit_action = d_context_menu->addAction(tr("Edit resource"));

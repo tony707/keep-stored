@@ -43,6 +43,8 @@ class MainWindow : public QMainWindow
 
 		void updateResourcePreview(const QItemSelection &, const QItemSelection &);
 
+		void addDroppedResource(QString path);
+
 	private:
 		/**
 		 * \brief Build Application's Menu Bar.

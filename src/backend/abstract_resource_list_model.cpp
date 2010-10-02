@@ -6,8 +6,32 @@
 
 #include "abstract_resource_list_model.hpp"
 
+#include "url_resource.hpp"
+#include "ebook_resource.hpp"
+
+#include "string_tools.hpp"
 #include "category.hpp"
 #include "abstract_resource.hpp"
+
+void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListModel* model, QString path)
+{
+	boost::shared_ptr<AbstractResource> resource;
+	QUrl url = QUrl(path);
+
+	if (url.isValid())
+	{
+		resource.reset(new UrlResource());
+	}
+	else
+	{
+		resource.reset(new EbookResource());
+	}
+
+	resource->setTitle(fromQString(path));
+	resource->setLocation(fromQString(path));
+
+	model->addResource(resource);
+}
 
 AbstractResourceListModel::AbstractResourceListModel(boost::shared_ptr<Category> category, QObject *parent) :
 	QAbstractListModel(parent),
@@ -46,13 +70,13 @@ QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) con
 		switch(index.column())
 		{
 			case 0:
-				return QString::fromUtf8(d_category->resourceList().at(index.row())->title().c_str());
+				return toQString(d_category->resourceList().at(index.row())->title());
 				break;
 			case 1:
-				return QString::fromUtf8(d_category->resourceList().at(index.row())->author().c_str());
+				return toQString(d_category->resourceList().at(index.row())->author());
 				break;
 			case 2:
-				return QString::fromUtf8(d_category->resourceList().at(index.row())->location().c_str());
+				return toQString(d_category->resourceList().at(index.row())->location());
 				break;
 		}
 	}
@@ -146,17 +170,12 @@ boost::shared_ptr<AbstractResource> AbstractResourceListModel::resource(int row)
 	return d_category->resourceList().at(row);
 }
 
-void AbstractResourceListModel::addResource(boost::shared_ptr<AbstractResource> resource, QStringList& values)
+void AbstractResourceListModel::addResource(boost::shared_ptr<AbstractResource> resource)
 {
-	beginInsertRows(QModelIndex(), rowCount()-1, rowCount()-1);
+	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 
 	d_category->addResource(resource);
 
 	endInsertRows();
-
-	for (int row = 0; row < values.count(); ++row)
-	{
-		setData(index(rowCount()-1, row), values.at(row), Qt::EditRole);
-	}
 }
 

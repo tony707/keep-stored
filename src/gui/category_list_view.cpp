@@ -21,6 +21,8 @@ CategoryListView::CategoryListView(QWidget* parent) :
 	setMinimumWidth(150);
 	setMaximumWidth(horizontalScrollBar()->sizeHint().width() + 100);
 	setAcceptDrops(true);
+	setDropIndicatorShown(true);
+	setDragDropMode(QAbstractItemView::DropOnly);
 
 	d_context_menu = new QMenu();
 	d_delete_action = d_context_menu->addAction(tr("Delete category"));
@@ -54,6 +56,11 @@ void CategoryListView::dragEnterEvent(QDragEnterEvent *event)
 
 void CategoryListView::dragMoveEvent(QDragMoveEvent *event)
 {
+	QModelIndex index = indexAt(event->pos());
+	if (index.row() >= 0)
+	{
+		setCurrentIndex(index);
+	}
 	event->acceptProposedAction();
 }
 
@@ -63,6 +70,7 @@ void CategoryListView::dropEvent(QDropEvent *event)
 	if (mimeData->hasText())
 	{
 		qDebug() << mimeData->text();
+		emit resourceDropped(mimeData->text());
 	} else if (mimeData->hasUrls())
 	{
 		QList<QUrl> url_list = mimeData->urls();
@@ -70,10 +78,12 @@ void CategoryListView::dropEvent(QDropEvent *event)
 		{
 			QString url_string = url.path();
 			qDebug() << url_string;
+			emit resourceDropped(url_string);
 		}
 	} else
 	{
 		qDebug() << "This mime type can't be dropped!";
+		//TODO: MSGBOX
 	}
 	event->acceptProposedAction();
 }

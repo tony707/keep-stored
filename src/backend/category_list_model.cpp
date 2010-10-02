@@ -7,6 +7,7 @@
 #include "category_list_model.hpp"
 
 #include "category.hpp"
+#include "string_tools.hpp"
 
 CategoryListModel::CategoryListModel(QList<boost::shared_ptr<Category> > category_list, QObject *parent) :
 	QAbstractListModel(parent),
@@ -35,7 +36,7 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
-		return QString::fromUtf8(d_category_list.at(index.row())->title().c_str());
+		return toQString(d_category_list.at(index.row())->title());
 	}
 
 	if (role == Qt::DecorationRole)

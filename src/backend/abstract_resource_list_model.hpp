@@ -22,6 +22,8 @@ class AbstractResourceListModel : public QAbstractListModel
 
 	public:
 
+		static void prepareResourceAddition(AbstractResourceListModel*, QString path);
+
 		/**
 		 * \brief Constructor.
 		 */
@@ -45,7 +47,7 @@ class AbstractResourceListModel : public QAbstractListModel
 
 	public slots:
 
-		void addResource(boost::shared_ptr<AbstractResource> resource, QStringList& values);
+		void addResource(boost::shared_ptr<AbstractResource> resource);
 
 	private:
 

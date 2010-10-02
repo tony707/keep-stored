@@ -47,7 +47,7 @@ Category::Category(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 	assert(xml_node);
 
 	d_title = xml_node->getAttributeValue("title");
-	std::list<boost::shared_ptr<systools::xml::XmlNode> > resource_list = xml_node->getXPath()->evaluate("ks:resource");
+	std::list<boost::shared_ptr<systools::xml::XmlNode> > resource_list = xml_node->xpath()->evaluate("ks:resource");
 
 	BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> resource, resource_list)
 	{
@@ -55,12 +55,12 @@ Category::Category(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 	}
 }
 
-std::string Category::title()
+systools::String Category::title()
 {
 	return d_title;
 }
 
-void Category::setTitle(std::string title)
+void Category::setTitle(systools::String title)
 {
 	d_title = title;
 }

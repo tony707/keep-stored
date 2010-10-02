@@ -38,6 +38,10 @@ class CategoryListView : public QListView
 
 		QAction* d_delete_action;
 
+		signals:
+
+		void resourceDropped(QString path);
+
 		public slots:
 
 			void addCategory();

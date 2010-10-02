@@ -12,6 +12,8 @@
 #include <list>
 #include <string>
 
+#include <systools/string.hpp>
+
 namespace systools
 {
 	namespace xml
@@ -51,19 +53,19 @@ class AbstractResource
 
 		ResourceType type();
 
-		std::string title();
+		systools::String title();
 
-		std::string author();
+		systools::String author();
 
-		std::string location();
+		systools::String location();
 
-		void setTitle(std::string title);
+		void setTitle(systools::String title);
 
-		void setAuthor(std::string author);
+		void setAuthor(systools::String author);
 
-		void setLocation(std::string location);
+		void setLocation(systools::String location);
 
-	private:
+	protected:
 
 		/**
 		 * \brief The type.
@@ -73,17 +75,17 @@ class AbstractResource
 		/**
 		 * \brief The title.
 		 */
-		std::string d_title;
+		systools::String d_title;
 
 		/**
 		 * \brief The author(s).
 		 */
-		std::string d_author;
+		systools::String d_author;
 
 		/**
 		 * \brief The location.
 		 */
-		std::string d_location;
+		systools::String d_location;
 
 };
 
