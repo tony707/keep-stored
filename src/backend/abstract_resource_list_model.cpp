@@ -17,8 +17,11 @@ void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListMode
 {
 	boost::shared_ptr<AbstractResource> resource;
 	QUrl url = QUrl(path);
+	
+	// We check if file:// is in, if so we remove it
+	path = path.remove("file://", Qt::CaseSensitive); 
 
-	if (url.isValid())
+	if (url.host() != "")
 	{
 		resource.reset(new UrlResource());
 	}

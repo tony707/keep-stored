@@ -1,0 +1,274 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AR	Makefile	/^AR            = ar cqs$/;"	m
+AbstractResource	src/backend/abstract_resource.cpp	/^AbstractResource::AbstractResource()$/;"	f	class:AbstractResource
+AbstractResource	src/backend/abstract_resource.cpp	/^AbstractResource::AbstractResource(boost::shared_ptr<systools::xml::XmlNode> xml_node)$/;"	f	class:AbstractResource
+AbstractResource	src/backend/abstract_resource.hpp	/^class AbstractResource$/;"	c
+AbstractResourceListModel	src/backend/abstract_resource_list_model.cpp	/^AbstractResourceListModel::AbstractResourceListModel(boost::shared_ptr<Category> category, QObject *parent) :$/;"	f	class:AbstractResourceListModel
+AbstractResourceListModel	src/backend/abstract_resource_list_model.hpp	/^class AbstractResourceListModel : public QAbstractListModel$/;"	c
+AbstractResourcePreview	src/gui/abstract_resource_preview.cpp	/^AbstractResourcePreview::AbstractResourcePreview(QWidget* parent) :$/;"	f	class:AbstractResourcePreview
+AbstractResourcePreview	src/gui/abstract_resource_preview.hpp	/^class AbstractResourcePreview : public QWidget$/;"	c
+Book	src/backend/abstract_resource.hpp	/^	Book,$/;"	e	enum:ResourceType
+BookResource	src/backend/book_resource.cpp	/^BookResource::BookResource() :$/;"	f	class:BookResource
+BookResource	src/backend/book_resource.cpp	/^BookResource::BookResource(boost::shared_ptr<systools::xml::XmlNode> xml_node) :$/;"	f	class:BookResource
+BookResource	src/backend/book_resource.hpp	/^class BookResource : public AbstractResource$/;"	c
+CC	Makefile	/^CC            = gcc$/;"	m
+CFLAGS	Makefile	/^CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT $(DEFINES)$/;"	m
+CHK_DIR_EXISTS	Makefile	/^CHK_DIR_EXISTS= test -d$/;"	m
+COMPRESS	Makefile	/^COMPRESS      = gzip -9f$/;"	m
+CONFIGURATION_FILE	src/backend/configuration.hpp	/^static const std::string CONFIGURATION_FILE = "configuration.xml";$/;"	v
+COPY	Makefile	/^COPY          = cp -f$/;"	m
+COPY_DIR	Makefile	/^COPY_DIR      = $(COPY) -r$/;"	m
+COPY_FILE	Makefile	/^COPY_FILE     = $(COPY)$/;"	m
+CXX	Makefile	/^CXX           = g++$/;"	m
+CXXFLAGS	Makefile	/^CXXFLAGS      = -pipe -O2 -Wall -W -D_REENTRANT $(DEFINES)$/;"	m
+Category	src/backend/category.cpp	/^Category::Category()$/;"	f	class:Category
+Category	src/backend/category.cpp	/^Category::Category(boost::shared_ptr<systools::xml::XmlNode> xml_node)$/;"	f	class:Category
+Category	src/backend/category.hpp	/^class Category$/;"	c
+CategoryListModel	src/backend/category_list_model.cpp	/^CategoryListModel::CategoryListModel(QList<boost::shared_ptr<Category> > category_list, QObject *parent) :$/;"	f	class:CategoryListModel
+CategoryListModel	src/backend/category_list_model.hpp	/^class CategoryListModel : public QAbstractListModel$/;"	c
+CategoryListView	src/gui/category_list_view.cpp	/^CategoryListView::CategoryListView(QWidget* parent) :$/;"	f	class:CategoryListView
+CategoryListView	src/gui/category_list_view.hpp	/^class CategoryListView : public QListView$/;"	c
+Configuration	src/backend/configuration.cpp	/^Configuration::Configuration()$/;"	f	class:Configuration
+Configuration	src/backend/configuration.hpp	/^class Configuration$/;"	c
+DEFINES	Makefile	/^DEFINES       = -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED$/;"	m
+DEL_DIR	Makefile	/^DEL_DIR       = rmdir$/;"	m
+DEL_FILE	Makefile	/^DEL_FILE      = rm -f$/;"	m
+DESTDIR	Makefile	/^DESTDIR       = $/;"	m
+DIST	Makefile	/^DIST          = \/usr\/share\/qt4\/mkspecs\/common\/g++.conf \\$/;"	m
+Default	src/backend/abstract_resource.hpp	/^	Default,$/;"	e	enum:ResourceType
+DefaultResource	src/backend/default_resource.cpp	/^DefaultResource::DefaultResource() :$/;"	f	class:DefaultResource
+DefaultResource	src/backend/default_resource.cpp	/^DefaultResource::DefaultResource(boost::shared_ptr<systools::xml::XmlNode> xml_node) :$/;"	f	class:DefaultResource
+DefaultResource	src/backend/default_resource.hpp	/^class DefaultResource : public AbstractResource$/;"	c
+DefaultResourcePreview	src/gui/default_resource_preview.cpp	/^DefaultResourcePreview::DefaultResourcePreview(AbstractResourcePreview* parent) :$/;"	f	class:DefaultResourcePreview
+DefaultResourcePreview	src/gui/default_resource_preview.hpp	/^class DefaultResourcePreview : public AbstractResourcePreview$/;"	c
+Ebook	src/backend/abstract_resource.hpp	/^	Ebook,$/;"	e	enum:ResourceType
+EbookResource	src/backend/ebook_resource.cpp	/^EbookResource::EbookResource() :$/;"	f	class:EbookResource
+EbookResource	src/backend/ebook_resource.cpp	/^EbookResource::EbookResource(boost::shared_ptr<systools::xml::XmlNode> xml_node) :$/;"	f	class:EbookResource
+EbookResource	src/backend/ebook_resource.hpp	/^class EbookResource : public AbstractResource$/;"	c
+INCPATH	Makefile	/^INCPATH       = -I\/usr\/share\/qt4\/mkspecs\/linux-g++ -I. -I\/usr\/include\/qt4\/QtCore -I\/usr\/include\/qt4\/QtGui -I\/usr\/include\/qt4 -I\/usr\/local\/include -I\/usr\/local\/include\/libxml2 -I\/usr\/local\/include\/xmlsec1 -I\/usr\/include\/libxml2 -I\/usr\/include\/xmlsec1 -Iauto\/moc$/;"	m
+INSTALL_DIR	Makefile	/^INSTALL_DIR   = $(COPY_DIR)$/;"	m
+INSTALL_FILE	Makefile	/^INSTALL_FILE  = install -m 644 -p$/;"	m
+INSTALL_PROGRAM	Makefile	/^INSTALL_PROGRAM = install -m 755 -p$/;"	m
+KEEPSTORED_XML_NAMESPACE	src/backend/configuration.hpp	/^static const systools::String KEEPSTORED_XML_NAMESPACE = "http:\/\/github.com\/tinoutinou\/keep-stored";$/;"	v
+KEEP_STORED_ABSTRACT_RESOURCE_HPP	src/backend/abstract_resource.hpp	8;"	d
+KEEP_STORED_ABSTRACT_RESOURCE_LIST_MODEL_HPP	src/backend/abstract_resource_list_model.hpp	8;"	d
+KEEP_STORED_ABSTRACT_RESOURCE_PREVIEW_HPP	src/gui/abstract_resource_preview.hpp	8;"	d
+KEEP_STORED_BOOK_RESOURCE_HPP	src/backend/book_resource.hpp	8;"	d
+KEEP_STORED_CATEGORY_HPP	src/backend/category.hpp	8;"	d
+KEEP_STORED_CATEGORY_LIST_MODEL_HPP	src/backend/category_list_model.hpp	8;"	d
+KEEP_STORED_CATEGORY_LIST_VIEW_HPP	src/gui/category_list_view.hpp	8;"	d
+KEEP_STORED_CONFIGURATION_HPP	src/backend/configuration.hpp	8;"	d
+KEEP_STORED_DEFAULT_RESOURCE_HPP	src/backend/default_resource.hpp	8;"	d
+KEEP_STORED_DEFAULT_RESOURCE_PREVIEW_HPP	src/gui/default_resource_preview.hpp	8;"	d
+KEEP_STORED_EBOOK_RESOURCE_HPP	src/backend/ebook_resource.hpp	8;"	d
+KEEP_STORED_MAIN_WINDOW_HPP	src/gui/main_window.hpp	8;"	d
+KEEP_STORED_RESOURCE_LIST_VIEW_HPP	src/gui/resource_list_view.hpp	8;"	d
+KEEP_STORED_RESOURCE_VIEW_HPP	src/gui/resource_view.hpp	8;"	d
+KEEP_STORED_STRING_TOOLS_HPP	src/backend/string_tools.hpp	8;"	d
+KEEP_STORED_URL_RESOURCE_HPP	src/backend/url_resource.hpp	8;"	d
+LFLAGS	Makefile	/^LFLAGS        = -Wl,-O1$/;"	m
+LIBS	Makefile	/^LIBS          = $(SUBLIBS)  -L\/usr\/lib -lxml2 -lsystools -lxmlsec1 -lxmlsec1-openssl -lQtGui -lQtCore -lpthread $/;"	m
+LINK	Makefile	/^LINK          = g++$/;"	m
+MKDIR	Makefile	/^MKDIR         = mkdir -p$/;"	m
+MOVE	Makefile	/^MOVE          = mv -f$/;"	m
+MainWindow	src/gui/main_window.cpp	/^MainWindow::MainWindow(QWidget* parent) :$/;"	f	class:MainWindow
+MainWindow	src/gui/main_window.hpp	/^class MainWindow : public QMainWindow$/;"	c
+OBJECTS	Makefile	/^OBJECTS       = bin\/main.o \\$/;"	m
+OBJECTS_DIR	Makefile	/^OBJECTS_DIR   = bin\/$/;"	m
+QMAKE	Makefile	/^QMAKE         = \/usr\/bin\/qmake$/;"	m
+QMAKE_TARGET	Makefile	/^QMAKE_TARGET  = keep-stored$/;"	m
+RANLIB	Makefile	/^RANLIB        = $/;"	m
+ResourceListView	src/gui/resource_list_view.cpp	/^ResourceListView::ResourceListView(QWidget* parent) :$/;"	f	class:ResourceListView
+ResourceListView	src/gui/resource_list_view.hpp	/^class ResourceListView : public QTableView$/;"	c
+ResourceType	src/backend/abstract_resource.hpp	/^enum ResourceType$/;"	g
+ResourceView	src/gui/resource_view.cpp	/^ResourceView::ResourceView(CategoryListModel* category_list_model, QWidget* parent) :$/;"	f	class:ResourceView
+ResourceView	src/gui/resource_view.hpp	/^class ResourceView : public QWidget$/;"	c
+SED	Makefile	/^SED           = sed$/;"	m
+SOURCES	Makefile	/^SOURCES       = src\/main.cpp \\$/;"	m
+STRIP	Makefile	/^STRIP         = strip$/;"	m
+SYMLINK	Makefile	/^SYMLINK       = ln -f -s$/;"	m
+TAR	Makefile	/^TAR           = tar -cf$/;"	m
+TARGET	Makefile	/^TARGET        = keep-stored$/;"	m
+Url	src/backend/abstract_resource.hpp	/^	Url$/;"	e	enum:ResourceType
+UrlResource	src/backend/url_resource.cpp	/^UrlResource::UrlResource() :$/;"	f	class:UrlResource
+UrlResource	src/backend/url_resource.cpp	/^UrlResource::UrlResource(boost::shared_ptr<systools::xml::XmlNode> xml_node) :$/;"	f	class:UrlResource
+UrlResource	src/backend/url_resource.hpp	/^class UrlResource : public AbstractResource$/;"	c
+WIN32_LEAN_AND_MEAN	src/backend/configuration.cpp	17;"	d	file:
+addCategory	src/gui/category_list_view.cpp	/^void CategoryListView::addCategory()$/;"	f	class:CategoryListView
+addDroppedResource	src/gui/main_window.cpp	/^void MainWindow::addDroppedResource(QString path)$/;"	f	class:MainWindow
+addResource	src/backend/abstract_resource_list_model.cpp	/^void AbstractResourceListModel::addResource(boost::shared_ptr<AbstractResource> resource)$/;"	f	class:AbstractResourceListModel
+addResource	src/backend/category.cpp	/^void Category::addResource(boost::shared_ptr<AbstractResource> resource)$/;"	f	class:Category
+author	src/backend/abstract_resource.cpp	/^systools::String AbstractResource::author()$/;"	f	class:AbstractResource
+buildMenuBar	src/gui/main_window.cpp	/^void MainWindow::buildMenuBar()$/;"	f	class:MainWindow
+buildToolBar	src/gui/main_window.cpp	/^void MainWindow::buildToolBar()$/;"	f	class:MainWindow
+buildWidgets	src/gui/main_window.cpp	/^void MainWindow::buildWidgets()$/;"	f	class:MainWindow
+category	src/backend/abstract_resource_list_model.cpp	/^boost::shared_ptr<Category> AbstractResourceListModel::category()$/;"	f	class:AbstractResourceListModel
+categoryList	src/backend/category_list_model.cpp	/^QList<boost::shared_ptr<Category> > CategoryListModel::categoryList()$/;"	f	class:CategoryListModel
+closeEvent	src/gui/main_window.cpp	/^void MainWindow::closeEvent(QCloseEvent* event)$/;"	f	class:MainWindow
+columnCount	src/backend/abstract_resource_list_model.cpp	/^int AbstractResourceListModel::columnCount(const QModelIndex &parent) const$/;"	f	class:AbstractResourceListModel
+configurationFilePath	src/backend/configuration.cpp	/^std::string Configuration::configurationFilePath()$/;"	f	class:Configuration
+contextMenuEvent	src/gui/category_list_view.cpp	/^void CategoryListView::contextMenuEvent(QContextMenuEvent*)$/;"	f	class:CategoryListView
+contextMenuEvent	src/gui/resource_list_view.cpp	/^void ResourceListView::contextMenuEvent(QContextMenuEvent*)$/;"	f	class:ResourceListView
+createFromXmlNode	src/backend/abstract_resource.cpp	/^boost::shared_ptr<AbstractResource> AbstractResource::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)$/;"	f	class:AbstractResource
+createFromXmlNode	src/backend/category.cpp	/^boost::shared_ptr<Category> Category::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)$/;"	f	class:Category
+d_add_action	src/gui/main_window.hpp	/^		 QAction* d_add_action;$/;"	m	class:MainWindow
+d_add_category	src/gui/main_window.hpp	/^		 QAction* d_add_category;$/;"	m	class:MainWindow
+d_add_menu	src/gui/main_window.hpp	/^		 QMenu* d_add_menu;$/;"	m	class:MainWindow
+d_add_resource	src/gui/main_window.hpp	/^		 QAction* d_add_resource;$/;"	m	class:MainWindow
+d_author	src/backend/abstract_resource.hpp	/^		systools::String d_author;$/;"	m	class:AbstractResource
+d_author	src/gui/default_resource_preview.hpp	/^		QLabel* d_author;$/;"	m	class:DefaultResourcePreview
+d_author_edit	src/gui/resource_view.hpp	/^		QLineEdit* d_author_edit;$/;"	m	class:ResourceView
+d_author_label	src/gui/default_resource_preview.hpp	/^		QLabel* d_author_label;$/;"	m	class:DefaultResourcePreview
+d_category	src/backend/abstract_resource_list_model.hpp	/^		boost::shared_ptr<Category> d_category;$/;"	m	class:AbstractResourceListModel
+d_category_list	src/backend/category_list_model.hpp	/^		QList<boost::shared_ptr<Category> > d_category_list;$/;"	m	class:CategoryListModel
+d_category_list_model	src/gui/main_window.hpp	/^		 CategoryListModel* d_category_list_model;$/;"	m	class:MainWindow
+d_category_list_model	src/gui/resource_view.hpp	/^		CategoryListModel* d_category_list_model;$/;"	m	class:ResourceView
+d_category_list_view	src/gui/main_window.hpp	/^		 CategoryListView* d_category_list_view;$/;"	m	class:MainWindow
+d_combo_category_list	src/gui/resource_view.hpp	/^		QComboBox* d_combo_category_list;$/;"	m	class:ResourceView
+d_configuration	src/gui/main_window.hpp	/^		 boost::shared_ptr<Configuration> d_configuration;$/;"	m	class:MainWindow
+d_context_menu	src/gui/category_list_view.hpp	/^		QMenu* d_context_menu;$/;"	m	class:CategoryListView
+d_context_menu	src/gui/resource_list_view.hpp	/^		QMenu* d_context_menu;$/;"	m	class:ResourceListView
+d_current_row	src/gui/abstract_resource_preview.hpp	/^		int d_current_row;$/;"	m	class:AbstractResourcePreview
+d_delete_action	src/gui/category_list_view.hpp	/^		QAction* d_delete_action;$/;"	m	class:CategoryListView
+d_delete_action	src/gui/resource_list_view.hpp	/^		QAction* d_delete_action;$/;"	m	class:ResourceListView
+d_edit_action	src/gui/main_window.hpp	/^		 QAction* d_edit_action;$/;"	m	class:MainWindow
+d_edit_action	src/gui/resource_list_view.hpp	/^		QAction* d_edit_action;$/;"	m	class:ResourceListView
+d_location	src/backend/abstract_resource.hpp	/^		systools::String d_location;$/;"	m	class:AbstractResource
+d_location	src/gui/default_resource_preview.hpp	/^		QLabel* d_location;$/;"	m	class:DefaultResourcePreview
+d_location_edit	src/gui/resource_view.hpp	/^		QLineEdit* d_location_edit;$/;"	m	class:ResourceView
+d_location_label	src/gui/default_resource_preview.hpp	/^		QLabel* d_location_label;$/;"	m	class:DefaultResourcePreview
+d_open_button	src/gui/default_resource_preview.hpp	/^		QPushButton* d_open_button;$/;"	m	class:DefaultResourcePreview
+d_remove_action	src/gui/main_window.hpp	/^		 QAction* d_remove_action;$/;"	m	class:MainWindow
+d_resource_list	src/backend/category.hpp	/^		QList<boost::shared_ptr<AbstractResource> > d_resource_list;$/;"	m	class:Category
+d_resource_list_model	src/gui/main_window.hpp	/^		 AbstractResourceListModel* d_resource_list_model;$/;"	m	class:MainWindow
+d_resource_list_model	src/gui/resource_view.hpp	/^		AbstractResourceListModel* d_resource_list_model;$/;"	m	class:ResourceView
+d_resource_list_view	src/gui/main_window.hpp	/^		 ResourceListView* d_resource_list_view;$/;"	m	class:MainWindow
+d_resource_model_list	src/gui/abstract_resource_preview.hpp	/^		AbstractResourceListModel* d_resource_model_list;$/;"	m	class:AbstractResourcePreview
+d_resource_preview	src/gui/main_window.hpp	/^		 QStackedWidget* d_resource_preview;$/;"	m	class:MainWindow
+d_resource_view	src/gui/main_window.hpp	/^		 ResourceView* d_resource_view;$/;"	m	class:MainWindow
+d_row	src/gui/resource_view.hpp	/^		int d_row;$/;"	m	class:ResourceView
+d_search_action	src/gui/main_window.hpp	/^		 QAction* d_search_action;$/;"	m	class:MainWindow
+d_selection_model	src/gui/category_list_view.hpp	/^		QItemSelectionModel* d_selection_model;$/;"	m	class:CategoryListView
+d_setting_action	src/gui/main_window.hpp	/^		 QAction* d_setting_action;$/;"	m	class:MainWindow
+d_submit_button	src/gui/resource_view.hpp	/^		QPushButton* d_submit_button;$/;"	m	class:ResourceView
+d_title	src/backend/abstract_resource.hpp	/^		systools::String d_title;$/;"	m	class:AbstractResource
+d_title	src/backend/category.hpp	/^		systools::String d_title;$/;"	m	class:Category
+d_title	src/gui/default_resource_preview.hpp	/^		QLabel* d_title;$/;"	m	class:DefaultResourcePreview
+d_title_edit	src/gui/resource_view.hpp	/^		QLineEdit* d_title_edit;$/;"	m	class:ResourceView
+d_title_label	src/gui/default_resource_preview.hpp	/^		QLabel* d_title_label;$/;"	m	class:DefaultResourcePreview
+d_type	src/backend/abstract_resource.hpp	/^		ResourceType d_type;$/;"	m	class:AbstractResource
+data	src/backend/abstract_resource_list_model.cpp	/^QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) const$/;"	f	class:AbstractResourceListModel
+data	src/backend/category_list_model.cpp	/^QVariant CategoryListModel::data(const QModelIndex &index, int role) const$/;"	f	class:CategoryListModel
+deleteCategory	src/gui/category_list_view.cpp	/^void CategoryListView::deleteCategory()$/;"	f	class:CategoryListView
+deleteResource	src/gui/resource_list_view.cpp	/^void ResourceListView::deleteResource()$/;"	f	class:ResourceListView
+dragEnterEvent	src/gui/category_list_view.cpp	/^void CategoryListView::dragEnterEvent(QDragEnterEvent *event)$/;"	f	class:CategoryListView
+dragMoveEvent	src/gui/category_list_view.cpp	/^void CategoryListView::dragMoveEvent(QDragMoveEvent *event)$/;"	f	class:CategoryListView
+dropEvent	src/gui/category_list_view.cpp	/^void CategoryListView::dropEvent(QDropEvent *event)$/;"	f	class:CategoryListView
+editResource	src/gui/resource_list_view.cpp	/^void ResourceListView::editResource()$/;"	f	class:ResourceListView
+flags	src/backend/category_list_model.cpp	/^Qt::ItemFlags CategoryListModel::flags(const QModelIndex &index) const$/;"	f	class:CategoryListModel
+fromQString	src/backend/string_tools.cpp	/^systools::String fromQString(const QString& str)$/;"	f
+getStaticMetaObject	auto/moc/moc_abstract_resource_list_model.cpp	/^const QMetaObject &AbstractResourceListModel::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:AbstractResourceListModel
+getStaticMetaObject	auto/moc/moc_abstract_resource_preview.cpp	/^const QMetaObject &AbstractResourcePreview::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:AbstractResourcePreview
+getStaticMetaObject	auto/moc/moc_category_list_model.cpp	/^const QMetaObject &CategoryListModel::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:CategoryListModel
+getStaticMetaObject	auto/moc/moc_category_list_view.cpp	/^const QMetaObject &CategoryListView::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:CategoryListView
+getStaticMetaObject	auto/moc/moc_main_window.cpp	/^const QMetaObject &MainWindow::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:MainWindow
+getStaticMetaObject	auto/moc/moc_resource_list_view.cpp	/^const QMetaObject &ResourceListView::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:ResourceListView
+getStaticMetaObject	auto/moc/moc_resource_view.cpp	/^const QMetaObject &ResourceView::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:ResourceView
+headerData	src/backend/abstract_resource_list_model.cpp	/^QVariant AbstractResourceListModel::headerData(int section, Qt::Orientation orientation, int role) const$/;"	f	class:AbstractResourceListModel
+insertRows	src/backend/category_list_model.cpp	/^bool CategoryListModel::insertRows(int position, int rows, const QModelIndex &index)$/;"	f	class:CategoryListModel
+loadConfigurationFile	src/backend/configuration.cpp	/^QList<boost::shared_ptr<Category> > Configuration::loadConfigurationFile()$/;"	f	class:Configuration
+loadResource	src/gui/resource_view.cpp	/^void ResourceView::loadResource(int row)$/;"	f	class:ResourceView
+location	src/backend/abstract_resource.cpp	/^systools::String AbstractResource::location()$/;"	f	class:AbstractResource
+main	src/main.cpp	/^int main(int argc, char** argv)$/;"	f
+metaObject	auto/moc/moc_abstract_resource_list_model.cpp	/^const QMetaObject *AbstractResourceListModel::metaObject() const$/;"	f	class:AbstractResourceListModel
+metaObject	auto/moc/moc_abstract_resource_preview.cpp	/^const QMetaObject *AbstractResourcePreview::metaObject() const$/;"	f	class:AbstractResourcePreview
+metaObject	auto/moc/moc_category_list_model.cpp	/^const QMetaObject *CategoryListModel::metaObject() const$/;"	f	class:CategoryListModel
+metaObject	auto/moc/moc_category_list_view.cpp	/^const QMetaObject *CategoryListView::metaObject() const$/;"	f	class:CategoryListView
+metaObject	auto/moc/moc_main_window.cpp	/^const QMetaObject *MainWindow::metaObject() const$/;"	f	class:MainWindow
+metaObject	auto/moc/moc_resource_list_view.cpp	/^const QMetaObject *ResourceListView::metaObject() const$/;"	f	class:ResourceListView
+metaObject	auto/moc/moc_resource_view.cpp	/^const QMetaObject *ResourceView::metaObject() const$/;"	f	class:ResourceView
+open	src/gui/default_resource_preview.cpp	/^void DefaultResourcePreview::open()$/;"	f	class:DefaultResourcePreview
+prepareResourceAddition	src/backend/abstract_resource_list_model.cpp	/^void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListModel* model, QString path)$/;"	f	class:AbstractResourceListModel
+qCleanupResources_icons	auto/resources/qrc_icons.cpp	/^int QT_MANGLE_NAMESPACE(qCleanupResources_icons)()$/;"	f
+qInitResources_icons	auto/resources/qrc_icons.cpp	/^int QT_MANGLE_NAMESPACE(qInitResources_icons)()$/;"	f
+qt_meta_data_AbstractResourceListModel	auto/moc/moc_abstract_resource_list_model.cpp	/^static const uint qt_meta_data_AbstractResourceListModel[] = {$/;"	v	file:
+qt_meta_data_AbstractResourcePreview	auto/moc/moc_abstract_resource_preview.cpp	/^static const uint qt_meta_data_AbstractResourcePreview[] = {$/;"	v	file:
+qt_meta_data_CategoryListModel	auto/moc/moc_category_list_model.cpp	/^static const uint qt_meta_data_CategoryListModel[] = {$/;"	v	file:
+qt_meta_data_CategoryListView	auto/moc/moc_category_list_view.cpp	/^static const uint qt_meta_data_CategoryListView[] = {$/;"	v	file:
+qt_meta_data_MainWindow	auto/moc/moc_main_window.cpp	/^static const uint qt_meta_data_MainWindow[] = {$/;"	v	file:
+qt_meta_data_ResourceListView	auto/moc/moc_resource_list_view.cpp	/^static const uint qt_meta_data_ResourceListView[] = {$/;"	v	file:
+qt_meta_data_ResourceView	auto/moc/moc_resource_view.cpp	/^static const uint qt_meta_data_ResourceView[] = {$/;"	v	file:
+qt_meta_stringdata_AbstractResourceListModel	auto/moc/moc_abstract_resource_list_model.cpp	/^static const char qt_meta_stringdata_AbstractResourceListModel[] = {$/;"	v	file:
+qt_meta_stringdata_AbstractResourcePreview	auto/moc/moc_abstract_resource_preview.cpp	/^static const char qt_meta_stringdata_AbstractResourcePreview[] = {$/;"	v	file:
+qt_meta_stringdata_CategoryListModel	auto/moc/moc_category_list_model.cpp	/^static const char qt_meta_stringdata_CategoryListModel[] = {$/;"	v	file:
+qt_meta_stringdata_CategoryListView	auto/moc/moc_category_list_view.cpp	/^static const char qt_meta_stringdata_CategoryListView[] = {$/;"	v	file:
+qt_meta_stringdata_MainWindow	auto/moc/moc_main_window.cpp	/^static const char qt_meta_stringdata_MainWindow[] = {$/;"	v	file:
+qt_meta_stringdata_ResourceListView	auto/moc/moc_resource_list_view.cpp	/^static const char qt_meta_stringdata_ResourceListView[] = {$/;"	v	file:
+qt_meta_stringdata_ResourceView	auto/moc/moc_resource_view.cpp	/^static const char qt_meta_stringdata_ResourceView[] = {$/;"	v	file:
+qt_metacall	auto/moc/moc_abstract_resource_list_model.cpp	/^int AbstractResourceListModel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:AbstractResourceListModel
+qt_metacall	auto/moc/moc_abstract_resource_preview.cpp	/^int AbstractResourcePreview::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:AbstractResourcePreview
+qt_metacall	auto/moc/moc_category_list_model.cpp	/^int CategoryListModel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:CategoryListModel
+qt_metacall	auto/moc/moc_category_list_view.cpp	/^int CategoryListView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:CategoryListView
+qt_metacall	auto/moc/moc_main_window.cpp	/^int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:MainWindow
+qt_metacall	auto/moc/moc_resource_list_view.cpp	/^int ResourceListView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:ResourceListView
+qt_metacall	auto/moc/moc_resource_view.cpp	/^int ResourceView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:ResourceView
+qt_metacast	auto/moc/moc_abstract_resource_list_model.cpp	/^void *AbstractResourceListModel::qt_metacast(const char *_clname)$/;"	f	class:AbstractResourceListModel
+qt_metacast	auto/moc/moc_abstract_resource_preview.cpp	/^void *AbstractResourcePreview::qt_metacast(const char *_clname)$/;"	f	class:AbstractResourcePreview
+qt_metacast	auto/moc/moc_category_list_model.cpp	/^void *CategoryListModel::qt_metacast(const char *_clname)$/;"	f	class:CategoryListModel
+qt_metacast	auto/moc/moc_category_list_view.cpp	/^void *CategoryListView::qt_metacast(const char *_clname)$/;"	f	class:CategoryListView
+qt_metacast	auto/moc/moc_main_window.cpp	/^void *MainWindow::qt_metacast(const char *_clname)$/;"	f	class:MainWindow
+qt_metacast	auto/moc/moc_resource_list_view.cpp	/^void *ResourceListView::qt_metacast(const char *_clname)$/;"	f	class:ResourceListView
+qt_metacast	auto/moc/moc_resource_view.cpp	/^void *ResourceView::qt_metacast(const char *_clname)$/;"	f	class:ResourceView
+qt_resource_data	auto/resources/qrc_icons.cpp	/^static const unsigned char qt_resource_data[] = {$/;"	v	file:
+qt_resource_name	auto/resources/qrc_icons.cpp	/^static const unsigned char qt_resource_name[] = {$/;"	v	file:
+qt_resource_struct	auto/resources/qrc_icons.cpp	/^static const unsigned char qt_resource_struct[] = {$/;"	v	file:
+removeResource	src/backend/category.cpp	/^void Category::removeResource(int row)$/;"	f	class:Category
+removeRows	src/backend/abstract_resource_list_model.cpp	/^bool AbstractResourceListModel::removeRows(int position, int rows, const QModelIndex &index)$/;"	f	class:AbstractResourceListModel
+removeRows	src/backend/category_list_model.cpp	/^bool CategoryListModel::removeRows(int position, int rows, const QModelIndex &index)$/;"	f	class:CategoryListModel
+reset	src/gui/default_resource_preview.cpp	/^void DefaultResourcePreview::reset()$/;"	f	class:DefaultResourcePreview
+resource	src/backend/abstract_resource_list_model.cpp	/^boost::shared_ptr<AbstractResource> AbstractResourceListModel::resource(int row)$/;"	f	class:AbstractResourceListModel
+resourceAboutToEdit	auto/moc/moc_resource_list_view.cpp	/^void ResourceListView::resourceAboutToEdit(int _t1)$/;"	f	class:ResourceListView
+resourceDropped	auto/moc/moc_category_list_view.cpp	/^void CategoryListView::resourceDropped(QString _t1)$/;"	f	class:CategoryListView
+resourceList	src/backend/category.cpp	/^QList<boost::shared_ptr<AbstractResource> > Category::resourceList()$/;"	f	class:Category
+resourceSelected	auto/moc/moc_resource_list_view.cpp	/^void ResourceListView::resourceSelected(boost::shared_ptr<AbstractResource> _t1)$/;"	f	class:ResourceListView
+resourceTypeToString	src/backend/abstract_resource.cpp	/^std::string AbstractResource::resourceTypeToString(ResourceType type)$/;"	f	class:AbstractResource
+rootConfigurationDirectory	src/backend/configuration.cpp	/^QDir Configuration::rootConfigurationDirectory()$/;"	f	class:Configuration
+rowCount	src/backend/abstract_resource_list_model.cpp	/^int AbstractResourceListModel::rowCount(const QModelIndex &parent) const$/;"	f	class:AbstractResourceListModel
+rowCount	src/backend/category_list_model.cpp	/^int CategoryListModel::rowCount(const QModelIndex &parent) const$/;"	f	class:CategoryListModel
+save	src/gui/resource_view.cpp	/^void ResourceView::save()$/;"	f	class:ResourceView
+saveConfigurationFile	src/backend/configuration.cpp	/^void Configuration::saveConfigurationFile(QList<boost::shared_ptr<Category> > category_list)$/;"	f	class:Configuration
+saveToXml	src/backend/abstract_resource.cpp	/^void AbstractResource::saveToXml(boost::shared_ptr<AbstractResource> resource, boost::shared_ptr<systools::xml::XmlWriter> xml_writer)$/;"	f	class:AbstractResource
+saveToXml	src/backend/category.cpp	/^void Category::saveToXml(boost::shared_ptr<Category> category, boost::shared_ptr<systools::xml::XmlWriter> xml_writer)$/;"	f	class:Category
+setAuthor	src/backend/abstract_resource.cpp	/^void AbstractResource::setAuthor(systools::String author)$/;"	f	class:AbstractResource
+setData	src/backend/abstract_resource_list_model.cpp	/^bool AbstractResourceListModel::setData(const QModelIndex &index, const QVariant &value, int role)$/;"	f	class:AbstractResourceListModel
+setData	src/backend/category_list_model.cpp	/^bool CategoryListModel::setData(const QModelIndex &index, const QVariant &value, int role)$/;"	f	class:CategoryListModel
+setLocation	src/backend/abstract_resource.cpp	/^void AbstractResource::setLocation(systools::String location)$/;"	f	class:AbstractResource
+setResourceListModel	src/gui/resource_view.cpp	/^void ResourceView::setResourceListModel(AbstractResourceListModel* resource_list_model)$/;"	f	class:ResourceView
+setTitle	src/backend/abstract_resource.cpp	/^void AbstractResource::setTitle(systools::String title)$/;"	f	class:AbstractResource
+setTitle	src/backend/category.cpp	/^void Category::setTitle(systools::String title)$/;"	f	class:Category
+setupActions	src/gui/main_window.cpp	/^void MainWindow::setupActions()$/;"	f	class:MainWindow
+showAddMenu	src/gui/main_window.cpp	/^void MainWindow::showAddMenu()$/;"	f	class:MainWindow
+staticMetaObject	auto/moc/moc_abstract_resource_list_model.cpp	/^const QMetaObject AbstractResourceListModel::staticMetaObject = {$/;"	m	class:AbstractResourceListModel	file:
+staticMetaObject	auto/moc/moc_abstract_resource_preview.cpp	/^const QMetaObject AbstractResourcePreview::staticMetaObject = {$/;"	m	class:AbstractResourcePreview	file:
+staticMetaObject	auto/moc/moc_category_list_model.cpp	/^const QMetaObject CategoryListModel::staticMetaObject = {$/;"	m	class:CategoryListModel	file:
+staticMetaObject	auto/moc/moc_category_list_view.cpp	/^const QMetaObject CategoryListView::staticMetaObject = {$/;"	m	class:CategoryListView	file:
+staticMetaObject	auto/moc/moc_main_window.cpp	/^const QMetaObject MainWindow::staticMetaObject = {$/;"	m	class:MainWindow	file:
+staticMetaObject	auto/moc/moc_resource_list_view.cpp	/^const QMetaObject ResourceListView::staticMetaObject = {$/;"	m	class:ResourceListView	file:
+staticMetaObject	auto/moc/moc_resource_view.cpp	/^const QMetaObject ResourceView::staticMetaObject = {$/;"	m	class:ResourceView	file:
+systools	src/backend/abstract_resource.hpp	/^namespace systools$/;"	n
+systools	src/backend/category.hpp	/^namespace systools$/;"	n
+systools	src/backend/string_tools.hpp	/^namespace systools$/;"	n
+title	src/backend/abstract_resource.cpp	/^systools::String AbstractResource::title()$/;"	f	class:AbstractResource
+title	src/backend/category.cpp	/^systools::String Category::title()$/;"	f	class:Category
+toQString	src/backend/string_tools.cpp	/^QString toQString(const systools::String& str)$/;"	f
+type	src/backend/abstract_resource.cpp	/^ResourceType AbstractResource::type()$/;"	f	class:AbstractResource
+updateResourceInformation	src/gui/default_resource_preview.cpp	/^void DefaultResourcePreview::updateResourceInformation(AbstractResourceListModel* model, int row)$/;"	f	class:DefaultResourcePreview
+updateResourceList	src/gui/main_window.cpp	/^void MainWindow::updateResourceList(const QItemSelection & selected, const QItemSelection & deselected)$/;"	f	class:MainWindow
+updateResourcePreview	src/gui/main_window.cpp	/^void MainWindow::updateResourcePreview(const QItemSelection & selected, const QItemSelection & deselected)$/;"	f	class:MainWindow
+xml	src/backend/abstract_resource.hpp	/^	namespace xml$/;"	n	namespace:systools
+xml	src/backend/category.hpp	/^	namespace xml$/;"	n	namespace:systools
