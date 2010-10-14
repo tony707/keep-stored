@@ -16,10 +16,8 @@
 void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListModel* model, QString path)
 {
 	boost::shared_ptr<AbstractResource> resource;
-	QUrl url = QUrl(path);
-	
-	// We check if file:// is in, if so we remove it
-	path = path.remove("file://", Qt::CaseSensitive); 
+
+	QUrl url = QUrl::fromUserInput(path);
 
 	if (url.host() != "")
 	{
@@ -30,8 +28,8 @@ void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListMode
 		resource.reset(new EbookResource());
 	}
 
-	resource->setTitle(fromQString(path));
-	resource->setLocation(fromQString(path));
+	resource->setTitle(fromQString(url.toString()));
+	resource->setLocation(fromQString(url.toString()));
 
 	model->addResource(resource);
 }

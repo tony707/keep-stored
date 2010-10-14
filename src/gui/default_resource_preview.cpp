@@ -64,15 +64,7 @@ void DefaultResourcePreview::open()
 	if (d_current_row >= 0)
 	{
 		QString url_string = d_resource_model_list->data(d_resource_model_list->index(d_current_row, 2), Qt::DisplayRole).toString();
-		
-		QUrl url = QUrl(url_string);
 
-		if (url.host() == "") {
-			url_string.prepend("file://");
-		}
-
-		if (url.isValid()) {
-			QDesktopServices::openUrl(url);
-		}
+		QDesktopServices::openUrl(url_string);
 	}
 }
