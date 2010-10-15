@@ -18,6 +18,7 @@
 #include <boost/foreach.hpp>
 
 #include <sstream>
+#include <QDebug>
 
 boost::shared_ptr<AbstractResource> AbstractResource::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
@@ -59,6 +60,13 @@ AbstractResource::AbstractResource(boost::shared_ptr<systools::xml::XmlNode> xml
 	d_author = xml_node->xpath()->evaluateAsString("string(ks:author)");
 	d_location = xml_node->xpath()->evaluateAsString("string(ks:location)");
 
+	std::list<boost::shared_ptr<systools::xml::XmlNode> > tag_list = xml_node->xpath()->evaluate("ks:tagList/ks:tag");
+
+	BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> tag, tag_list)
+	{
+		d_tag_list.push_back(tag->content());
+	}
+
 }
 
 void AbstractResource::saveToXml(boost::shared_ptr<AbstractResource> resource, boost::shared_ptr<systools::xml::XmlWriter> xml_writer)
@@ -75,6 +83,14 @@ void AbstractResource::saveToXml(boost::shared_ptr<AbstractResource> resource, b
 		xml_writer->writeElement("title", resource->title());
 		xml_writer->writeElement("author", resource->author());
 		xml_writer->writeElement("location", resource->location());
+		xml_writer->startElement("tagList");
+
+		BOOST_FOREACH(systools::String tag, resource->tagList())
+		{
+			xml_writer->writeElement("tag", tag);
+		}
+
+		xml_writer->endElement(); //tagList
 		xml_writer->endElement(); //resource
 	}
 }
@@ -122,6 +138,11 @@ systools::String AbstractResource::location()
 	return d_location;
 }
 
+QList<systools::String> AbstractResource::tagList()
+{
+	return d_tag_list;
+}
+
 void AbstractResource::setTitle(systools::String title)
 {
 	d_title = title;
@@ -137,3 +158,7 @@ void AbstractResource::setLocation(systools::String location)
 	d_location = location;
 }
 
+void AbstractResource::setTagList(QList<systools::String> tag_list)
+{
+	d_tag_list = tag_list;
+}

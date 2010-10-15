@@ -37,6 +37,7 @@ class ResourceView : public QWidget
 
 		QLineEdit* d_title_edit;
 		QLineEdit* d_author_edit;
+		QLineEdit* d_taglist_edit;
 		QLineEdit* d_location_edit;
 		QPushButton* d_submit_button;
 		QComboBox* d_combo_category_list;

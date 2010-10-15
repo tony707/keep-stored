@@ -28,6 +28,10 @@ class ResourceListView : public QTableView
 
 		void contextMenuEvent(QContextMenuEvent*);
 
+		void dragEnterEvent(QDragEnterEvent *event);
+		void dragMoveEvent(QDragMoveEvent *event);
+		void dropEvent(QDropEvent *event);
+
 	private:
 
 		QMenu* d_context_menu;
@@ -39,6 +43,7 @@ class ResourceListView : public QTableView
 	signals:
 		void resourceAboutToEdit(int row);
 		void resourceSelected(boost::shared_ptr<AbstractResource> resource);
+		void resourceDropped(QString url);
 
 	public slots:
 

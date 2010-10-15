@@ -138,6 +138,7 @@ void MainWindow::updateResourceList(const QItemSelection & selected, const QItem
 		d_resource_list_view->setModel(filterModel);
 		d_resource_list_view->resizeRowsToContents();
 		connect(d_resource_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourcePreview(const QItemSelection &, const QItemSelection &)));
+		connect(d_resource_list_view, SIGNAL(resourceDropped(QString)), this, SLOT(addDroppedResource(QString)));
 
 		static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->reset();
 		d_resource_view->setResourceListModel(d_resource_list_model);

@@ -9,10 +9,9 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <list>
-#include <string>
-
 #include <systools/string.hpp>
+
+#include <QList>
 
 namespace systools
 {
@@ -59,11 +58,15 @@ class AbstractResource
 
 		systools::String location();
 
+		QList<systools::String> tagList();
+
 		void setTitle(systools::String title);
 
 		void setAuthor(systools::String author);
 
 		void setLocation(systools::String location);
+
+		void setTagList(QList<systools::String> tag_list);
 
 	protected:
 
@@ -86,6 +89,11 @@ class AbstractResource
 		 * \brief The location.
 		 */
 		systools::String d_location;
+
+		/**
+		 * \brief The tag list.
+		 */
+		QList<systools::String> d_tag_list;
 
 };
 

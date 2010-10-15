@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = keep-stored
 VERSION = 1.0.0
-CONFIG += qt warn_on
+CONFIG += qt warn_on debug
 QT += gui
 
 # Debug

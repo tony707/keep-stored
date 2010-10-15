@@ -28,7 +28,7 @@ void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListMode
 		resource.reset(new EbookResource());
 	}
 
-	resource->setTitle(fromQString(url.toString()));
+	resource->setTitle(fromQString(QFileInfo(url.path()).fileName()));
 	resource->setLocation(fromQString(url.toString()));
 
 	model->addResource(resource);
@@ -51,7 +51,7 @@ int AbstractResourceListModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 
-	return 3;
+	return 4;
 }
 
 QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) const
@@ -66,7 +66,7 @@ QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) con
 		return QVariant();
 	}
 
-	if (role == Qt::DisplayRole)
+	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
 		switch(index.column())
 		{
@@ -77,6 +77,9 @@ QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) con
 				return toQString(d_category->resourceList().at(index.row())->author());
 				break;
 			case 2:
+				return stringListToQString(d_category->resourceList().at(index.row())->tagList());
+				break;
+			case 3:
 				return toQString(d_category->resourceList().at(index.row())->location());
 				break;
 		}
@@ -85,23 +88,36 @@ QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) con
 	return QVariant();
 }
 
+Qt::ItemFlags AbstractResourceListModel::flags(const QModelIndex &index) const
+{
+	if (!index.isValid())
+	{
+		return Qt::ItemIsEnabled;
+	}
+
+	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+}
+
 bool AbstractResourceListModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	if (index.isValid() && role == Qt::EditRole)
 	{
-		QByteArray utf8_value = value.toString().toUtf8();
-		std::string value = std::string(utf8_value.constData(), utf8_value.size());
+		//QByteArray utf8_value = value.toString().toUtf8();
+		//std::string value = std::string(utf8_value.constData(), utf8_value.size());
 
 		switch(index.column())
 		{
 			case 0:
-				d_category->resourceList().at(index.row())->setTitle(value);
+				d_category->resourceList().at(index.row())->setTitle(fromQString(value.toString()));
 				break;
 			case 1:
-				d_category->resourceList().at(index.row())->setAuthor(value);
+				d_category->resourceList().at(index.row())->setAuthor(fromQString(value.toString()));
 				break;
 			case 2:
-				d_category->resourceList().at(index.row())->setLocation(value);
+				d_category->resourceList().at(index.row())->setTagList(QStringToStringList(value.toString()));
+				break;
+			case 3:
+				d_category->resourceList().at(index.row())->setLocation(fromQString(value.toString()));
 				break;
 		}
 
@@ -132,10 +148,11 @@ QVariant AbstractResourceListModel::headerData(int section, Qt::Orientation orie
 				header = QString(tr("Author(s)"));
 				break;
 			case 2:
+				header = QString(tr("Tags"));
+				break;
+			case 3:
 				header = QString(tr("Location"));
 				break;
-			default:
-				header = QString(tr("Other"));
 		}
 		return header;
 	}

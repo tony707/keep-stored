@@ -26,6 +26,7 @@ ResourceView::ResourceView(CategoryListModel* category_list_model, QWidget* pare
 	d_row(-1),
 	d_title_edit(new QLineEdit()),
 	d_author_edit(new QLineEdit()),
+	d_taglist_edit(new QLineEdit()),
 	d_location_edit(new QLineEdit()),
 	d_submit_button(new QPushButton(tr("Submit"))),
 	d_combo_category_list(new QComboBox()),
@@ -45,6 +46,7 @@ ResourceView::ResourceView(CategoryListModel* category_list_model, QWidget* pare
   layout->addRow(new QLabel(tr("Category")), d_combo_category_list);
   layout->addRow(new QLabel(tr("Title")), d_title_edit);
   layout->addRow(new QLabel(tr("Author(s)")), d_author_edit);
+  layout->addRow(new QLabel(tr("Tags")), d_taglist_edit);
   layout->addRow(new QLabel(tr("Location")), d_location_edit);
   layout->addRow(d_submit_button);
 
@@ -64,7 +66,8 @@ void ResourceView::loadResource(int row)
 	d_row = row;
 	d_title_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 0), Qt::DisplayRole).toString());
 	d_author_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 1), Qt::DisplayRole).toString());
-	d_location_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 2), Qt::DisplayRole).toString());
+	d_taglist_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 2), Qt::DisplayRole).toString());
+	d_location_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 3), Qt::DisplayRole).toString());
 
 	show();
 }
@@ -73,13 +76,15 @@ void ResourceView::save()
 {
 	QString title = d_title_edit->text();
 	QString author = d_author_edit->text();
+	QString taglist = d_taglist_edit->text();
 	QString location = d_location_edit->text();
 
 	if (d_row >= 0)
 	{
 		d_resource_list_model->setData(d_resource_list_model->index(d_row, 0), title, Qt::EditRole);
 		d_resource_list_model->setData(d_resource_list_model->index(d_row, 1), author, Qt::EditRole);
-		d_resource_list_model->setData(d_resource_list_model->index(d_row, 2), location, Qt::EditRole);
+		d_resource_list_model->setData(d_resource_list_model->index(d_row, 2), taglist, Qt::EditRole);
+		d_resource_list_model->setData(d_resource_list_model->index(d_row, 3), location, Qt::EditRole);
 	}
 	else
 	{
@@ -87,6 +92,7 @@ void ResourceView::save()
 
 		resource->setTitle(fromQString(title));
 		resource->setAuthor(fromQString(author));
+		resource->setTagList(QStringToStringList(taglist));
 		resource->setLocation(fromQString(location));
 
 		d_resource_list_model->addResource(resource);
@@ -94,6 +100,7 @@ void ResourceView::save()
 
 	d_title_edit->setText("");
 	d_author_edit->setText("");
+	d_taglist_edit->setText("");
 	d_location_edit->setText("");
 	d_row = -1;
 

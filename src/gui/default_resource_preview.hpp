@@ -29,10 +29,12 @@ class DefaultResourcePreview : public AbstractResourcePreview
 
 		QLabel* d_title_label;
 		QLabel* d_author_label;
+		QLabel* d_taglist_label;
 		QLabel* d_location_label;
 
 		QLabel* d_title;
 		QLabel* d_author;
+		QLabel* d_taglist;
 		QLabel* d_location;
 
 		QPushButton* d_open_button;
