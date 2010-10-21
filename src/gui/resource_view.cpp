@@ -34,14 +34,6 @@ ResourceView::ResourceView(CategoryListModel* category_list_model, QWidget* pare
 {
 	setWindowTitle(tr("Add a resource"));
 
-	for (int row = 0; row < d_category_list_model->rowCount(); ++row)
-	{
-		d_combo_category_list->addItem(
-				d_category_list_model->data(d_category_list_model->index(row, 0), Qt::DecorationRole).value<QIcon>(),
-				d_category_list_model->data(d_category_list_model->index(row, 0), Qt::DisplayRole).toString()
-		);
-	}
-
 	QFormLayout *layout = new QFormLayout;
   layout->addRow(new QLabel(tr("Category")), d_combo_category_list);
   layout->addRow(new QLabel(tr("Title")), d_title_edit);
@@ -59,6 +51,21 @@ void ResourceView::setResourceListModel(AbstractResourceListModel* resource_list
 {
 	d_resource_list_model = resource_list_model;
 	d_combo_category_list->setCurrentIndex(d_category_list_model->categoryList().indexOf(d_resource_list_model->category()));
+}
+
+void ResourceView::showEvent(QShowEvent* event)
+{
+	Q_UNUSED(event);
+
+	d_combo_category_list->clear();
+
+	for (int row = 0; row < d_category_list_model->rowCount(); ++row)
+	{
+		d_combo_category_list->addItem(
+				d_category_list_model->data(d_category_list_model->index(row, 0), Qt::DecorationRole).value<QIcon>(),
+				d_category_list_model->data(d_category_list_model->index(row, 0), Qt::DisplayRole).toString()
+		);
+	}
 }
 
 void ResourceView::loadResource(int row)
@@ -90,10 +97,10 @@ void ResourceView::save()
 	{
 		boost::shared_ptr<AbstractResource> resource(new DefaultResource());
 
-		resource->setTitle(fromQString(title));
-		resource->setAuthor(fromQString(author));
-		resource->setTagList(QStringToStringList(taglist));
-		resource->setLocation(fromQString(location));
+		resource->setTitle(title);
+		resource->setAuthor(author);
+		resource->setTagList(qStringToQStringList(taglist));
+		resource->setLocation(location);
 
 		d_resource_list_model->addResource(resource);
 	}

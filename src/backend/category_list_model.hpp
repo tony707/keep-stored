@@ -13,7 +13,7 @@
 
 #include <list>
 
-class Category;
+class AbstractCategory;
 
 class CategoryListModel : public QAbstractListModel
 {
@@ -24,7 +24,7 @@ class CategoryListModel : public QAbstractListModel
 		/**
 		 * \brief Constructor.
 		 */
-		CategoryListModel(QList<boost::shared_ptr<Category> > category_list, QObject *parent = 0);
+		CategoryListModel(QList<boost::shared_ptr<AbstractCategory> > category_list, QObject *parent = 0);
 
 		int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
@@ -38,14 +38,14 @@ class CategoryListModel : public QAbstractListModel
 
 		bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
 
-		QList<boost::shared_ptr<Category> > categoryList();
+		QList<boost::shared_ptr<AbstractCategory> > categoryList();
 
 	private:
 
 		/**
 		 * \brief The category list.
 		 */
-		QList<boost::shared_ptr<Category> > d_category_list;
+		QList<boost::shared_ptr<AbstractCategory> > d_category_list;
 
 };
 

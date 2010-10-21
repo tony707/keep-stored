@@ -37,14 +37,14 @@ systools::String fromQString(const QString& str);
  * \param string_list The string list to convert.
  * \return The string.
  */
-QString stringListToQString(QList<systools::String> string_list);
+QString qStringListToQString(QList<QString> string_list);
 
 /**
  * \brief Convert a QString to a systools::String list.
  * \param str The string to convert.
  * \return The string list.
  */
-QList<systools::String> QStringToStringList(QString list);
+QList<QString> qStringToQStringList(QString list);
 
 #endif /* KEEP_STORED_STRING_TOOLS_HPP */
 

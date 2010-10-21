@@ -16,7 +16,7 @@
 static const std::string CONFIGURATION_FILE = "configuration.xml";
 static const systools::String KEEPSTORED_XML_NAMESPACE = "http://github.com/tinoutinou/keep-stored";
 
-class Category;
+class AbstractCategory;
 
 class Configuration
 {
@@ -30,12 +30,12 @@ class Configuration
 		 /**
 			* \brief Load the application configuration.
 			*/
-		 QList<boost::shared_ptr<Category> > loadConfigurationFile();
+		 QList<boost::shared_ptr<AbstractCategory> > loadConfigurationFile();
 
 		 /**
 			* \brief Load the application configuration.
 			*/
-		 void saveConfigurationFile(QList<boost::shared_ptr<Category> > category_list);
+		 void saveConfigurationFile(QList<boost::shared_ptr<AbstractCategory> > category_list);
 
 	private:
 

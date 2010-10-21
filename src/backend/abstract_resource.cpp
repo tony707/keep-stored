@@ -10,6 +10,7 @@
 #include "book_resource.hpp"
 #include "ebook_resource.hpp"
 #include "url_resource.hpp"
+#include "string_tools.hpp"
 
 #include <systools/xml_node.hpp>
 #include <systools/xml_writer.hpp>
@@ -18,7 +19,6 @@
 #include <boost/foreach.hpp>
 
 #include <sstream>
-#include <QDebug>
 
 boost::shared_ptr<AbstractResource> AbstractResource::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
@@ -56,15 +56,15 @@ AbstractResource::AbstractResource(boost::shared_ptr<systools::xml::XmlNode> xml
 {
 	assert(xml_node);
 
-	d_title = xml_node->xpath()->evaluateAsString("string(ks:title)");
-	d_author = xml_node->xpath()->evaluateAsString("string(ks:author)");
-	d_location = xml_node->xpath()->evaluateAsString("string(ks:location)");
+	d_title = toQString(xml_node->xpath()->evaluateAsString("string(ks:title)"));
+	d_author = toQString(xml_node->xpath()->evaluateAsString("string(ks:author)"));
+	d_location = toQString(xml_node->xpath()->evaluateAsString("string(ks:location)"));
 
 	std::list<boost::shared_ptr<systools::xml::XmlNode> > tag_list = xml_node->xpath()->evaluate("ks:tagList/ks:tag");
 
 	BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> tag, tag_list)
 	{
-		d_tag_list.push_back(tag->content());
+		d_tag_list.push_back(toQString(tag->content()));
 	}
 
 }
@@ -80,14 +80,14 @@ void AbstractResource::saveToXml(boost::shared_ptr<AbstractResource> resource, b
 
 		xml_writer->startElement("resource");
 		xml_writer->writeAttribute("type", oss.str());
-		xml_writer->writeElement("title", resource->title());
-		xml_writer->writeElement("author", resource->author());
-		xml_writer->writeElement("location", resource->location());
+		xml_writer->writeElement("title", fromQString(resource->title()));
+		xml_writer->writeElement("author", fromQString(resource->author()));
+		xml_writer->writeElement("location", fromQString(resource->location()));
 		xml_writer->startElement("tagList");
 
-		BOOST_FOREACH(systools::String tag, resource->tagList())
+		BOOST_FOREACH(QString tag, resource->tagList())
 		{
-			xml_writer->writeElement("tag", tag);
+			xml_writer->writeElement("tag", fromQString(tag));
 		}
 
 		xml_writer->endElement(); //tagList
@@ -118,47 +118,47 @@ std::string AbstractResource::resourceTypeToString(ResourceType type)
 	return str_type;
 }
 
-ResourceType AbstractResource::type()
+AbstractResource::ResourceType AbstractResource::type()
 {
 	return d_type;
 }
 
-systools::String AbstractResource::title()
+QString AbstractResource::title()
 {
 	return d_title;
 }
 
-systools::String AbstractResource::author()
+QString AbstractResource::author()
 {
 	return d_author;
 }
 
-systools::String AbstractResource::location()
+QString AbstractResource::location()
 {
 	return d_location;
 }
 
-QList<systools::String> AbstractResource::tagList()
+QList<QString> AbstractResource::tagList()
 {
 	return d_tag_list;
 }
 
-void AbstractResource::setTitle(systools::String title)
+void AbstractResource::setTitle(QString title)
 {
 	d_title = title;
 }
 
-void AbstractResource::setAuthor(systools::String author)
+void AbstractResource::setAuthor(QString author)
 {
 	d_author = author;
 }
 
-void AbstractResource::setLocation(systools::String location)
+void AbstractResource::setLocation(QString location)
 {
 	d_location = location;
 }
 
-void AbstractResource::setTagList(QList<systools::String> tag_list)
+void AbstractResource::setTagList(QList<QString> tag_list)
 {
 	d_tag_list = tag_list;
 }

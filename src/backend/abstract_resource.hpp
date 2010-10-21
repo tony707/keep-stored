@@ -12,6 +12,7 @@
 #include <systools/string.hpp>
 
 #include <QList>
+#include <QString>
 
 namespace systools
 {
@@ -22,17 +23,19 @@ namespace systools
 	}
 }
 
-enum ResourceType
-{
-	Default,
-	Book,
-	Ebook,
-	Url
-};
 
 class AbstractResource
 {
+
 	public:
+
+	enum ResourceType
+	{
+		Default,
+		Book,
+		Ebook,
+		Url
+	};
 
 		/**
 		 * \brief Constructor.
@@ -52,21 +55,21 @@ class AbstractResource
 
 		ResourceType type();
 
-		systools::String title();
+		QString title();
 
-		systools::String author();
+		QString author();
 
-		systools::String location();
+		QString location();
 
-		QList<systools::String> tagList();
+		QList<QString> tagList();
 
-		void setTitle(systools::String title);
+		void setTitle(QString title);
 
-		void setAuthor(systools::String author);
+		void setAuthor(QString author);
 
-		void setLocation(systools::String location);
+		void setLocation(QString location);
 
-		void setTagList(QList<systools::String> tag_list);
+		void setTagList(QList<QString> tag_list);
 
 	protected:
 
@@ -78,22 +81,22 @@ class AbstractResource
 		/**
 		 * \brief The title.
 		 */
-		systools::String d_title;
+		QString d_title;
 
 		/**
 		 * \brief The author(s).
 		 */
-		systools::String d_author;
+		QString d_author;
 
 		/**
 		 * \brief The location.
 		 */
-		systools::String d_location;
+		QString d_location;
 
 		/**
 		 * \brief The tag list.
 		 */
-		QList<systools::String> d_tag_list;
+		QList<QString> d_tag_list;
 
 };
 

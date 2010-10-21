@@ -12,7 +12,7 @@
 #include "default_resource_preview.hpp"
 
 #include "../backend/abstract_resource.hpp"
-#include "../backend/category.hpp"
+#include "../backend/abstract_category.hpp"
 #include "../backend/configuration.hpp"
 #include "../backend/category_list_model.hpp"
 #include "../backend/abstract_resource_list_model.hpp"
@@ -42,12 +42,20 @@ void MainWindow::buildMenuBar()
 
 void MainWindow::buildWidgets()
 {
-	QList<boost::shared_ptr<Category> > category_list = d_configuration->loadConfigurationFile();
+	QList<boost::shared_ptr<AbstractCategory> > category_list = d_configuration->loadConfigurationFile();
+
 	d_category_list_model = new CategoryListModel(category_list);
+
+	d_resource_list_model = new AbstractResourceListModel();
+	QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
+	filterModel->setSourceModel(d_resource_list_model);
 
 	d_category_list_view = new CategoryListView();
 	d_category_list_view->setModel(d_category_list_model);
+
 	d_resource_list_view = new ResourceListView();
+	d_resource_list_view->setModel(filterModel);
+
 	d_resource_view = new ResourceView(d_category_list_model);
 
 	// Put each resource type in stack
@@ -100,6 +108,8 @@ void MainWindow::setupActions()
 	connect(d_category_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourceList(const QItemSelection &, const QItemSelection &)));
 	connect(d_resource_list_view, SIGNAL(resourceAboutToEdit(int)), d_resource_view, SLOT(loadResource(int)));
 	connect(d_category_list_view, SIGNAL(resourceDropped(QString)), this, SLOT(addDroppedResource(QString)));
+	connect(d_resource_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourcePreview(const QItemSelection &, const QItemSelection &)));
+	connect(d_resource_list_view, SIGNAL(resourceDropped(QString)), this, SLOT(addDroppedResource(QString)));
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -132,13 +142,8 @@ void MainWindow::updateResourceList(const QItemSelection & selected, const QItem
 
 	if (selected_index.row() >= 0)
 	{
-		QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
-		d_resource_list_model = new AbstractResourceListModel(d_category_list_model->categoryList().at(selected_index.row()));
-		filterModel->setSourceModel(d_resource_list_model);
-		d_resource_list_view->setModel(filterModel);
+		d_resource_list_model->setCategory(d_category_list_model->categoryList().at(selected_index.row()));
 		d_resource_list_view->resizeRowsToContents();
-		connect(d_resource_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourcePreview(const QItemSelection &, const QItemSelection &)));
-		connect(d_resource_list_view, SIGNAL(resourceDropped(QString)), this, SLOT(addDroppedResource(QString)));
 
 		static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->reset();
 		d_resource_view->setResourceListModel(d_resource_list_model);

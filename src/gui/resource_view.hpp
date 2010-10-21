@@ -31,6 +31,9 @@ class ResourceView : public QWidget
 
 		void setResourceListModel(AbstractResourceListModel* resource_list_model);
 
+	protected:
+		void showEvent(QShowEvent* event);
+
 	private:
 
 		int d_row;

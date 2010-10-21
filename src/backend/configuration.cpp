@@ -5,7 +5,7 @@
  */
 
 #include "configuration.hpp"
-#include "category.hpp"
+#include "abstract_category.hpp"
 
 #include <systools/xml_document.hpp>
 #include <systools/xml_document_writer.hpp>
@@ -64,9 +64,9 @@ std::string Configuration::configurationFilePath()
 	return rootConfigurationDirectory().path().toStdString() + "/" + CONFIGURATION_FILE;
 }
 
-QList<boost::shared_ptr<Category> > Configuration::loadConfigurationFile()
+QList<boost::shared_ptr<AbstractCategory> > Configuration::loadConfigurationFile()
 {
-	QList<boost::shared_ptr<Category> > category_list;
+	QList<boost::shared_ptr<AbstractCategory> > category_list;
 
 	if (rootConfigurationDirectory().exists(QString::fromStdString(CONFIGURATION_FILE)))
 	{
@@ -79,14 +79,14 @@ QList<boost::shared_ptr<Category> > Configuration::loadConfigurationFile()
 
 		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category, category_node_list)
 		{
-			category_list.push_back(Category::createFromXmlNode(category));
+			category_list.push_back(AbstractCategory::createFromXmlNode(category));
 		}
 	}
 
 	return category_list;
 }
 
-void Configuration::saveConfigurationFile(QList<boost::shared_ptr<Category> > category_list)
+void Configuration::saveConfigurationFile(QList<boost::shared_ptr<AbstractCategory> > category_list)
 {
 	boost::shared_ptr<systools::xml::XmlDocumentWriter> xml_writer(new systools::xml::XmlDocumentWriter());
 
@@ -94,9 +94,9 @@ void Configuration::saveConfigurationFile(QList<boost::shared_ptr<Category> > ca
 	xml_writer->startElement("configuration");
 	xml_writer->writeAttribute("xmlns", KEEPSTORED_XML_NAMESPACE);
 
-	BOOST_FOREACH(boost::shared_ptr<Category> category, category_list)
+	BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, category_list)
 	{
-		Category::saveToXml(category, xml_writer);
+		AbstractCategory::saveToXml(category, xml_writer);
 	}
 
 	xml_writer->endElement(); //configuration

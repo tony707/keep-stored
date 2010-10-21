@@ -1,0 +1,203 @@
+<!DOCTYPE QtCreatorProject>
+<qtcreator>
+ <data>
+  <variable>RunConfiguration0-BaseEnvironmentBase</variable>
+  <value type="int">2</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-CommandLineArguments</variable>
+  <valuelist type="QVariantList"/>
+ </data>
+ <data>
+  <variable>RunConfiguration0-ProFile</variable>
+  <value type="QString">KeepStored.pro</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-RunConfiguration.name</variable>
+  <value type="QString">KeepStored</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UseDyldImageSuffix</variable>
+  <value type="bool">false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UseTerminal</variable>
+  <value type="bool">false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UserEnvironmentChanges</variable>
+  <valuelist type="QVariantList"/>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UserSetName</variable>
+  <value type="bool">false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UserSetWorkingDirectory</variable>
+  <value type="bool">false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UserWorkingDirectory</variable>
+  <value type="QString"></value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-type</variable>
+  <value type="QString">Qt4ProjectManager.Qt4RunConfiguration</value>
+ </data>
+ <data>
+  <variable>activeRunConfiguration</variable>
+  <value type="int">0</value>
+ </data>
+ <data>
+  <variable>activebuildconfiguration</variable>
+  <value type="QString">Debug</value>
+ </data>
+ <data>
+  <variable>buildConfiguration-Debug</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
+   <value key="QtVersionId" type="int">2</value>
+   <value key="ToolChain" type="int">0</value>
+   <value key="buildConfiguration" type="int">2</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Debug-buildstep0</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList">
+    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-MhFRUw/Render</value>
+    <value type="QString">CLICOLOR=1</value>
+    <value type="QString">COMMAND_MODE=legacy</value>
+    <value type="QString">DISPLAY=/tmp/launch-mOIrqL/org.x:0</value>
+    <value type="QString">EDITOR=vim</value>
+    <value type="QString">HISTCONTROL=ignoredups</value>
+    <value type="QString">HOME=/Users/tony</value>
+    <value type="QString">LANG=fr_FR.UTF-8</value>
+    <value type="QString">LOGNAME=tony</value>
+    <value type="QString">LSCOLORS=ExFxCxDxBxegedabagacad</value>
+    <value type="QString">OLDPWD=/Users/tony</value>
+    <value type="QString">PATH=/Developer/Tools/Qt:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/home/tony/tomcat/bin:/opt/local/bin:/sbin:/usr/local/sbin</value>
+    <value type="QString">PWD=/Users/tony/QtProjects/keep-stored</value>
+    <value type="QString">QTDIR=/usr/local/Qt4.6</value>
+    <value type="QString">SHELL=/bin/bash</value>
+    <value type="QString">SHLVL=1</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-6WL1nV/Listeners</value>
+    <value type="QString">TERM=xterm-color</value>
+    <value type="QString">TERM_PROGRAM=Apple_Terminal</value>
+    <value type="QString">TERM_PROGRAM_VERSION=273</value>
+    <value type="QString">TMPDIR=/var/folders/Pn/PnFIlVNMFL8eXcAlSqHcjE+++TI/-Tmp-/</value>
+    <value type="QString">USER=tony</value>
+    <value type="QString">_=/usr/bin/open</value>
+    <value type="QString">__CF_USER_TEXT_ENCODING=0x1F5:0:91
+</value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">/Users/tony/QtProjects/keep-stored/KeepStored.pro</value>
+    <value type="QString">-spec</value>
+    <value type="QString">macx-g++</value>
+    <value type="QString">-r</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString">/usr/bin/qmake</value>
+   <value key="abstractProcess.enabled" type="bool">false</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/Users/tony/QtProjects/keep-stored</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Debug-buildstep1</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList">
+    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-MhFRUw/Render</value>
+    <value type="QString">CLICOLOR=1</value>
+    <value type="QString">COMMAND_MODE=legacy</value>
+    <value type="QString">DISPLAY=/tmp/launch-mOIrqL/org.x:0</value>
+    <value type="QString">EDITOR=vim</value>
+    <value type="QString">HISTCONTROL=ignoredups</value>
+    <value type="QString">HOME=/Users/tony</value>
+    <value type="QString">LANG=fr_FR.UTF-8</value>
+    <value type="QString">LOGNAME=tony</value>
+    <value type="QString">LSCOLORS=ExFxCxDxBxegedabagacad</value>
+    <value type="QString">OLDPWD=/Users/tony</value>
+    <value type="QString">PATH=/Developer/Tools/Qt:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/home/tony/tomcat/bin:/opt/local/bin:/sbin:/usr/local/sbin</value>
+    <value type="QString">PWD=/Users/tony/QtProjects/keep-stored</value>
+    <value type="QString">QTDIR=/usr/local/Qt4.6</value>
+    <value type="QString">SHELL=/bin/bash</value>
+    <value type="QString">SHLVL=1</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-6WL1nV/Listeners</value>
+    <value type="QString">TERM=xterm-color</value>
+    <value type="QString">TERM_PROGRAM=Apple_Terminal</value>
+    <value type="QString">TERM_PROGRAM_VERSION=273</value>
+    <value type="QString">TMPDIR=/var/folders/Pn/PnFIlVNMFL8eXcAlSqHcjE+++TI/-Tmp-/</value>
+    <value type="QString">USER=tony</value>
+    <value type="QString">_=/usr/bin/open</value>
+    <value type="QString">__CF_USER_TEXT_ENCODING=0x1F5:0:91
+</value>
+   </valuelist>
+   <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
+   <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">-w</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString">/usr/bin/make</value>
+   <value key="abstractProcess.enabled" type="bool">true</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/Users/tony/QtProjects/keep-stored</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Debug-cleanstep0</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
+   <value key="cleanConfig" type="bool">true</value>
+   <valuelist key="makeargs" type="QVariantList">
+    <value type="QString">clean</value>
+   </valuelist>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfigurations</variable>
+  <valuelist type="QVariantList">
+   <value type="QString">Debug</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>buildstep0</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString"></value>
+   <value key="mkspec" type="QString"></value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildstep1</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString"></value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildsteps</variable>
+  <valuelist type="QVariantList">
+   <value type="QString">trolltech.qt4projectmanager.qmake</value>
+   <value type="QString">trolltech.qt4projectmanager.make</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>cleanstep0</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString"></value>
+   <value key="clean" type="bool">true</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>cleansteps</variable>
+  <valuelist type="QVariantList">
+   <value type="QString">trolltech.qt4projectmanager.make</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>defaultFileEncoding</variable>
+  <value type="QByteArray">System</value>
+ </data>
+ <data>
+  <variable>project</variable>
+  <valuemap type="QVariantMap"/>
+ </data>
+</qtcreator>

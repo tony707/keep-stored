@@ -10,7 +10,7 @@
 #include "ebook_resource.hpp"
 
 #include "string_tools.hpp"
-#include "category.hpp"
+#include "abstract_category.hpp"
 #include "abstract_resource.hpp"
 
 void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListModel* model, QString path)
@@ -28,15 +28,14 @@ void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListMode
 		resource.reset(new EbookResource());
 	}
 
-	resource->setTitle(fromQString(QFileInfo(url.path()).fileName()));
-	resource->setLocation(fromQString(url.toString()));
+	resource->setTitle(QFileInfo(url.path()).fileName());
+	resource->setLocation(url.toString());
 
 	model->addResource(resource);
 }
 
-AbstractResourceListModel::AbstractResourceListModel(boost::shared_ptr<Category> category, QObject *parent) :
-	QAbstractListModel(parent),
-	d_category(category)
+AbstractResourceListModel::AbstractResourceListModel(QObject *parent) :
+	QAbstractListModel(parent)
 {
 }
 
@@ -44,7 +43,14 @@ int AbstractResourceListModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 
-	return d_category->resourceList().count();
+	if (d_category)
+	{
+		return d_category->resourceList().count();
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 int AbstractResourceListModel::columnCount(const QModelIndex &parent) const
@@ -71,16 +77,16 @@ QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) con
 		switch(index.column())
 		{
 			case 0:
-				return toQString(d_category->resourceList().at(index.row())->title());
+				return d_category->resourceList().at(index.row())->title();
 				break;
 			case 1:
-				return toQString(d_category->resourceList().at(index.row())->author());
+				return d_category->resourceList().at(index.row())->author();
 				break;
 			case 2:
-				return stringListToQString(d_category->resourceList().at(index.row())->tagList());
+				return qStringListToQString(d_category->resourceList().at(index.row())->tagList());
 				break;
 			case 3:
-				return toQString(d_category->resourceList().at(index.row())->location());
+				return d_category->resourceList().at(index.row())->location();
 				break;
 		}
 	}
@@ -102,22 +108,19 @@ bool AbstractResourceListModel::setData(const QModelIndex &index, const QVariant
 {
 	if (index.isValid() && role == Qt::EditRole)
 	{
-		//QByteArray utf8_value = value.toString().toUtf8();
-		//std::string value = std::string(utf8_value.constData(), utf8_value.size());
-
 		switch(index.column())
 		{
 			case 0:
-				d_category->resourceList().at(index.row())->setTitle(fromQString(value.toString()));
+				d_category->resourceList().at(index.row())->setTitle(value.toString());
 				break;
 			case 1:
-				d_category->resourceList().at(index.row())->setAuthor(fromQString(value.toString()));
+				d_category->resourceList().at(index.row())->setAuthor(value.toString());
 				break;
 			case 2:
-				d_category->resourceList().at(index.row())->setTagList(QStringToStringList(value.toString()));
+				d_category->resourceList().at(index.row())->setTagList(qStringToQStringList(value.toString()));
 				break;
 			case 3:
-				d_category->resourceList().at(index.row())->setLocation(fromQString(value.toString()));
+				d_category->resourceList().at(index.row())->setLocation(value.toString());
 				break;
 		}
 
@@ -178,9 +181,16 @@ bool AbstractResourceListModel::removeRows(int position, int rows, const QModelI
 	return true;
 }
 
-boost::shared_ptr<Category> AbstractResourceListModel::category()
+boost::shared_ptr<AbstractCategory> AbstractResourceListModel::category()
 {
 	return d_category;
+}
+
+void AbstractResourceListModel::setCategory(boost::shared_ptr<AbstractCategory> category)
+{
+	beginResetModel();
+	d_category = category;
+	endResetModel();
 }
 
 boost::shared_ptr<AbstractResource> AbstractResourceListModel::resource(int row)

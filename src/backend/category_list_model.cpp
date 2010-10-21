@@ -6,10 +6,11 @@
 
 #include "category_list_model.hpp"
 
-#include "category.hpp"
+#include "abstract_category.hpp"
+#include "default_category.hpp"
 #include "string_tools.hpp"
 
-CategoryListModel::CategoryListModel(QList<boost::shared_ptr<Category> > category_list, QObject *parent) :
+CategoryListModel::CategoryListModel(QList<boost::shared_ptr<AbstractCategory> > category_list, QObject *parent) :
 	QAbstractListModel(parent),
 	d_category_list(category_list)
 {
@@ -36,7 +37,7 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
-		return toQString(d_category_list.at(index.row())->title());
+		return d_category_list.at(index.row())->title();
 	}
 
 	if (role == Qt::DecorationRole)
@@ -63,8 +64,7 @@ bool CategoryListModel::setData(const QModelIndex &index, const QVariant &value,
 {
 	if (index.isValid() && role == Qt::EditRole)
 	{
-		QByteArray utf8_value = value.toString().toUtf8();
-		d_category_list.at(index.row())->setTitle(std::string(utf8_value.constData(), utf8_value.size()));
+		d_category_list.at(index.row())->setTitle(value.toString());
 		emit dataChanged(index, index);
 		return true;
 	}
@@ -80,7 +80,7 @@ bool CategoryListModel::insertRows(int position, int rows, const QModelIndex &in
 
 	for (int row = 0; row < rows; ++row)
 	{
-		d_category_list.insert(position, boost::shared_ptr<Category>(new Category()));
+		d_category_list.insert(position, boost::shared_ptr<AbstractCategory>(new DefaultCategory()));
 	}
 
 	endInsertRows();
@@ -96,7 +96,7 @@ bool CategoryListModel::removeRows(int position, int rows, const QModelIndex &in
 
 	for (int row = 0; row < rows; ++row)
 	{
-		boost::shared_ptr<Category> category = d_category_list.at(position);
+		boost::shared_ptr<AbstractCategory> category = d_category_list.at(position);
 
 		if (category->resourceList().count() > 0)
 		{
@@ -113,7 +113,7 @@ bool CategoryListModel::removeRows(int position, int rows, const QModelIndex &in
 	return true;
 }
 
-QList<boost::shared_ptr<Category> > CategoryListModel::categoryList()
+QList<boost::shared_ptr<AbstractCategory> > CategoryListModel::categoryList()
 {
 	return d_category_list;
 }
