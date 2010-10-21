@@ -33,7 +33,8 @@ class AbstractCategory
 
 	enum CategoryType
 	{
-		Default
+		Default,
+		Search
 	};
 
 		static void saveToXml(boost::shared_ptr<AbstractCategory> category, boost::shared_ptr<systools::xml::XmlWriter> xml_writer);
@@ -75,9 +76,9 @@ class AbstractCategory
 		 */
 		virtual QList<boost::shared_ptr<AbstractResource> > resourceList();
 
-		virtual void addResource(boost::shared_ptr<AbstractResource> resource) = 0;
+		virtual void addResource(boost::shared_ptr<AbstractResource> resource);
 
-		virtual void removeResource(int row) = 0;
+		virtual void removeResource(int row);
 
 	protected:
 

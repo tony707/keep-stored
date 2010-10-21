@@ -4,9 +4,8 @@
  * \brief The abstract category class.
  */
 
-#include "abstract_category.hpp"
 #include "default_category.hpp"
-//#include "search_category.hpp"
+#include "search_category.hpp"
 #include "abstract_resource.hpp"
 #include "string_tools.hpp"
 
@@ -32,12 +31,12 @@ boost::shared_ptr<AbstractCategory> AbstractCategory::createFromXmlNode(boost::s
 		case Default:
 			category.reset(new DefaultCategory(xml_node));
 			break;
+		case Search:
+			category.reset(new SearchCategory(xml_node));
+			break;
 		default:
 			category.reset(new DefaultCategory(xml_node));
 			break;
-		//case Search:
-		//	category.reset(new SearchCategory(xml_node));
-		//	break;
 	}
 	return category;
 }
@@ -104,5 +103,15 @@ void AbstractCategory::setType(CategoryType type)
 
 QList<boost::shared_ptr<AbstractResource> > AbstractCategory::resourceList()
 {
-	return QList<boost::shared_ptr<AbstractResource> >();
+	return d_resource_list;
+}
+
+void AbstractCategory::addResource(boost::shared_ptr<AbstractResource> resource)
+{
+	d_resource_list.push_back(resource);
+}
+
+void AbstractCategory::removeResource(int row)
+{
+	d_resource_list.removeAt(row);
 }

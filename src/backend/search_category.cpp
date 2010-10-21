@@ -1,10 +1,10 @@
 /**
- * \file category.cpp
+ * \file search_category.cpp
  * \author Anthony Demange <tinou@tinou.fr>
- * \brief The default category class.
+ * \brief The search category class.
  */
 
-#include "default_category.hpp"
+#include "search_category.hpp"
 #include "abstract_category.hpp"
 #include "abstract_resource.hpp"
 #include "string_tools.hpp"
@@ -15,11 +15,11 @@
 
 #include <boost/foreach.hpp>
 
-DefaultCategory::DefaultCategory()
+SearchCategory::SearchCategory()
 {
 }
 
-DefaultCategory::DefaultCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node) :
+SearchCategory::SearchCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node) :
 	AbstractCategory(xml_node)
 {
 }
