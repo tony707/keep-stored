@@ -17,10 +17,12 @@
 
 DefaultCategory::DefaultCategory()
 {
+	d_type = Default;
 }
 
 DefaultCategory::DefaultCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node) :
 	AbstractCategory(xml_node)
 {
+	d_type = Default;
 }
 

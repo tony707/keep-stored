@@ -16,7 +16,7 @@ class SearchCategory : public AbstractCategory
 		/**
 		 * \brief Constructor.
 		 */
-		SearchCategory();
+		SearchCategory(QString title);
 
 		/**
 		 * \brief Constructor.

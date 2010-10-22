@@ -6,6 +6,7 @@
 
 #include "configuration.hpp"
 #include "abstract_category.hpp"
+#include "search_category.hpp"
 
 #include <systools/xml_document.hpp>
 #include <systools/xml_document_writer.hpp>
@@ -77,9 +78,23 @@ QList<boost::shared_ptr<AbstractCategory> > Configuration::loadConfigurationFile
 		std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list = xml_document->xpath()->evaluate("/ks:configuration/ks:category");
 
 
-		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category, category_node_list)
+		bool has_one_search_category = false;
+
+		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category_node, category_node_list)
 		{
-			category_list.push_back(AbstractCategory::createFromXmlNode(category));
+			boost::shared_ptr<AbstractCategory> category = AbstractCategory::createFromXmlNode(category_node);
+
+			if(category->type() == AbstractCategory::Search)
+			{
+				has_one_search_category = true;
+			}
+
+			category_list.push_back(category);
+		}
+
+		if (!has_one_search_category)
+		{
+			category_list.push_front(boost::shared_ptr<AbstractCategory>(new SearchCategory("Search results")));
 		}
 	}
 

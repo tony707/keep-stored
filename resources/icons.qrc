@@ -7,5 +7,6 @@
 			<file>search.png</file>
 			<file>category.png</file>
 			<file>settings.png</file>
+			<file>search_category.gif</file>
     </qresource>
 </RCC>

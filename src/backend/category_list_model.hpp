@@ -40,6 +40,8 @@ class CategoryListModel : public QAbstractListModel
 
 		QList<boost::shared_ptr<AbstractCategory> > categoryList();
 
+		boost::shared_ptr<AbstractCategory> searchCategory();
+
 	private:
 
 		/**

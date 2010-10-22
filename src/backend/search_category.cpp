@@ -15,12 +15,16 @@
 
 #include <boost/foreach.hpp>
 
-SearchCategory::SearchCategory()
+SearchCategory::SearchCategory(QString title) :
+	AbstractCategory()
 {
+	d_title = title;
+	d_type = Search;
 }
 
 SearchCategory::SearchCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node) :
 	AbstractCategory(xml_node)
 {
+	d_type = Search;
 }
 

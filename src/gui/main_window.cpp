@@ -18,6 +18,8 @@
 #include "../backend/abstract_resource_list_model.hpp"
 #include "../backend/abstract_resource_list_model.hpp"
 
+#include <boost/foreach.hpp>
+
 #include <QApplication>
 #include <QtGui>
 
@@ -45,6 +47,7 @@ void MainWindow::buildWidgets()
 	QList<boost::shared_ptr<AbstractCategory> > category_list = d_configuration->loadConfigurationFile();
 
 	d_category_list_model = new CategoryListModel(category_list);
+	d_search_category = d_category_list_model->searchCategory();
 
 	d_resource_list_model = new AbstractResourceListModel();
 	QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
@@ -80,8 +83,8 @@ void MainWindow::buildToolBar()
 {
 	QToolBar *handlingToolBar = addToolBar("ToolBar");
 
-	QLineEdit* search_widget = new QLineEdit();
-	search_widget->setFixedWidth(200);
+	d_search_edit = new QLineEdit();
+	d_search_edit->setFixedWidth(200);
 
 	QWidget* spacer = new QWidget();
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -94,7 +97,7 @@ void MainWindow::buildToolBar()
 	d_add_action->setMenu(d_add_menu);
 
 	handlingToolBar->addWidget(spacer);
-	handlingToolBar->addWidget(search_widget);
+	handlingToolBar->addWidget(d_search_edit);
 	d_search_action = handlingToolBar->addAction(QIcon(":/resources/search.png"), tr("Search"));
 
 }
@@ -104,6 +107,7 @@ void MainWindow::setupActions()
 	connect(d_add_category, SIGNAL(triggered()), d_category_list_view, SLOT(addCategory()));
 	connect(d_add_resource, SIGNAL(triggered()), d_resource_view, SLOT(show()));
 	connect(d_add_action, SIGNAL(triggered()), this, SLOT(showAddMenu()));
+	connect(d_search_action, SIGNAL(triggered()), this, SLOT(findResources()));
 
 	connect(d_category_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourceList(const QItemSelection &, const QItemSelection &)));
 	connect(d_resource_list_view, SIGNAL(resourceAboutToEdit(int)), d_resource_view, SLOT(loadResource(int)));
@@ -177,5 +181,29 @@ void MainWindow::addDroppedResource(QString path)
 {
 	AbstractResourceListModel::prepareResourceAddition(d_resource_list_model, path);
 	d_resource_list_view->resizeRowsToContents();
+}
+
+void MainWindow::findResources()
+{
+	QString pattern = d_search_edit->text();
+
+	if (!pattern.isEmpty())
+	{
+		d_search_category->clearResourceList();
+
+		BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, d_category_list_model->categoryList())
+		{
+			d_resource_list_model->setCategory(category);
+
+			QModelIndexList modelIndexes = d_resource_list_model->match(d_resource_list_model->index(0, 0), Qt::DisplayRole, pattern, -1, Qt::MatchFlags(Qt::MatchContains | Qt::MatchWrap));
+
+			BOOST_FOREACH(QModelIndex index, modelIndexes)
+			{
+				d_search_category->addResource(d_resource_list_model->resource(index.row()));
+			}
+		}
+
+		d_category_list_view->setCurrentIndex(d_category_list_model->index(d_category_list_model->categoryList().indexOf(d_search_category), 0));
+	}
 }
 

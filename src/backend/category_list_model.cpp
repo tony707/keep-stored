@@ -35,14 +35,23 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
+	boost::shared_ptr<AbstractCategory> category = d_category_list.at(index.row());
+
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
-		return d_category_list.at(index.row())->title();
+		return category->title();
 	}
 
 	if (role == Qt::DecorationRole)
 	{
-		return QIcon(":/resources/category.png");
+		if (category->type() == AbstractCategory::Default)
+		{
+			return QIcon(":/resources/category.png");
+		}
+		else if(category->type() == AbstractCategory::Search)
+		{
+			return QIcon(":/resources/search_category.gif");
+		}
 	}
 
 
@@ -100,7 +109,7 @@ bool CategoryListModel::removeRows(int position, int rows, const QModelIndex &in
 
 		if (category->resourceList().count() > 0)
 		{
-			//TODO: Popup msgbox, Please delete all attached resources of this category before deleting it.
+			QMessageBox::information(NULL, tr("Information"), tr("Please delete all attached resources before deleting this category."));
 		}
 		else
 		{
@@ -116,4 +125,20 @@ bool CategoryListModel::removeRows(int position, int rows, const QModelIndex &in
 QList<boost::shared_ptr<AbstractCategory> > CategoryListModel::categoryList()
 {
 	return d_category_list;
+}
+
+boost::shared_ptr<AbstractCategory> CategoryListModel::searchCategory()
+{
+	boost::shared_ptr<AbstractCategory> search_category;
+
+	BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, d_category_list)
+	{
+		if (category->type() == AbstractCategory::Search)
+		{
+			search_category = category;
+			break;
+		}
+	}
+
+	return search_category;
 }

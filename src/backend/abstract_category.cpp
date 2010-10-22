@@ -17,12 +17,14 @@
 
 #include <sstream>
 
+#include <QDebug>
+
 boost::shared_ptr<AbstractCategory> AbstractCategory::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
 	int int_type;
 	std::istringstream iss(xml_node->getAttributeValue("type").toStdString());
 	iss >> int_type;
-	CategoryType type = static_cast<CategoryType>(type);
+	CategoryType type = static_cast<CategoryType>(int_type);
 
 	boost::shared_ptr<AbstractCategory> category;
 
@@ -54,16 +56,20 @@ void AbstractCategory::saveToXml(boost::shared_ptr<AbstractCategory> category, b
 		xml_writer->writeAttribute("type", oss.str());
 		xml_writer->writeAttribute("title", fromQString(category->title()));
 
-		BOOST_FOREACH(boost::shared_ptr<AbstractResource> resource, category->resourceList())
+		if (category->type() != AbstractCategory::Search)
 		{
-			AbstractResource::saveToXml(resource, xml_writer);
+			BOOST_FOREACH(boost::shared_ptr<AbstractResource> resource, category->resourceList())
+			{
+				AbstractResource::saveToXml(resource, xml_writer);
+			}
 		}
 
 		xml_writer->endElement(); //category
 	}
 }
 
-AbstractCategory::AbstractCategory()
+AbstractCategory::AbstractCategory() :
+	d_resource_list(QList<boost::shared_ptr<AbstractResource> >())
 {
 }
 
@@ -115,3 +121,9 @@ void AbstractCategory::removeResource(int row)
 {
 	d_resource_list.removeAt(row);
 }
+
+void AbstractCategory::clearResourceList()
+{
+	d_resource_list.clear();
+}
+

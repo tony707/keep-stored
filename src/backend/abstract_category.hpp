@@ -80,6 +80,8 @@ class AbstractCategory
 
 		virtual void removeResource(int row);
 
+		virtual void clearResourceList();
+
 	protected:
 
 		/**

@@ -18,10 +18,12 @@ class QTableView;
 class CategoryListView;
 class ResourceListView;
 class CategoryListModel;
+class AbstractCategory;
 class AbstractResource;
 class AbstractResourceListModel;
 class ResourceView;
 class QStackedWidget;
+class QLineEdit;
 
 class MainWindow : public QMainWindow
 {
@@ -44,6 +46,8 @@ class MainWindow : public QMainWindow
 		void updateResourcePreview(const QItemSelection &, const QItemSelection &);
 
 		void addDroppedResource(QString path);
+
+		void findResources();
 
 	private:
 		/**
@@ -107,6 +111,11 @@ class MainWindow : public QMainWindow
 			*/
 		 ResourceView* d_resource_view;
 
+		 /**
+			* \brief The resource view (new/edit).
+			*/
+		 boost::shared_ptr<AbstractCategory> d_search_category;
+
 	private:
 
 		 QAction* d_add_action;
@@ -122,6 +131,8 @@ class MainWindow : public QMainWindow
 		 QAction* d_setting_action;
 
 		 QAction* d_search_action;
+
+		 QLineEdit* d_search_edit;
 
 };
 
