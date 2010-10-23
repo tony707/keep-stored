@@ -13,6 +13,7 @@
 
 #include <QList>
 #include <QString>
+#include <QUrl>
 
 namespace systools
 {
@@ -51,7 +52,7 @@ class AbstractResource
 
 		static void saveToXml(boost::shared_ptr<AbstractResource> resource, boost::shared_ptr<systools::xml::XmlWriter> xml_writer);
 
-		static std::string resourceTypeToString(ResourceType type);
+		static QString resourceTypeToString(ResourceType type);
 
 		ResourceType type();
 
@@ -59,7 +60,7 @@ class AbstractResource
 
 		QString author();
 
-		QString location();
+		QUrl location();
 
 		QList<QString> tagList();
 
@@ -67,7 +68,7 @@ class AbstractResource
 
 		void setAuthor(QString author);
 
-		void setLocation(QString location);
+		void setLocation(QUrl location);
 
 		void setTagList(QList<QString> tag_list);
 
@@ -91,7 +92,7 @@ class AbstractResource
 		/**
 		 * \brief The location.
 		 */
-		QString d_location;
+		QUrl d_location;
 
 		/**
 		 * \brief The tag list.

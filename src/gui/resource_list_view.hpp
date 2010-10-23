@@ -43,7 +43,7 @@ class ResourceListView : public QTableView
 	signals:
 		void resourceAboutToEdit(int row);
 		void resourceSelected(boost::shared_ptr<AbstractResource> resource);
-		void resourceDropped(QString url);
+		void resourceDropped(const QMimeData* mime_data);
 
 	public slots:
 

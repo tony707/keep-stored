@@ -67,28 +67,6 @@ void ResourceListView::dragMoveEvent(QDragMoveEvent *event)
 
 void ResourceListView::dropEvent(QDropEvent *event)
 {
-	QString url_string;
-
-	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->hasText())
-	{
-		url_string = mimeData->text();
-		qDebug() << url_string;
-
-	} else if (mimeData->hasUrls())
-	{
-		QList<QUrl> url_list = mimeData->urls();
-		BOOST_FOREACH(QUrl url, url_list)
-		{
-			url_string = url.path();
-			qDebug() << url_string;
-			emit resourceDropped(url_string);
-		}
-	} else
-	{
-		qDebug() << "This mime type can't be dropped!";
-		//TODO: MSGBOX
-	}
-
+	emit resourceDropped(event->mimeData());
 	event->acceptProposedAction();
 }

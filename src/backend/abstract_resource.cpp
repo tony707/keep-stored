@@ -20,12 +20,14 @@
 
 #include <sstream>
 
+#include <QDebug>
+
 boost::shared_ptr<AbstractResource> AbstractResource::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
 	int int_type;
 	std::istringstream iss(xml_node->getAttributeValue("type").toStdString());
 	iss >> int_type;
-	ResourceType type = static_cast<ResourceType>(type);
+	ResourceType type = static_cast<ResourceType>(int_type);
 
 	boost::shared_ptr<AbstractResource> resource;
 
@@ -58,7 +60,7 @@ AbstractResource::AbstractResource(boost::shared_ptr<systools::xml::XmlNode> xml
 
 	d_title = toQString(xml_node->xpath()->evaluateAsString("string(ks:title)"));
 	d_author = toQString(xml_node->xpath()->evaluateAsString("string(ks:author)"));
-	d_location = toQString(xml_node->xpath()->evaluateAsString("string(ks:location)"));
+	d_location = QUrl::fromUserInput(toQString(xml_node->xpath()->evaluateAsString("string(ks:location)")));
 
 	std::list<boost::shared_ptr<systools::xml::XmlNode> > tag_list = xml_node->xpath()->evaluate("ks:tagList/ks:tag");
 
@@ -82,7 +84,7 @@ void AbstractResource::saveToXml(boost::shared_ptr<AbstractResource> resource, b
 		xml_writer->writeAttribute("type", oss.str());
 		xml_writer->writeElement("title", fromQString(resource->title()));
 		xml_writer->writeElement("author", fromQString(resource->author()));
-		xml_writer->writeElement("location", fromQString(resource->location()));
+		xml_writer->writeElement("location", fromQString(resource->location().toString()));
 		xml_writer->startElement("tagList");
 
 		BOOST_FOREACH(QString tag, resource->tagList())
@@ -95,9 +97,9 @@ void AbstractResource::saveToXml(boost::shared_ptr<AbstractResource> resource, b
 	}
 }
 
-std::string AbstractResource::resourceTypeToString(ResourceType type)
+QString AbstractResource::resourceTypeToString(ResourceType type)
 {
-	std::string str_type;
+	QString str_type;
 
 	switch(type)
 	{
@@ -133,7 +135,7 @@ QString AbstractResource::author()
 	return d_author;
 }
 
-QString AbstractResource::location()
+QUrl AbstractResource::location()
 {
 	return d_location;
 }
@@ -153,7 +155,7 @@ void AbstractResource::setAuthor(QString author)
 	d_author = author;
 }
 
-void AbstractResource::setLocation(QString location)
+void AbstractResource::setLocation(QUrl location)
 {
 	d_location = location;
 }

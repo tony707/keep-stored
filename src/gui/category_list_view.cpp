@@ -5,6 +5,8 @@
  */
 
 #include "category_list_view.hpp"
+#include "../backend/category_list_model.hpp"
+#include "../backend/abstract_category.hpp"
 
 #include <boost/foreach.hpp>
 
@@ -33,7 +35,13 @@ void CategoryListView::contextMenuEvent(QContextMenuEvent*)
 {
 	if (selectionModel()->hasSelection())
 	{
-		d_context_menu->exec(QCursor::pos());
+		int row = selectionModel()->selectedRows().front().row();
+		boost::shared_ptr<AbstractCategory> category = static_cast<CategoryListModel*>(this->model())->categoryList().at(row);
+
+		if (category->type() != AbstractCategory::Search)
+		{
+			d_context_menu->exec(QCursor::pos());
+		}
 	}
 }
 
@@ -66,25 +74,7 @@ void CategoryListView::dragMoveEvent(QDragMoveEvent *event)
 
 void CategoryListView::dropEvent(QDropEvent *event)
 {
-	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->hasText())
-	{
-		qDebug() << mimeData->text();
-		emit resourceDropped(mimeData->text());
-	} else if (mimeData->hasUrls())
-	{
-		QList<QUrl> url_list = mimeData->urls();
-		BOOST_FOREACH(QUrl url, url_list)
-		{
-			QString url_string = url.path();
-			qDebug() << url_string;
-			emit resourceDropped(url_string);
-		}
-	} else
-	{
-		qDebug() << "This mime type can't be dropped!";
-		//TODO: MSGBOX
-	}
+	emit resourceDropped(event->mimeData());
 	event->acceptProposedAction();
 }
 

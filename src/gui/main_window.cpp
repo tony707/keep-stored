@@ -111,9 +111,9 @@ void MainWindow::setupActions()
 
 	connect(d_category_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourceList(const QItemSelection &, const QItemSelection &)));
 	connect(d_resource_list_view, SIGNAL(resourceAboutToEdit(int)), d_resource_view, SLOT(loadResource(int)));
-	connect(d_category_list_view, SIGNAL(resourceDropped(QString)), this, SLOT(addDroppedResource(QString)));
+	connect(d_category_list_view, SIGNAL(resourceDropped(const QMimeData*)), d_resource_list_model, SLOT(addResource(const QMimeData*)));
 	connect(d_resource_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourcePreview(const QItemSelection &, const QItemSelection &)));
-	connect(d_resource_list_view, SIGNAL(resourceDropped(QString)), this, SLOT(addDroppedResource(QString)));
+	connect(d_resource_list_view, SIGNAL(resourceDropped(const QMimeData*)), d_resource_list_model, SLOT(addResource(const QMimeData*)));
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -175,12 +175,6 @@ void MainWindow::updateResourcePreview(const QItemSelection & selected, const QI
 		d_resource_preview->setCurrentIndex((int)resource->type());
 		static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->updateResourceInformation(d_resource_list_model, selected_index.row());
 	}
-}
-
-void MainWindow::addDroppedResource(QString path)
-{
-	AbstractResourceListModel::prepareResourceAddition(d_resource_list_model, path);
-	d_resource_list_view->resizeRowsToContents();
 }
 
 void MainWindow::findResources()

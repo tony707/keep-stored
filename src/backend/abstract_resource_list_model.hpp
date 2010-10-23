@@ -53,6 +53,8 @@ class AbstractResourceListModel : public QAbstractListModel
 
 		void addResource(boost::shared_ptr<AbstractResource> resource);
 
+		void addResource(const QMimeData* mime_data);
+
 	private:
 
 		/**

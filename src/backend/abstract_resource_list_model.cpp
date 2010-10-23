@@ -19,18 +19,18 @@ void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListMode
 
 	QUrl url = QUrl::fromUserInput(path);
 
-	if (url.host() != "")
+	if (url.host().isEmpty())
 	{
-		resource.reset(new UrlResource());
+		resource.reset(new EbookResource());
+		resource->setTitle(QFileInfo(url.path()).fileName());
 	}
 	else
 	{
-		resource.reset(new EbookResource());
+		resource.reset(new UrlResource());
+		resource->setTitle(url.host());
 	}
 
-	resource->setTitle(QFileInfo(url.path()).fileName());
-	resource->setLocation(url.toString());
-
+	resource->setLocation(url);
 	model->addResource(resource);
 }
 
@@ -74,19 +74,28 @@ QVariant AbstractResourceListModel::data(const QModelIndex &index, int role) con
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
+		boost::shared_ptr<AbstractResource> resource = d_category->resourceList().at(index.row());
+
 		switch(index.column())
 		{
 			case 0:
-				return d_category->resourceList().at(index.row())->title();
+				return resource->title();
 				break;
 			case 1:
-				return d_category->resourceList().at(index.row())->author();
+				return resource->author();
 				break;
 			case 2:
-				return qStringListToQString(d_category->resourceList().at(index.row())->tagList());
+				return qStringListToQString(resource->tagList());
 				break;
 			case 3:
-				return d_category->resourceList().at(index.row())->location();
+				if (resource->type() == AbstractResource::Ebook)
+				{
+					return resource->location().path();
+				}
+				else
+				{
+					return resource->location().toString();
+				}
 				break;
 		}
 	}
@@ -120,7 +129,7 @@ bool AbstractResourceListModel::setData(const QModelIndex &index, const QVariant
 				d_category->resourceList().at(index.row())->setTagList(qStringToQStringList(value.toString()));
 				break;
 			case 3:
-				d_category->resourceList().at(index.row())->setLocation(value.toString());
+				d_category->resourceList().at(index.row())->setLocation(QUrl::fromUserInput(value.toString()));
 				break;
 		}
 
@@ -205,5 +214,45 @@ void AbstractResourceListModel::addResource(boost::shared_ptr<AbstractResource> 
 	d_category->addResource(resource);
 
 	endInsertRows();
+}
+
+void AbstractResourceListModel::addResource(const QMimeData* mime_data)
+{
+	QList<QUrl> url_list;
+
+	if (mime_data->hasText())
+	{
+		qDebug() << mime_data->text();
+		url_list.push_back(QUrl::fromUserInput(mime_data->text()));
+	}
+	else if (mime_data->hasUrls())
+	{
+		url_list = mime_data->urls();
+	}
+	else
+	{
+		//TODO: MSGBOX
+	}
+
+	BOOST_FOREACH(QUrl url, url_list)
+	{
+		qDebug() << url.toString();
+
+		boost::shared_ptr<AbstractResource> resource;
+
+		if (url.host().isEmpty())
+		{
+			resource.reset(new EbookResource());
+			resource->setTitle(QFileInfo(url.path()).fileName());
+		}
+		else
+		{
+			resource.reset(new UrlResource());
+			resource->setTitle(url.host());
+		}
+
+		resource->setLocation(url);
+		addResource(resource);
+	}
 }
 

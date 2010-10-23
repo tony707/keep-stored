@@ -40,7 +40,7 @@ class CategoryListView : public QListView
 
 		signals:
 
-		void resourceDropped(QString path);
+		void resourceDropped(const QMimeData* mime_data);
 
 		public slots:
 

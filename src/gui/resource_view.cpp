@@ -13,6 +13,7 @@
 #include "../backend/string_tools.hpp"
 
 #include <QLabel>
+#include <QUrl>
 #include <QLineEdit>
 #include <QFormLayout>
 #include <QPushButton>
@@ -100,7 +101,7 @@ void ResourceView::save()
 		resource->setTitle(title);
 		resource->setAuthor(author);
 		resource->setTagList(qStringToQStringList(taglist));
-		resource->setLocation(location);
+		resource->setLocation(QUrl::fromUserInput(location));
 
 		d_resource_list_model->addResource(resource);
 	}
