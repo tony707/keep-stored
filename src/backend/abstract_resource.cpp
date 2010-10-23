@@ -25,7 +25,7 @@
 boost::shared_ptr<AbstractResource> AbstractResource::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
 	int int_type;
-	std::istringstream iss(xml_node->getAttributeValue("type").toStdString());
+	std::istringstream iss(xml_node->xpath()->evaluateAsString("string(ks:type)").toStdString());
 	iss >> int_type;
 	ResourceType type = static_cast<ResourceType>(int_type);
 
@@ -81,7 +81,7 @@ void AbstractResource::saveToXml(boost::shared_ptr<AbstractResource> resource, b
 		oss << resource->type();
 
 		xml_writer->startElement("resource");
-		xml_writer->writeAttribute("type", oss.str());
+		xml_writer->writeElement("type", oss.str());
 		xml_writer->writeElement("title", fromQString(resource->title()));
 		xml_writer->writeElement("author", fromQString(resource->author()));
 		xml_writer->writeElement("location", fromQString(resource->location().toString()));

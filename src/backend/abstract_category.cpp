@@ -22,7 +22,7 @@
 boost::shared_ptr<AbstractCategory> AbstractCategory::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
 	int int_type;
-	std::istringstream iss(xml_node->getAttributeValue("type").toStdString());
+	std::istringstream iss(xml_node->xpath()->evaluateAsString("string(ks:type)").toStdString());
 	iss >> int_type;
 	CategoryType type = static_cast<CategoryType>(int_type);
 
@@ -53,8 +53,8 @@ void AbstractCategory::saveToXml(boost::shared_ptr<AbstractCategory> category, b
 		oss << category->type();
 
 		xml_writer->startElement("category");
-		xml_writer->writeAttribute("type", oss.str());
-		xml_writer->writeAttribute("title", fromQString(category->title()));
+		xml_writer->writeElement("type", oss.str());
+		xml_writer->writeElement("title", fromQString(category->title()));
 
 		if (category->type() != AbstractCategory::Search)
 		{
@@ -77,7 +77,7 @@ AbstractCategory::AbstractCategory(boost::shared_ptr<systools::xml::XmlNode> xml
 {
 	assert(xml_node);
 
-	d_title = toQString(xml_node->getAttributeValue("title"));
+	d_title = toQString(xml_node->xpath()->evaluateAsString("string(ks:title)"));
 	std::list<boost::shared_ptr<systools::xml::XmlNode> > resource_list = xml_node->xpath()->evaluate("ks:resource");
 
 	BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> resource, resource_list)

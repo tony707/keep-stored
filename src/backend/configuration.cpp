@@ -11,18 +11,66 @@
 #include <systools/xml_document.hpp>
 #include <systools/xml_document_writer.hpp>
 #include <systools/xml_xpath.hpp>
+#include <systools/xml_schema.hpp>
 
 #include <boost/foreach.hpp>
+
+#include <QMessageBox>
 
 #ifdef WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
+static const systools::String SCHEMA_STRING = "<?xml version=\"1.0\"?> \
+<xs:schema \
+	xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" \
+	targetNamespace=\"http://github.com/tinoutinou/keep-stored\" \
+	xmlns=\"" + KEEPSTORED_XML_NAMESPACE + "\" \
+	elementFormDefault=\"qualified\" \
+	> \
+	<xs:element name=\"configuration\"> \
+		<xs:complexType> \
+			<xs:sequence> \
+				<xs:element minOccurs=\"0\" name=\"category\"> \
+					<xs:complexType > \
+						<xs:sequence> \
+							<xs:element name=\"type\" type=\"xs:int\" /> \
+							<xs:element name=\"title\" type=\"xs:string\" /> \
+							<xs:element minOccurs=\"0\" name=\"resource\" > \
+								<xs:complexType> \
+									<xs:sequence> \
+										<xs:element name=\"type\" type=\"xs:int\" /> \
+										<xs:element name=\"title\" type=\"xs:string\" /> \
+										<xs:element name=\"author\" type=\"xs:string\" /> \
+										<xs:element name=\"location\" type=\"xs:string\" /> \
+										<xs:element minOccurs=\"0\" maxOccurs=\"1\" name=\"tagList\" > \
+											<xs:complexType> \
+												<xs:sequence> \
+													<xs:element minOccurs=\"0\" name=\"tag\" type=\"xs:string\" /> \
+												</xs:sequence> \
+											</xs:complexType> \
+										</xs:element> \
+									</xs:sequence> \
+								</xs:complexType> \
+							</xs:element> \
+						</xs:sequence> \
+					</xs:complexType> \
+				</xs:element> \
+				<xs:any minOccurs=\"0\" maxOccurs=\"unbounded\" processContents=\"skip\" /> \
+			</xs:sequence> \
+		</xs:complexType> \
+	</xs:element> \
+ \
+</xs:schema> \
+";
+
 
 Configuration::Configuration()
 {
 }
+
+const boost::shared_ptr<systools::xml::XmlSchema> Configuration::SCHEMA(systools::xml::XmlSchema::createFromBuffer(SCHEMA_STRING.toUtf8()));
 
 QDir Configuration::rootConfigurationDirectory()
 {
@@ -72,6 +120,16 @@ QList<boost::shared_ptr<AbstractCategory> > Configuration::loadConfigurationFile
 	if (rootConfigurationDirectory().exists(QString::fromStdString(CONFIGURATION_FILE)))
 	{
 		boost::shared_ptr<systools::xml::XmlDocument> xml_document = systools::xml::XmlDocument::createFromFile(configurationFilePath());
+
+		try
+		{
+			EXCEPTION_ASSERT(SCHEMA->validate(xml_document), systools::ParsingErrorException, "Unrecognized XML document");
+		}
+		catch (systools::Exception e)
+		{
+			QMessageBox::critical(NULL, QObject::tr("Error!"), QObject::tr("Bad configuration file.\n\nThe error was:\n\n%1").arg(QString(e.what())));
+			return QList<boost::shared_ptr<AbstractCategory> >();
+		}
 
 		xml_document->xpath()->registerNamespace("ks", KEEPSTORED_XML_NAMESPACE);
 

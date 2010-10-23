@@ -18,6 +18,14 @@ static const systools::String KEEPSTORED_XML_NAMESPACE = "http://github.com/tino
 
 class AbstractCategory;
 
+namespace systools
+{
+	namespace xml
+	{
+		class XmlSchema;
+	}
+}
+
 class Configuration
 {
 	public:
@@ -38,6 +46,11 @@ class Configuration
 		 void saveConfigurationFile(QList<boost::shared_ptr<AbstractCategory> > category_list);
 
 	private:
+
+		 /**
+			* \brief The associated xml_schema.
+			*/
+		static const boost::shared_ptr<systools::xml::XmlSchema> SCHEMA;
 
 		/**
 		 * \brief Get the root configuration directory.
