@@ -121,20 +121,22 @@ QList<boost::shared_ptr<AbstractCategory> > Configuration::loadConfigurationFile
 	{
 		boost::shared_ptr<systools::xml::XmlDocument> xml_document = systools::xml::XmlDocument::createFromFile(configurationFilePath());
 
+
+		std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list;
+
 		try
 		{
 			EXCEPTION_ASSERT(SCHEMA->validate(xml_document), systools::ParsingErrorException, "Unrecognized XML document");
+
+			xml_document->xpath()->registerNamespace("ks", KEEPSTORED_XML_NAMESPACE);
+
+			category_node_list = xml_document->xpath()->evaluate("/ks:configuration/ks:category");
 		}
 		catch (systools::Exception e)
 		{
 			QMessageBox::critical(NULL, QObject::tr("Error!"), QObject::tr("Bad configuration file.\n\nThe error was:\n\n%1").arg(QString(e.what())));
 			return QList<boost::shared_ptr<AbstractCategory> >();
 		}
-
-		xml_document->xpath()->registerNamespace("ks", KEEPSTORED_XML_NAMESPACE);
-
-		std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list = xml_document->xpath()->evaluate("/ks:configuration/ks:category");
-
 
 		bool has_one_search_category = false;
 
