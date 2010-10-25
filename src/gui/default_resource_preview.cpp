@@ -69,7 +69,14 @@ void DefaultResourcePreview::open()
 	if (d_current_row >= 0)
 	{
 		QUrl url = d_resource_model_list->resource(d_current_row)->location();
-		qDebug() << url.toString();
-		QDesktopServices::openUrl(url.toString());
+
+		if (QFile::exists(url.path()))
+		{
+			QDesktopServices::openUrl(url.toString());
+		}
+		else
+		{
+			QMessageBox::critical(NULL, QObject::tr("Error!"), QObject::tr("File %1 doesn't exist.").arg(QString(url.path())));
+		}
 	}
 }
