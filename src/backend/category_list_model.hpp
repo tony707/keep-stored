@@ -15,7 +15,7 @@
 
 class AbstractCategory;
 
-class CategoryListModel : public QAbstractListModel
+class CategoryListModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
@@ -24,30 +24,36 @@ class CategoryListModel : public QAbstractListModel
 		/**
 		 * \brief Constructor.
 		 */
-		CategoryListModel(QList<boost::shared_ptr<AbstractCategory> > category_list, QObject *parent = 0);
+		CategoryListModel(boost::shared_ptr<AbstractCategory> root_category, QObject *parent = 0);
 
 		int rowCount(const QModelIndex &parent = QModelIndex()) const;
+
+		int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
 		QVariant data(const QModelIndex &index, int role) const;
 
 		Qt::ItemFlags flags(const QModelIndex &index) const;
 
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+		QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+
+		QModelIndex parent(const QModelIndex &index) const;
+
+    //bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
 		bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
 
 		bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
 
-		QList<boost::shared_ptr<AbstractCategory> > categoryList();
+		boost::shared_ptr<AbstractCategory> rootCategory();
 
 		boost::shared_ptr<AbstractCategory> searchCategory();
 
 	private:
 
 		/**
-		 * \brief The category list.
+		 * \brief The root category.
 		 */
-		QList<boost::shared_ptr<AbstractCategory> > d_category_list;
+		boost::shared_ptr<AbstractCategory> d_root_category;
 
 };
 

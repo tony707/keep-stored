@@ -11,6 +11,7 @@
 #include "../backend/abstract_resource.hpp"
 #include "../backend/default_resource.hpp"
 #include "../backend/string_tools.hpp"
+#include "../backend/abstract_category.hpp"
 
 #include <QLabel>
 #include <QUrl>
@@ -51,7 +52,7 @@ ResourceView::ResourceView(CategoryListModel* category_list_model, QWidget* pare
 void ResourceView::setResourceListModel(AbstractResourceListModel* resource_list_model)
 {
 	d_resource_list_model = resource_list_model;
-	d_combo_category_list->setCurrentIndex(d_category_list_model->categoryList().indexOf(d_resource_list_model->category()));
+	d_combo_category_list->setCurrentIndex(d_category_list_model->rootCategory()->children().indexOf(d_resource_list_model->category()));
 }
 
 void ResourceView::showEvent(QShowEvent* event)

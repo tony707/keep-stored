@@ -76,7 +76,7 @@ void DefaultResourcePreview::open()
 		}
 		else
 		{
-			QMessageBox::critical(NULL, QObject::tr("Error!"), QObject::tr("File %1 doesn't exist.").arg(QString(url.path())));
+			QMessageBox::critical(NULL, tr("Error!"), tr("File %1 doesn't exist.").arg(QString(url.path())));
 		}
 	}
 }

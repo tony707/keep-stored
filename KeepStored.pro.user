@@ -58,7 +58,10 @@
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <value key="QtVersionId" type="int">2</value>
    <value key="ToolChain" type="int">0</value>
+   <value key="addQDumper" type=""></value>
    <value key="buildConfiguration" type="int">2</value>
+   <value key="buildDirectory" type="QString"></value>
+   <value key="useShadowBuild" type="bool">false</value>
   </valuemap>
  </data>
  <data>
@@ -66,10 +69,10 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-MhFRUw/Render</value>
+    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-fasO8b/Render</value>
     <value type="QString">CLICOLOR=1</value>
     <value type="QString">COMMAND_MODE=legacy</value>
-    <value type="QString">DISPLAY=/tmp/launch-mOIrqL/org.x:0</value>
+    <value type="QString">DISPLAY=/tmp/launch-Z2RtT7/org.x:0</value>
     <value type="QString">EDITOR=vim</value>
     <value type="QString">HISTCONTROL=ignoredups</value>
     <value type="QString">HOME=/Users/tony</value>
@@ -82,7 +85,7 @@
     <value type="QString">QTDIR=/usr/local/Qt4.6</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=1</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-6WL1nV/Listeners</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-mqMH8e/Listeners</value>
     <value type="QString">TERM=xterm-color</value>
     <value type="QString">TERM_PROGRAM=Apple_Terminal</value>
     <value type="QString">TERM_PROGRAM_VERSION=273</value>
@@ -108,10 +111,10 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-MhFRUw/Render</value>
+    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-fasO8b/Render</value>
     <value type="QString">CLICOLOR=1</value>
     <value type="QString">COMMAND_MODE=legacy</value>
-    <value type="QString">DISPLAY=/tmp/launch-mOIrqL/org.x:0</value>
+    <value type="QString">DISPLAY=/tmp/launch-Z2RtT7/org.x:0</value>
     <value type="QString">EDITOR=vim</value>
     <value type="QString">HISTCONTROL=ignoredups</value>
     <value type="QString">HOME=/Users/tony</value>
@@ -124,7 +127,7 @@
     <value type="QString">QTDIR=/usr/local/Qt4.6</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=1</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-6WL1nV/Listeners</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-mqMH8e/Listeners</value>
     <value type="QString">TERM=xterm-color</value>
     <value type="QString">TERM_PROGRAM=Apple_Terminal</value>
     <value type="QString">TERM_PROGRAM_VERSION=273</value>

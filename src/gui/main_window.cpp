@@ -44,9 +44,9 @@ void MainWindow::buildMenuBar()
 
 void MainWindow::buildWidgets()
 {
-	QList<boost::shared_ptr<AbstractCategory> > category_list = d_configuration->loadConfigurationFile();
+	boost::shared_ptr<AbstractCategory> root_category = d_configuration->loadConfigurationFile();
 
-	d_category_list_model = new CategoryListModel(category_list);
+	d_category_list_model = new CategoryListModel(root_category);
 	d_search_category = d_category_list_model->searchCategory();
 
 	d_resource_list_model = new AbstractResourceListModel();
@@ -118,7 +118,7 @@ void MainWindow::setupActions()
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-	d_configuration->saveConfigurationFile(d_category_list_model->categoryList());
+	d_configuration->saveConfigurationFile(d_category_list_model->rootCategory());
 
 	QMainWindow::closeEvent(event);
 }
@@ -146,7 +146,7 @@ void MainWindow::updateResourceList(const QItemSelection & selected, const QItem
 
 	if (selected_index.row() >= 0)
 	{
-		d_resource_list_model->setCategory(d_category_list_model->categoryList().at(selected_index.row()));
+		d_resource_list_model->setCategory(boost::shared_ptr<AbstractCategory>(static_cast<AbstractCategory*>(selected_index.internalPointer())));
 		d_resource_list_view->resizeRowsToContents();
 
 		static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->reset();
@@ -183,9 +183,10 @@ void MainWindow::findResources()
 
 	if (!pattern.isEmpty())
 	{
+		d_category_list_view->setCurrentIndex(QModelIndex());
 		d_search_category->clearResourceList();
 
-		BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, d_category_list_model->categoryList())
+		BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, d_category_list_model->rootCategory()->children())
 		{
 			d_resource_list_model->setCategory(category);
 
@@ -197,7 +198,7 @@ void MainWindow::findResources()
 			}
 		}
 
-		d_category_list_view->setCurrentIndex(d_category_list_model->index(d_category_list_model->categoryList().indexOf(d_search_category), 0));
+		d_category_list_view->setCurrentIndex(d_category_list_model->index(d_category_list_model->rootCategory()->children().indexOf(d_search_category), 0));
 	}
 }
 

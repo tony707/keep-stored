@@ -36,7 +36,7 @@ void CategoryListView::contextMenuEvent(QContextMenuEvent*)
 	if (selectionModel()->hasSelection())
 	{
 		int row = selectionModel()->selectedRows().front().row();
-		boost::shared_ptr<AbstractCategory> category = static_cast<CategoryListModel*>(this->model())->categoryList().at(row);
+		boost::shared_ptr<AbstractCategory> category = static_cast<CategoryListModel*>(this->model())->rootCategory()->children().at(row);
 
 		if (category->type() != AbstractCategory::Search)
 		{

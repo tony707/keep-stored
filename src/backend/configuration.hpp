@@ -23,6 +23,7 @@ namespace systools
 	namespace xml
 	{
 		class XmlSchema;
+		class XmlNode;
 	}
 }
 
@@ -38,12 +39,14 @@ class Configuration
 		 /**
 			* \brief Load the application configuration.
 			*/
-		 QList<boost::shared_ptr<AbstractCategory> > loadConfigurationFile();
+		 boost::shared_ptr<AbstractCategory> loadConfigurationFile();
+
+		 void createChildCategory(boost::shared_ptr<systools::xml::XmlNode> category_node, boost::shared_ptr<AbstractCategory> parent);
 
 		 /**
 			* \brief Load the application configuration.
 			*/
-		 void saveConfigurationFile(QList<boost::shared_ptr<AbstractCategory> > category_list);
+		 void saveConfigurationFile(boost::shared_ptr<AbstractCategory> root_category);
 
 	private:
 

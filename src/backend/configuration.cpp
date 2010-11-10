@@ -6,7 +6,9 @@
 
 #include "configuration.hpp"
 #include "abstract_category.hpp"
+#include "default_category.hpp"
 #include "search_category.hpp"
+#include "string_tools.hpp"
 
 #include <systools/xml_document.hpp>
 #include <systools/xml_document_writer.hpp>
@@ -14,8 +16,10 @@
 #include <systools/xml_schema.hpp>
 
 #include <boost/foreach.hpp>
+#include <boost/smart_ptr.hpp>
 
 #include <QMessageBox>
+#include <QDebug>
 
 #ifdef WINDOWS
 #define WIN32_LEAN_AND_MEAN
@@ -29,34 +33,36 @@ static const systools::String SCHEMA_STRING = "<?xml version=\"1.0\"?> \
 	xmlns=\"" + KEEPSTORED_XML_NAMESPACE + "\" \
 	elementFormDefault=\"qualified\" \
 	> \
+	\
+	<xs:complexType name=\"tagType\" > \
+		<xs:sequence> \
+			<xs:element minOccurs=\"0\" name=\"tag\" type=\"xs:string\" /> \
+		</xs:sequence> \
+	</xs:complexType> \
+	\
+	<xs:complexType name=\"resourceType\" > \
+		<xs:sequence> \
+			<xs:element name=\"type\" type=\"xs:int\" minOccurs=\"1\" /> \
+			<xs:element name=\"title\" type=\"xs:string\" minOccurs=\"1\" /> \
+			<xs:element name=\"author\" type=\"xs:string\" minOccurs=\"1\" /> \
+			<xs:element name=\"location\" type=\"xs:string\" minOccurs=\"1\" /> \
+			<xs:element minOccurs=\"0\" maxOccurs=\"1\" name=\"tagList\" type=\"tagType\" /> \
+		</xs:sequence> \
+	</xs:complexType> \
+	\
+	<xs:complexType name=\"categoryType\" mixed=\"true\" > \
+		<xs:sequence> \
+			<xs:element name=\"type\" type=\"xs:int\" minOccurs=\"1\" /> \
+			<xs:element name=\"title\" type=\"xs:string\" minOccurs=\"1\" /> \
+			<xs:element minOccurs=\"0\" name=\"resource\" type=\"resourceType\" /> \
+			<xs:element name=\"category\" type=\"categoryType\" minOccurs=\"0\" /> \
+		</xs:sequence> \
+	</xs:complexType> \
+	\
 	<xs:element name=\"configuration\"> \
 		<xs:complexType> \
 			<xs:sequence> \
-				<xs:element minOccurs=\"0\" name=\"category\"> \
-					<xs:complexType > \
-						<xs:sequence> \
-							<xs:element name=\"type\" type=\"xs:int\" /> \
-							<xs:element name=\"title\" type=\"xs:string\" /> \
-							<xs:element minOccurs=\"0\" name=\"resource\" > \
-								<xs:complexType> \
-									<xs:sequence> \
-										<xs:element name=\"type\" type=\"xs:int\" /> \
-										<xs:element name=\"title\" type=\"xs:string\" /> \
-										<xs:element name=\"author\" type=\"xs:string\" /> \
-										<xs:element name=\"location\" type=\"xs:string\" /> \
-										<xs:element minOccurs=\"0\" maxOccurs=\"1\" name=\"tagList\" > \
-											<xs:complexType> \
-												<xs:sequence> \
-													<xs:element minOccurs=\"0\" name=\"tag\" type=\"xs:string\" /> \
-												</xs:sequence> \
-											</xs:complexType> \
-										</xs:element> \
-									</xs:sequence> \
-								</xs:complexType> \
-							</xs:element> \
-						</xs:sequence> \
-					</xs:complexType> \
-				</xs:element> \
+				<xs:element name=\"category\" type=\"categoryType\" minOccurs=\"0\" /> \
 				<xs:any minOccurs=\"0\" maxOccurs=\"unbounded\" processContents=\"skip\" /> \
 			</xs:sequence> \
 		</xs:complexType> \
@@ -64,6 +70,8 @@ static const systools::String SCHEMA_STRING = "<?xml version=\"1.0\"?> \
  \
 </xs:schema> \
 ";
+
+static bool has_one_search_category = false;
 
 
 Configuration::Configuration()
@@ -113,14 +121,13 @@ std::string Configuration::configurationFilePath()
 	return rootConfigurationDirectory().path().toStdString() + "/" + CONFIGURATION_FILE;
 }
 
-QList<boost::shared_ptr<AbstractCategory> > Configuration::loadConfigurationFile()
+boost::shared_ptr<AbstractCategory> Configuration::loadConfigurationFile()
 {
-	QList<boost::shared_ptr<AbstractCategory> > category_list;
+	boost::shared_ptr<AbstractCategory> root_category(new DefaultCategory());
 
 	if (rootConfigurationDirectory().exists(QString::fromStdString(CONFIGURATION_FILE)))
 	{
 		boost::shared_ptr<systools::xml::XmlDocument> xml_document = systools::xml::XmlDocument::createFromFile(configurationFilePath());
-
 
 		std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list;
 
@@ -135,33 +142,50 @@ QList<boost::shared_ptr<AbstractCategory> > Configuration::loadConfigurationFile
 		catch (systools::Exception e)
 		{
 			QMessageBox::critical(NULL, QObject::tr("Error!"), QObject::tr("Bad configuration file.\n\nThe error was:\n\n%1").arg(QString(e.what())));
-			return QList<boost::shared_ptr<AbstractCategory> >();
+			return boost::shared_ptr<AbstractCategory>();
 		}
-
-		bool has_one_search_category = false;
 
 		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category_node, category_node_list)
 		{
 			boost::shared_ptr<AbstractCategory> category = AbstractCategory::createFromXmlNode(category_node);
+
+			createChildCategory(category_node, category);
 
 			if(category->type() == AbstractCategory::Search)
 			{
 				has_one_search_category = true;
 			}
 
-			category_list.push_back(category);
+			root_category->appendChild(category);
 		}
 
 		if (!has_one_search_category)
 		{
-			category_list.push_front(boost::shared_ptr<AbstractCategory>(new SearchCategory("Search results")));
+			root_category->prependChild(boost::shared_ptr<AbstractCategory>(new SearchCategory("Search results")));
 		}
 	}
 
-	return category_list;
+	return root_category;
 }
 
-void Configuration::saveConfigurationFile(QList<boost::shared_ptr<AbstractCategory> > category_list)
+void Configuration::createChildCategory(boost::shared_ptr<systools::xml::XmlNode> category_node, boost::shared_ptr<AbstractCategory> parent)
+{
+	std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list = category_node->xpath()->evaluate("ks:category");
+
+	if (category_node_list.size() > 0)
+	{
+		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category_node, category_node_list)
+		{
+			boost::shared_ptr<AbstractCategory> category = AbstractCategory::createFromXmlNode(category_node);
+			parent->appendChild(category);
+			category->setParent(boost::weak_ptr<AbstractCategory>(category));
+
+			createChildCategory(category_node, category);
+		}
+	}
+}
+
+void Configuration::saveConfigurationFile(boost::shared_ptr<AbstractCategory> root_category)
 {
 	boost::shared_ptr<systools::xml::XmlDocumentWriter> xml_writer(new systools::xml::XmlDocumentWriter());
 
@@ -169,7 +193,7 @@ void Configuration::saveConfigurationFile(QList<boost::shared_ptr<AbstractCatego
 	xml_writer->startElement("configuration");
 	xml_writer->writeAttribute("xmlns", KEEPSTORED_XML_NAMESPACE);
 
-	BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, category_list)
+	BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, root_category->children())
 	{
 		AbstractCategory::saveToXml(category, xml_writer);
 	}

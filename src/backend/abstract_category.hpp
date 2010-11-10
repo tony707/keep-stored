@@ -10,7 +10,8 @@
 #include <QList>
 #include <QString>
 
-#include <boost/shared_ptr.hpp>
+#include <boost/smart_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 #include <list>
 
@@ -26,7 +27,7 @@ namespace systools
 
 class AbstractResource;
 
-class AbstractCategory
+class AbstractCategory : public boost::enable_shared_from_this<AbstractCategory>
 {
 
 	public:
@@ -71,6 +72,26 @@ class AbstractCategory
 		 */
 		void setType(CategoryType type);
 
+		void prependChild(boost::shared_ptr<AbstractCategory> category);
+
+		void appendChild(boost::shared_ptr<AbstractCategory> category);
+
+		boost::shared_ptr<AbstractCategory> childAt(int row);
+
+		int childCount();
+
+		int columnCount();
+
+		int row();
+
+		boost::shared_ptr<AbstractCategory> parent();
+
+		QList<boost::shared_ptr<AbstractCategory> > children();
+
+		void setParent(boost::weak_ptr<AbstractCategory> parent_category);
+
+		bool hasChildren();
+
 		/**
 		 * \brief Get the resource list.
 		 */
@@ -98,6 +119,16 @@ class AbstractCategory
 		 * \brief The associated resource list.
 		 */
 		QList<boost::shared_ptr<AbstractResource> > d_resource_list;
+
+		/**
+		 * \brief The children categories.
+		 */
+		QList<boost::shared_ptr<AbstractCategory> > d_children_categories;
+
+		/**
+		 * \brief The parent category.
+		 */
+		boost::weak_ptr<AbstractCategory> d_parent_category;
 
 };
 
