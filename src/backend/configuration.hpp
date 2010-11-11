@@ -41,7 +41,7 @@ class Configuration
 			*/
 		 AbstractCategory* loadConfigurationFile();
 
-		 void createChildCategory(boost::shared_ptr<systools::xml::XmlNode> category_node, AbstractCategory* parent);
+		 void createChildCategory(systools::xml::XmlNode& category_node, AbstractCategory* parent);
 
 		 /**
 			* \brief Load the application configuration.
@@ -53,7 +53,7 @@ class Configuration
 		 /**
 			* \brief The associated xml_schema.
 			*/
-		static const boost::shared_ptr<systools::xml::XmlSchema> SCHEMA;
+		static const systools::xml::XmlSchema SCHEMA;
 
 		/**
 		 * \brief Get the root configuration directory.

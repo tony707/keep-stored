@@ -14,7 +14,7 @@ class EbookResource : public AbstractResource
 	public:
 		EbookResource();
 
-		EbookResource(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		EbookResource(systools::xml::XmlNode& xml_node);
 };
 
 #endif /* KEEP_STORED_EBOOK_RESOURCE_HPP */

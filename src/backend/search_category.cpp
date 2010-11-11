@@ -22,7 +22,7 @@ SearchCategory::SearchCategory(QString title) :
 	d_type = Search;
 }
 
-SearchCategory::SearchCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node) :
+SearchCategory::SearchCategory(systools::xml::XmlNode& xml_node) :
 	AbstractCategory(xml_node)
 {
 	d_type = Search;

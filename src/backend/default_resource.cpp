@@ -12,7 +12,7 @@ DefaultResource::DefaultResource() :
 	d_type = Default;
 }
 
-DefaultResource::DefaultResource(boost::shared_ptr<systools::xml::XmlNode> xml_node) :
+DefaultResource::DefaultResource(systools::xml::XmlNode& xml_node) :
 	AbstractResource(xml_node)
 {
 	d_type = Default;

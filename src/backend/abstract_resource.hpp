@@ -10,20 +10,14 @@
 #include <boost/shared_ptr.hpp>
 
 #include <systools/string.hpp>
+#include <systools/xml_node.hpp>
+#include <systools/xml_writer.hpp>
+#include <systools/xml_xpath.hpp>
+
 
 #include <QList>
 #include <QString>
 #include <QUrl>
-
-namespace systools
-{
-	namespace xml
-	{
-		class XmlNode;
-		class XmlWriter;
-	}
-}
-
 
 class AbstractResource
 {
@@ -46,11 +40,11 @@ class AbstractResource
 		/**
 		 * \brief Constructor.
 		 */
-		AbstractResource(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		AbstractResource(systools::xml::XmlNode& xml_node);
 
-		static boost::shared_ptr<AbstractResource> createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		static boost::shared_ptr<AbstractResource> createFromXmlNode(systools::xml::XmlNode& xml_node);
 
-		static void saveToXml(boost::shared_ptr<AbstractResource> resource, boost::shared_ptr<systools::xml::XmlWriter> xml_writer);
+		static void saveToXml(boost::shared_ptr<AbstractResource> resource, systools::xml::XmlWriter& xml_writer);
 
 		static QString resourceTypeToString(ResourceType type);
 

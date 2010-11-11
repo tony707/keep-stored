@@ -136,8 +136,6 @@ void MainWindow::updateResourceList(const QItemSelection & selected, const QItem
 {
 	Q_UNUSED(deselected);
 
-	qDebug() << "Selection changed";
-
 	QModelIndex selected_index;
 
 	if (selected.indexes().count() > 0)

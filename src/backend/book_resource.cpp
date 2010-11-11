@@ -12,7 +12,7 @@ BookResource::BookResource() :
 	d_type = Book;
 }
 
-BookResource::BookResource(boost::shared_ptr<systools::xml::XmlNode> xml_node) :
+BookResource::BookResource(systools::xml::XmlNode& xml_node) :
 	AbstractResource(xml_node)
 {
 	d_type = Book;

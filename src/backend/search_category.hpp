@@ -21,7 +21,7 @@ class SearchCategory : public AbstractCategory
 		/**
 		 * \brief Constructor.
 		 */
-		SearchCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		SearchCategory(systools::xml::XmlNode& xml_node);
 
 };
 

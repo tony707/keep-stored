@@ -14,7 +14,7 @@ class UrlResource : public AbstractResource
 	public:
 		UrlResource();
 
-		UrlResource(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		UrlResource(systools::xml::XmlNode& xml_node);
 };
 
 #endif /* KEEP_STORED_URL_RESOURCE_HPP */

@@ -12,20 +12,16 @@
 #include "url_resource.hpp"
 #include "string_tools.hpp"
 
-#include <systools/xml_node.hpp>
-#include <systools/xml_writer.hpp>
-#include <systools/xml_xpath.hpp>
-
 #include <boost/foreach.hpp>
 
 #include <sstream>
 
 #include <QDebug>
 
-boost::shared_ptr<AbstractResource> AbstractResource::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
+boost::shared_ptr<AbstractResource> AbstractResource::createFromXmlNode(systools::xml::XmlNode& xml_node)
 {
 	int int_type;
-	std::istringstream iss(xml_node->xpath()->evaluateAsString("string(ks:type)").toStdString());
+	std::istringstream iss(xml_node.xpath().evaluateAsString("string(ks:type)").toStdString());
 	iss >> int_type;
 	ResourceType type = static_cast<ResourceType>(int_type);
 
@@ -54,46 +50,42 @@ AbstractResource::AbstractResource()
 {
 }
 
-AbstractResource::AbstractResource(boost::shared_ptr<systools::xml::XmlNode> xml_node)
+AbstractResource::AbstractResource(systools::xml::XmlNode& xml_node)
 {
-	assert(xml_node);
+	d_title = toQString(xml_node.xpath().evaluateAsString("string(ks:title)"));
+	d_author = toQString(xml_node.xpath().evaluateAsString("string(ks:author)"));
+	d_location = QUrl::fromUserInput(toQString(xml_node.xpath().evaluateAsString("string(ks:location)")));
 
-	d_title = toQString(xml_node->xpath()->evaluateAsString("string(ks:title)"));
-	d_author = toQString(xml_node->xpath()->evaluateAsString("string(ks:author)"));
-	d_location = QUrl::fromUserInput(toQString(xml_node->xpath()->evaluateAsString("string(ks:location)")));
+	std::list<systools::xml::XmlNode> tag_list = xml_node.xpath().evaluate("ks:tagList/ks:tag");
 
-	std::list<boost::shared_ptr<systools::xml::XmlNode> > tag_list = xml_node->xpath()->evaluate("ks:tagList/ks:tag");
-
-	BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> tag, tag_list)
+	BOOST_FOREACH(systools::xml::XmlNode tag, tag_list)
 	{
-		d_tag_list.push_back(toQString(tag->content()));
+		d_tag_list.push_back(toQString(tag.content()));
 	}
 
 }
 
-void AbstractResource::saveToXml(boost::shared_ptr<AbstractResource> resource, boost::shared_ptr<systools::xml::XmlWriter> xml_writer)
+void AbstractResource::saveToXml(boost::shared_ptr<AbstractResource> resource, systools::xml::XmlWriter& xml_writer)
 {
-	assert(xml_writer);
-
 	if (resource)
 	{
 		std::ostringstream oss;
 		oss << resource->type();
 
-		xml_writer->startElement("resource");
-		xml_writer->writeElement("type", oss.str());
-		xml_writer->writeElement("title", fromQString(resource->title()));
-		xml_writer->writeElement("author", fromQString(resource->author()));
-		xml_writer->writeElement("location", fromQString(resource->location().toString()));
-		xml_writer->startElement("tagList");
+		xml_writer.startElement("resource");
+		xml_writer.writeElement("type", oss.str());
+		xml_writer.writeElement("title", fromQString(resource->title()));
+		xml_writer.writeElement("author", fromQString(resource->author()));
+		xml_writer.writeElement("location", fromQString(resource->location().toString()));
+		xml_writer.startElement("tagList");
 
 		BOOST_FOREACH(QString tag, resource->tagList())
 		{
-			xml_writer->writeElement("tag", fromQString(tag));
+			xml_writer.writeElement("tag", fromQString(tag));
 		}
 
-		xml_writer->endElement(); //tagList
-		xml_writer->endElement(); //resource
+		xml_writer.endElement(); //tagList
+		xml_writer.endElement(); //resource
 	}
 }
 

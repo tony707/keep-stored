@@ -14,7 +14,7 @@ class BookResource : public AbstractResource
 	public:
 		BookResource();
 
-		BookResource(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		BookResource(systools::xml::XmlNode& xml_node);
 };
 
 #endif /* KEEP_STORED_BOOK_RESOURCE_HPP */

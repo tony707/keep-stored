@@ -19,10 +19,10 @@
 
 #include <QDebug>
 
-AbstractCategory* AbstractCategory::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
+AbstractCategory* AbstractCategory::createFromXmlNode(systools::xml::XmlNode& xml_node)
 {
 	int int_type;
-	std::istringstream iss(xml_node->xpath()->evaluateAsString("string(ks:type)").toStdString());
+	std::istringstream iss(xml_node.xpath().evaluateAsString("string(ks:type)").toStdString());
 	iss >> int_type;
 	CategoryType type = static_cast<CategoryType>(int_type);
 
@@ -43,18 +43,16 @@ AbstractCategory* AbstractCategory::createFromXmlNode(boost::shared_ptr<systools
 	return category;
 }
 
-void AbstractCategory::saveToXml(AbstractCategory* category, boost::shared_ptr<systools::xml::XmlWriter> xml_writer)
+void AbstractCategory::saveToXml(AbstractCategory* category, systools::xml::XmlWriter& xml_writer)
 {
-	assert(xml_writer);
-
 	if (category)
 	{
 		std::ostringstream oss;
 		oss << category->type();
 
-		xml_writer->startElement("category");
-		xml_writer->writeElement("type", oss.str());
-		xml_writer->writeElement("title", fromQString(category->title()));
+		xml_writer.startElement("category");
+		xml_writer.writeElement("type", oss.str());
+		xml_writer.writeElement("title", fromQString(category->title()));
 
 		if (category->type() != AbstractCategory::Search)
 		{
@@ -72,7 +70,7 @@ void AbstractCategory::saveToXml(AbstractCategory* category, boost::shared_ptr<s
 			}
 		}
 
-		xml_writer->endElement(); //category
+		xml_writer.endElement(); //category
 	}
 }
 
@@ -85,21 +83,18 @@ AbstractCategory::AbstractCategory() :
 
 AbstractCategory::~AbstractCategory()
 {
-	qDebug() << "Delete ALL !";
 	qDeleteAll(d_children_categories);
 }
 
-AbstractCategory::AbstractCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node):
+AbstractCategory::AbstractCategory(systools::xml::XmlNode& xml_node):
 	d_resource_list(QList<boost::shared_ptr<AbstractResource> >()),
 	d_children_categories(QList<AbstractCategory* >()),
 	d_parent_category(NULL)
 {
-	assert(xml_node);
+	d_title = toQString(xml_node.xpath().evaluateAsString("string(ks:title)"));
+	std::list<systools::xml::XmlNode> resource_list = xml_node.xpath().evaluate("ks:resource");
 
-	d_title = toQString(xml_node->xpath()->evaluateAsString("string(ks:title)"));
-	std::list<boost::shared_ptr<systools::xml::XmlNode> > resource_list = xml_node->xpath()->evaluate("ks:resource");
-
-	BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> resource, resource_list)
+	BOOST_FOREACH(systools::xml::XmlNode resource, resource_list)
 	{
 		d_resource_list.push_back(AbstractResource::createFromXmlNode(resource));
 	}

@@ -10,6 +10,7 @@
 #include "search_category.hpp"
 #include "string_tools.hpp"
 
+#include <systools/parsing_error_exception.hpp>
 #include <systools/xml_document.hpp>
 #include <systools/xml_document_writer.hpp>
 #include <systools/xml_xpath.hpp>
@@ -78,7 +79,7 @@ Configuration::Configuration()
 {
 }
 
-const boost::shared_ptr<systools::xml::XmlSchema> Configuration::SCHEMA(systools::xml::XmlSchema::createFromBuffer(SCHEMA_STRING.toUtf8()));
+const systools::xml::XmlSchema Configuration::SCHEMA(systools::xml::XmlSchema::createFromBuffer(SCHEMA_STRING.toUtf8()));
 
 QDir Configuration::rootConfigurationDirectory()
 {
@@ -127,17 +128,17 @@ AbstractCategory* Configuration::loadConfigurationFile()
 
 	if (rootConfigurationDirectory().exists(QString::fromStdString(CONFIGURATION_FILE)))
 	{
-		boost::shared_ptr<systools::xml::XmlDocument> xml_document = systools::xml::XmlDocument::createFromFile(configurationFilePath());
+		systools::xml::XmlDocument xml_document = systools::xml::XmlDocument::createFromFile(configurationFilePath());
 
-		std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list;
+		std::list<systools::xml::XmlNode> category_node_list;
 
 		try
 		{
-			EXCEPTION_ASSERT(SCHEMA->validate(xml_document), systools::ParsingErrorException, "Unrecognized XML document");
+			EXCEPTION_ASSERT(SCHEMA.validate(xml_document), systools::ParsingErrorException, "Unrecognized XML document");
 
-			xml_document->xpath()->registerNamespace("ks", KEEPSTORED_XML_NAMESPACE);
+			xml_document.xpath().registerNamespace("ks", KEEPSTORED_XML_NAMESPACE);
 
-			category_node_list = xml_document->xpath()->evaluate("/ks:configuration/ks:category");
+			category_node_list = xml_document.xpath().evaluate("/ks:configuration/ks:category");
 		}
 		catch (systools::Exception e)
 		{
@@ -145,7 +146,7 @@ AbstractCategory* Configuration::loadConfigurationFile()
 			return 0;
 		}
 
-		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category_node, category_node_list)
+		BOOST_FOREACH(systools::xml::XmlNode category_node, category_node_list)
 		{
 			AbstractCategory* category = AbstractCategory::createFromXmlNode(category_node);
 
@@ -168,13 +169,13 @@ AbstractCategory* Configuration::loadConfigurationFile()
 	return root_category;
 }
 
-void Configuration::createChildCategory(boost::shared_ptr<systools::xml::XmlNode> category_node, AbstractCategory* parent)
+void Configuration::createChildCategory(systools::xml::XmlNode& category_node, AbstractCategory* parent)
 {
-	std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list = category_node->xpath()->evaluate("ks:category");
+	std::list<systools::xml::XmlNode> category_node_list = category_node.xpath().evaluate("ks:category");
 
 	if (category_node_list.size() > 0)
 	{
-		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category_node, category_node_list)
+		BOOST_FOREACH(systools::xml::XmlNode category_node, category_node_list)
 		{
 			AbstractCategory* category = AbstractCategory::createFromXmlNode(category_node);
 			parent->appendChild(category);
@@ -186,20 +187,20 @@ void Configuration::createChildCategory(boost::shared_ptr<systools::xml::XmlNode
 
 void Configuration::saveConfigurationFile(AbstractCategory* root_category)
 {
-	boost::shared_ptr<systools::xml::XmlDocumentWriter> xml_writer(new systools::xml::XmlDocumentWriter());
+	systools::xml::XmlDocumentWriter xml_writer;
 
-	xml_writer->startDocument();
-	xml_writer->startElement("configuration");
-	xml_writer->writeAttribute("xmlns", KEEPSTORED_XML_NAMESPACE);
+	xml_writer.startDocument();
+	xml_writer.startElement("configuration");
+	xml_writer.writeAttribute("xmlns", KEEPSTORED_XML_NAMESPACE);
 
 	BOOST_FOREACH(AbstractCategory* category, root_category->children())
 	{
 		AbstractCategory::saveToXml(category, xml_writer);
 	}
 
-	xml_writer->endElement(); //configuration
-	xml_writer->endDocument();
+	xml_writer.endElement(); //configuration
+	xml_writer.endDocument();
 
-	systools::xml::XmlDocument::saveToFile(xml_writer->getResultAsDocument(), configurationFilePath());
+	xml_writer.getResultAsDocument().writeToFile(configurationFilePath());
 }
 

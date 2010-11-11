@@ -12,7 +12,7 @@ EbookResource::EbookResource() :
 	d_type = Ebook;
 }
 
-EbookResource::EbookResource(boost::shared_ptr<systools::xml::XmlNode> xml_node) :
+EbookResource::EbookResource(systools::xml::XmlNode& xml_node) :
 	AbstractResource(xml_node)
 {
 	d_type = Ebook;

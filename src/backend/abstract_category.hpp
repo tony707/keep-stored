@@ -37,9 +37,9 @@ class AbstractCategory
 		Search
 	};
 
-		static void saveToXml(AbstractCategory* category, boost::shared_ptr<systools::xml::XmlWriter> xml_writer);
+		static void saveToXml(AbstractCategory* category, systools::xml::XmlWriter& xml_writer);
 
-		static AbstractCategory* createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		static AbstractCategory* createFromXmlNode(systools::xml::XmlNode& xml_node);
 
 		/**
 		 * \brief Constructor.
@@ -54,7 +54,7 @@ class AbstractCategory
 		/**
 		 * \brief Constructor.
 		 */
-		AbstractCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		AbstractCategory(systools::xml::XmlNode& xml_node);
 
 		/**
 		 * \brief Get the title.

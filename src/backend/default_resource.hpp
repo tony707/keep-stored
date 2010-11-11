@@ -14,7 +14,7 @@ class DefaultResource : public AbstractResource
 	public:
 		DefaultResource();
 
-		DefaultResource(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		DefaultResource(systools::xml::XmlNode& xml_node);
 };
 
 #endif /* KEEP_STORED_DEFAULT_RESOURCE_HPP */

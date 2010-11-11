@@ -26,7 +26,7 @@ class DefaultCategory : public AbstractCategory
 		/**
 		 * \brief Constructor.
 		 */
-		DefaultCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		DefaultCategory(systools::xml::XmlNode& xml_node);
 
 };
 
