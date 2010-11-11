@@ -20,8 +20,6 @@
 CategoryListView::CategoryListView(QWidget* parent) :
 	QTreeView(parent)
 {
-	setMinimumWidth(100);
-	setMaximumWidth(horizontalScrollBar()->sizeHint().width() + 100);
 	setAcceptDrops(true);
 	setDropIndicatorShown(true);
 	setDragDropMode(QAbstractItemView::DropOnly);

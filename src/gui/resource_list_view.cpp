@@ -45,8 +45,7 @@ void ResourceListView::contextMenuEvent(QContextMenuEvent*)
 
 void ResourceListView::editResource()
 {
-	int row = selectionModel()->selectedRows().front().row();
-	resourceAboutToEdit(row);
+	resourceAboutToEdit(selectionModel()->currentIndex());
 }
 
 void ResourceListView::deleteResource()

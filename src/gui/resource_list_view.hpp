@@ -41,7 +41,7 @@ class ResourceListView : public QTableView
 		QAction* d_delete_action;
 
 	signals:
-		void resourceAboutToEdit(int row);
+		void resourceAboutToEdit(QModelIndex);
 		void resourceSelected(boost::shared_ptr<AbstractResource> resource);
 		void resourceDropped(const QMimeData* mime_data);
 

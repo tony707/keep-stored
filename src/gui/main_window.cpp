@@ -89,7 +89,14 @@ void MainWindow::buildToolBar()
 	QWidget* spacer = new QWidget();
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+	d_add_action = handlingToolBar->addAction(QIcon(":/resources/add.png"), tr("Add"));
 	d_setting_action = handlingToolBar->addAction(QIcon(":/resources/settings.png"), tr("Settings"));
+
+	d_add_menu = new QMenu();
+	d_add_category = d_add_menu->addAction(tr("Add main category"));
+	d_add_resource = d_add_menu->addAction(tr("Add a resource"));
+	d_add_action->setMenu(d_add_menu);
+
 
 	handlingToolBar->addWidget(spacer);
 	handlingToolBar->addWidget(d_search_edit);
@@ -99,10 +106,14 @@ void MainWindow::buildToolBar()
 
 void MainWindow::setupActions()
 {
+	connect(d_add_category, SIGNAL(triggered()), d_category_list_view, SLOT(addMainCategory()));
+	connect(d_add_resource, SIGNAL(triggered()), d_resource_view, SLOT(show()));
+	connect(d_add_action, SIGNAL(triggered()), this, SLOT(showAddMenu()));
+
 	connect(d_search_action, SIGNAL(triggered()), this, SLOT(findResources()));
 
 	connect(d_category_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourceList(const QItemSelection &, const QItemSelection &)));
-	connect(d_resource_list_view, SIGNAL(resourceAboutToEdit(int)), d_resource_view, SLOT(loadResource(int)));
+	connect(d_resource_list_view, SIGNAL(resourceAboutToEdit(QModelIndex)), d_resource_view, SLOT(loadResource(QModelIndex)));
 	connect(d_category_list_view, SIGNAL(resourceDropped(const QMimeData*)), d_resource_list_model, SLOT(addResource(const QMimeData*)));
 	connect(d_resource_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourcePreview(const QItemSelection &, const QItemSelection &)));
 	connect(d_resource_list_view, SIGNAL(resourceDropped(const QMimeData*)), d_resource_list_model, SLOT(addResource(const QMimeData*)));
@@ -115,9 +126,17 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	QMainWindow::closeEvent(event);
 }
 
+void MainWindow::showAddMenu()
+{
+  d_add_menu->exec(QCursor::pos());
+}
+
+
 void MainWindow::updateResourceList(const QItemSelection & selected, const QItemSelection & deselected)
 {
 	Q_UNUSED(deselected);
+
+	qDebug() << "Selection changed";
 
 	QModelIndex selected_index;
 

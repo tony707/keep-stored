@@ -8,6 +8,7 @@
 #define KEEP_STORED_RESOURCE_VIEW_HPP
 
 #include <QWidget>
+#include <QModelIndex>
 
 #include <boost/shared_ptr.hpp>
 
@@ -17,6 +18,7 @@ class QComboBox;
 class QItemSelection;
 class AbstractResourceListModel;
 class CategoryListModel;
+class AbstractCategory;
 
 class ResourceView : public QWidget
 {
@@ -34,9 +36,11 @@ class ResourceView : public QWidget
 	protected:
 		void showEvent(QShowEvent* event);
 
+		void appendCategories(AbstractCategory* parent_category, const QModelIndex& parent = QModelIndex());
+
 	private:
 
-		int d_row;
+		QModelIndex d_index;
 
 		QLineEdit* d_title_edit;
 		QLineEdit* d_author_edit;
@@ -52,7 +56,7 @@ public slots:
 
 	void save();
 
-	void loadResource(int row);
+	void loadResource(QModelIndex);
 };
 
 #endif /* KEEP_STORED_RESOURCE_VIEW_HPP */

@@ -45,6 +45,8 @@ class MainWindow : public QMainWindow
 
 		void findResources();
 
+		void showAddMenu();
+
 	private:
 		/**
 		 * \brief Build Application's Menu Bar.
@@ -111,11 +113,20 @@ class MainWindow : public QMainWindow
 
 	private:
 
+		 QMenu* d_add_menu;
+
 		 QAction* d_setting_action;
 
 		 QAction* d_search_action;
 
 		 QLineEdit* d_search_edit;
+
+		 QAction* d_add_action;
+
+		 QAction* d_add_category;
+
+		 QAction* d_add_resource;
+
 
 };
 

@@ -25,7 +25,7 @@
 
 ResourceView::ResourceView(CategoryListModel* category_list_model, QWidget* parent) :
 	QWidget(parent),
-	d_row(-1),
+	d_index(QModelIndex()),
 	d_title_edit(new QLineEdit()),
 	d_author_edit(new QLineEdit()),
 	d_taglist_edit(new QLineEdit()),
@@ -52,7 +52,6 @@ ResourceView::ResourceView(CategoryListModel* category_list_model, QWidget* pare
 void ResourceView::setResourceListModel(AbstractResourceListModel* resource_list_model)
 {
 	d_resource_list_model = resource_list_model;
-	d_combo_category_list->setCurrentIndex(d_category_list_model->rootCategory()->children().indexOf(d_resource_list_model->category()));
 }
 
 void ResourceView::showEvent(QShowEvent* event)
@@ -61,22 +60,33 @@ void ResourceView::showEvent(QShowEvent* event)
 
 	d_combo_category_list->clear();
 
-	for (int row = 0; row < d_category_list_model->rowCount(); ++row)
+	appendCategories(d_category_list_model->rootCategory());
+
+	int row = d_combo_category_list->findData(d_resource_list_model->category()->title(), Qt::DisplayRole, Qt::MatchContains);
+	d_combo_category_list->setCurrentIndex(row);
+}
+
+void ResourceView::appendCategories(AbstractCategory* parent_category, const QModelIndex& parent)
+{
+	BOOST_FOREACH(AbstractCategory* category, parent_category->children())
 	{
+		QModelIndex index = d_category_list_model->index(category->row(), 0, parent);
+
 		d_combo_category_list->addItem(
-				d_category_list_model->data(d_category_list_model->index(row, 0), Qt::DecorationRole).value<QIcon>(),
-				d_category_list_model->data(d_category_list_model->index(row, 0), Qt::DisplayRole).toString()
-		);
+				d_category_list_model->data(index, Qt::DecorationRole).value<QIcon>(),
+				d_category_list_model->data(index, Qt::DisplayRole).toString());
+
+	appendCategories(category, index);
 	}
 }
 
-void ResourceView::loadResource(int row)
+void ResourceView::loadResource(QModelIndex index)
 {
-	d_row = row;
-	d_title_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 0), Qt::DisplayRole).toString());
-	d_author_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 1), Qt::DisplayRole).toString());
-	d_taglist_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 2), Qt::DisplayRole).toString());
-	d_location_edit->setText(d_resource_list_model->data(d_resource_list_model->index(row, 3), Qt::DisplayRole).toString());
+	d_index = index;
+	d_title_edit->setText(d_resource_list_model->data(d_resource_list_model->index(index.row(), 0), Qt::DisplayRole).toString());
+	d_author_edit->setText(d_resource_list_model->data(d_resource_list_model->index(index.row(), 1), Qt::DisplayRole).toString());
+	d_taglist_edit->setText(d_resource_list_model->data(d_resource_list_model->index(index.row(), 2), Qt::DisplayRole).toString());
+	d_location_edit->setText(d_resource_list_model->data(d_resource_list_model->index(index.row(), 3), Qt::DisplayRole).toString());
 
 	show();
 }
@@ -88,12 +98,12 @@ void ResourceView::save()
 	QString taglist = d_taglist_edit->text();
 	QString location = d_location_edit->text();
 
-	if (d_row >= 0)
+	if (d_index.isValid())
 	{
-		d_resource_list_model->setData(d_resource_list_model->index(d_row, 0), title, Qt::EditRole);
-		d_resource_list_model->setData(d_resource_list_model->index(d_row, 1), author, Qt::EditRole);
-		d_resource_list_model->setData(d_resource_list_model->index(d_row, 2), taglist, Qt::EditRole);
-		d_resource_list_model->setData(d_resource_list_model->index(d_row, 3), location, Qt::EditRole);
+		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 0), title, Qt::EditRole);
+		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 1), author, Qt::EditRole);
+		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 2), taglist, Qt::EditRole);
+		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 3), location, Qt::EditRole);
 	}
 	else
 	{
@@ -111,7 +121,7 @@ void ResourceView::save()
 	d_author_edit->setText("");
 	d_taglist_edit->setText("");
 	d_location_edit->setText("");
-	d_row = -1;
+	d_index = QModelIndex();
 
 	hide();
 }
