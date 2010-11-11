@@ -121,9 +121,9 @@ std::string Configuration::configurationFilePath()
 	return rootConfigurationDirectory().path().toStdString() + "/" + CONFIGURATION_FILE;
 }
 
-boost::shared_ptr<AbstractCategory> Configuration::loadConfigurationFile()
+AbstractCategory* Configuration::loadConfigurationFile()
 {
-	boost::shared_ptr<AbstractCategory> root_category(new DefaultCategory());
+	AbstractCategory* root_category = new DefaultCategory();
 
 	if (rootConfigurationDirectory().exists(QString::fromStdString(CONFIGURATION_FILE)))
 	{
@@ -142,12 +142,12 @@ boost::shared_ptr<AbstractCategory> Configuration::loadConfigurationFile()
 		catch (systools::Exception e)
 		{
 			QMessageBox::critical(NULL, QObject::tr("Error!"), QObject::tr("Bad configuration file.\n\nThe error was:\n\n%1").arg(QString(e.what())));
-			return boost::shared_ptr<AbstractCategory>();
+			return 0;
 		}
 
 		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category_node, category_node_list)
 		{
-			boost::shared_ptr<AbstractCategory> category = AbstractCategory::createFromXmlNode(category_node);
+			AbstractCategory* category = AbstractCategory::createFromXmlNode(category_node);
 
 			createChildCategory(category_node, category);
 
@@ -161,14 +161,14 @@ boost::shared_ptr<AbstractCategory> Configuration::loadConfigurationFile()
 
 		if (!has_one_search_category)
 		{
-			root_category->prependChild(boost::shared_ptr<AbstractCategory>(new SearchCategory("Search results")));
+			root_category->prependChild(new SearchCategory("Search results"));
 		}
 	}
 
 	return root_category;
 }
 
-void Configuration::createChildCategory(boost::shared_ptr<systools::xml::XmlNode> category_node, boost::shared_ptr<AbstractCategory> parent)
+void Configuration::createChildCategory(boost::shared_ptr<systools::xml::XmlNode> category_node, AbstractCategory* parent)
 {
 	std::list<boost::shared_ptr<systools::xml::XmlNode> > category_node_list = category_node->xpath()->evaluate("ks:category");
 
@@ -176,16 +176,15 @@ void Configuration::createChildCategory(boost::shared_ptr<systools::xml::XmlNode
 	{
 		BOOST_FOREACH(boost::shared_ptr<systools::xml::XmlNode> category_node, category_node_list)
 		{
-			boost::shared_ptr<AbstractCategory> category = AbstractCategory::createFromXmlNode(category_node);
+			AbstractCategory* category = AbstractCategory::createFromXmlNode(category_node);
 			parent->appendChild(category);
-			category->setParent(boost::weak_ptr<AbstractCategory>(category));
 
 			createChildCategory(category_node, category);
 		}
 	}
 }
 
-void Configuration::saveConfigurationFile(boost::shared_ptr<AbstractCategory> root_category)
+void Configuration::saveConfigurationFile(AbstractCategory* root_category)
 {
 	boost::shared_ptr<systools::xml::XmlDocumentWriter> xml_writer(new systools::xml::XmlDocumentWriter());
 
@@ -193,7 +192,7 @@ void Configuration::saveConfigurationFile(boost::shared_ptr<AbstractCategory> ro
 	xml_writer->startElement("configuration");
 	xml_writer->writeAttribute("xmlns", KEEPSTORED_XML_NAMESPACE);
 
-	BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, root_category->children())
+	BOOST_FOREACH(AbstractCategory* category, root_category->children())
 	{
 		AbstractCategory::saveToXml(category, xml_writer);
 	}

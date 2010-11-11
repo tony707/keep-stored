@@ -11,7 +11,6 @@
 #include <QString>
 
 #include <boost/smart_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
 
 #include <list>
 
@@ -27,7 +26,7 @@ namespace systools
 
 class AbstractResource;
 
-class AbstractCategory : public boost::enable_shared_from_this<AbstractCategory>
+class AbstractCategory
 {
 
 	public:
@@ -38,14 +37,19 @@ class AbstractCategory : public boost::enable_shared_from_this<AbstractCategory>
 		Search
 	};
 
-		static void saveToXml(boost::shared_ptr<AbstractCategory> category, boost::shared_ptr<systools::xml::XmlWriter> xml_writer);
+		static void saveToXml(AbstractCategory* category, boost::shared_ptr<systools::xml::XmlWriter> xml_writer);
 
-		static boost::shared_ptr<AbstractCategory> createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node);
+		static AbstractCategory* createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node);
 
 		/**
 		 * \brief Constructor.
 		 */
 		AbstractCategory();
+
+		/**
+		 * \brief Constructor.
+		 */
+		~AbstractCategory();
 
 		/**
 		 * \brief Constructor.
@@ -72,11 +76,13 @@ class AbstractCategory : public boost::enable_shared_from_this<AbstractCategory>
 		 */
 		void setType(CategoryType type);
 
-		void prependChild(boost::shared_ptr<AbstractCategory> category);
+		void prependChild(AbstractCategory* category);
 
-		void appendChild(boost::shared_ptr<AbstractCategory> category);
+		void appendChild(AbstractCategory* category);
 
-		boost::shared_ptr<AbstractCategory> childAt(int row);
+		void removeChild(int row);
+
+		AbstractCategory* childAt(int row);
 
 		int childCount();
 
@@ -84,11 +90,11 @@ class AbstractCategory : public boost::enable_shared_from_this<AbstractCategory>
 
 		int row();
 
-		boost::shared_ptr<AbstractCategory> parent();
+		AbstractCategory* parent();
 
-		QList<boost::shared_ptr<AbstractCategory> > children();
+		QList<AbstractCategory*> children();
 
-		void setParent(boost::weak_ptr<AbstractCategory> parent_category);
+		void setParent(AbstractCategory* parent_category);
 
 		bool hasChildren();
 
@@ -123,12 +129,12 @@ class AbstractCategory : public boost::enable_shared_from_this<AbstractCategory>
 		/**
 		 * \brief The children categories.
 		 */
-		QList<boost::shared_ptr<AbstractCategory> > d_children_categories;
+		QList<AbstractCategory*> d_children_categories;
 
 		/**
 		 * \brief The parent category.
 		 */
-		boost::weak_ptr<AbstractCategory> d_parent_category;
+		AbstractCategory* d_parent_category;
 
 };
 

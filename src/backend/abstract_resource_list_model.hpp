@@ -43,9 +43,9 @@ class AbstractResourceListModel : public QAbstractListModel
 
 		bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
 
-		boost::shared_ptr<AbstractCategory> category();
+		AbstractCategory* category();
 
-		void setCategory(boost::shared_ptr<AbstractCategory> category);
+		void setCategory(AbstractCategory* category);
 
 		boost::shared_ptr<AbstractResource> resource(int row);
 
@@ -60,7 +60,7 @@ class AbstractResourceListModel : public QAbstractListModel
 		/**
 		 * \brief The category.
 		 */
-		boost::shared_ptr<AbstractCategory> d_category;
+		AbstractCategory* d_category;
 
 };
 

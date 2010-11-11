@@ -44,7 +44,7 @@ void MainWindow::buildMenuBar()
 
 void MainWindow::buildWidgets()
 {
-	boost::shared_ptr<AbstractCategory> root_category = d_configuration->loadConfigurationFile();
+	AbstractCategory* root_category = d_configuration->loadConfigurationFile();
 
 	d_category_list_model = new CategoryListModel(root_category);
 	d_search_category = d_category_list_model->searchCategory();
@@ -89,12 +89,7 @@ void MainWindow::buildToolBar()
 	QWidget* spacer = new QWidget();
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	d_add_action = handlingToolBar->addAction(QIcon(":/resources/add.png"), tr("Add"));
 	d_setting_action = handlingToolBar->addAction(QIcon(":/resources/settings.png"), tr("Settings"));
-	d_add_menu = new QMenu();
-	d_add_category = d_add_menu->addAction(tr("Add a category"));
-	d_add_resource = d_add_menu->addAction(tr("Add a resource"));
-	d_add_action->setMenu(d_add_menu);
 
 	handlingToolBar->addWidget(spacer);
 	handlingToolBar->addWidget(d_search_edit);
@@ -104,9 +99,6 @@ void MainWindow::buildToolBar()
 
 void MainWindow::setupActions()
 {
-	connect(d_add_category, SIGNAL(triggered()), d_category_list_view, SLOT(addCategory()));
-	connect(d_add_resource, SIGNAL(triggered()), d_resource_view, SLOT(show()));
-	connect(d_add_action, SIGNAL(triggered()), this, SLOT(showAddMenu()));
 	connect(d_search_action, SIGNAL(triggered()), this, SLOT(findResources()));
 
 	connect(d_category_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourceList(const QItemSelection &, const QItemSelection &)));
@@ -121,12 +113,6 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	d_configuration->saveConfigurationFile(d_category_list_model->rootCategory());
 
 	QMainWindow::closeEvent(event);
-}
-
-//SLOTS
-void MainWindow::showAddMenu()
-{
-	d_add_menu->exec(QCursor::pos());
 }
 
 void MainWindow::updateResourceList(const QItemSelection & selected, const QItemSelection & deselected)
@@ -146,7 +132,7 @@ void MainWindow::updateResourceList(const QItemSelection & selected, const QItem
 
 	if (selected_index.row() >= 0)
 	{
-		d_resource_list_model->setCategory(boost::shared_ptr<AbstractCategory>(static_cast<AbstractCategory*>(selected_index.internalPointer())));
+		d_resource_list_model->setCategory(static_cast<AbstractCategory*>(selected_index.internalPointer()));
 		d_resource_list_view->resizeRowsToContents();
 
 		static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->reset();
@@ -186,7 +172,17 @@ void MainWindow::findResources()
 		d_category_list_view->setCurrentIndex(QModelIndex());
 		d_search_category->clearResourceList();
 
-		BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, d_category_list_model->rootCategory()->children())
+		findCategoryResources(d_category_list_model->rootCategory(), pattern);
+
+		d_category_list_view->setCurrentIndex(d_category_list_model->index(d_category_list_model->rootCategory()->children().indexOf(d_search_category), 0));
+	}
+}
+
+void MainWindow::findCategoryResources(AbstractCategory* parent_category, QString pattern)
+{
+	if (parent_category->hasChildren())
+	{
+		BOOST_FOREACH(AbstractCategory* category, parent_category->children())
 		{
 			d_resource_list_model->setCategory(category);
 
@@ -196,9 +192,9 @@ void MainWindow::findResources()
 			{
 				d_search_category->addResource(d_resource_list_model->resource(index.row()));
 			}
-		}
 
-		d_category_list_view->setCurrentIndex(d_category_list_model->index(d_category_list_model->rootCategory()->children().indexOf(d_search_category), 0));
+			findCategoryResources(category, pattern);
+		}
 	}
 }
 

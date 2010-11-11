@@ -24,7 +24,12 @@ class CategoryListModel : public QAbstractItemModel
 		/**
 		 * \brief Constructor.
 		 */
-		CategoryListModel(boost::shared_ptr<AbstractCategory> root_category, QObject *parent = 0);
+		CategoryListModel(AbstractCategory* root_category, QObject *parent = 0);
+
+		/**
+		 * \brief Destructor
+		 */
+		~CategoryListModel();
 
 		int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
@@ -34,26 +39,28 @@ class CategoryListModel : public QAbstractItemModel
 
 		Qt::ItemFlags flags(const QModelIndex &index) const;
 
+		QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
 		QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
 		QModelIndex parent(const QModelIndex &index) const;
 
-    //bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
 		bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
 
 		bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
 
-		boost::shared_ptr<AbstractCategory> rootCategory();
+		AbstractCategory* rootCategory();
 
-		boost::shared_ptr<AbstractCategory> searchCategory();
+		AbstractCategory* searchCategory();
 
 	private:
 
 		/**
 		 * \brief The root category.
 		 */
-		boost::shared_ptr<AbstractCategory> d_root_category;
+		AbstractCategory* d_root_category;
 
 };
 

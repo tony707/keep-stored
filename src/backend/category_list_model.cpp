@@ -10,15 +10,21 @@
 #include "default_category.hpp"
 #include "string_tools.hpp"
 
-CategoryListModel::CategoryListModel(boost::shared_ptr<AbstractCategory> root_category, QObject *parent) :
+CategoryListModel::CategoryListModel(AbstractCategory* root_category, QObject *parent) :
 	QAbstractItemModel(parent),
 	d_root_category(root_category)
 {
+	d_root_category->setTitle("Categories");
+}
+
+CategoryListModel::~CategoryListModel()
+{
+	delete d_root_category;
 }
 
 int CategoryListModel::rowCount(const QModelIndex &parent) const
 {
-	boost::shared_ptr<AbstractCategory> parent_category;
+	AbstractCategory* parent_category;
 
 	if (parent.column() > 0)
 		return 0;
@@ -26,7 +32,7 @@ int CategoryListModel::rowCount(const QModelIndex &parent) const
 	if (!parent.isValid())
 		parent_category = d_root_category;
 	else
-		parent_category = boost::shared_ptr<AbstractCategory>(static_cast<AbstractCategory*>(parent.internalPointer()));
+		parent_category = static_cast<AbstractCategory*>(parent.internalPointer());
 
 	return parent_category->childCount();
 }
@@ -35,7 +41,7 @@ int CategoryListModel::columnCount(const QModelIndex &parent) const
 {
 	if (parent.isValid())
 	{
-		boost::shared_ptr<AbstractCategory> category = boost::shared_ptr<AbstractCategory>(static_cast<AbstractCategory*>(parent.internalPointer()));
+		AbstractCategory* category = static_cast<AbstractCategory*>(parent.internalPointer());
 		return category->columnCount();
 	}
 	else
@@ -51,7 +57,7 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
-	boost::shared_ptr<AbstractCategory> category = boost::shared_ptr<AbstractCategory>(static_cast<AbstractCategory*>(index.internalPointer()));
+	AbstractCategory* category = static_cast<AbstractCategory*>(index.internalPointer());
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
@@ -70,7 +76,6 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 		}
 	}
 
-
 	return QVariant();
 }
 
@@ -78,13 +83,22 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 Qt::ItemFlags CategoryListModel::flags(const QModelIndex &index) const
 {
 	if (!index.isValid())
-	{
-		return Qt::ItemIsEnabled;
-	}
+		return 0;
 
-	//return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
-	return QAbstractItemModel::flags(index);
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
+
 }
+
+QVariant CategoryListModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	Q_UNUSED(section);
+
+	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+		return d_root_category->title();
+
+	return QVariant();
+}
+
 
 QModelIndex CategoryListModel::index(int row, int column, const QModelIndex &parent) const
 {
@@ -93,7 +107,7 @@ QModelIndex CategoryListModel::index(int row, int column, const QModelIndex &par
 		return QModelIndex();
 	}
 
-	boost::shared_ptr<AbstractCategory> parent_category;
+	AbstractCategory* parent_category;
 
 	if (!parent.isValid())
 	{
@@ -101,14 +115,14 @@ QModelIndex CategoryListModel::index(int row, int column, const QModelIndex &par
 	}
 	else
 	{
-		parent_category = boost::shared_ptr<AbstractCategory>(static_cast<AbstractCategory*>(parent.internalPointer()));
+		parent_category = static_cast<AbstractCategory*>(parent.internalPointer());
 	}
 
-	boost::shared_ptr<AbstractCategory> child_category = parent_category->childAt(row);
+	AbstractCategory* child_category = parent_category->childAt(row);
 
 	if (child_category)
 	{
-		return createIndex(row, column, child_category.get());
+		return createIndex(row, column, child_category);
 	}
 	else
 	{
@@ -124,41 +138,49 @@ QModelIndex CategoryListModel::parent(const QModelIndex &index) const
 		return QModelIndex();
 	}
 
-	boost::shared_ptr<AbstractCategory> child_category = boost::shared_ptr<AbstractCategory>(static_cast<AbstractCategory*>(index.internalPointer()));
+	AbstractCategory* child_category = static_cast<AbstractCategory*>(index.internalPointer());
+	AbstractCategory* parent_category = child_category->parent();
 
-	boost::shared_ptr<AbstractCategory> parent_category = child_category->parent();
-
-	if (child_category == parent_category)
+	if (d_root_category == parent_category)
 	{
 		return QModelIndex();
 	}
 
-	return createIndex(parent_category->row(), 0, parent_category.get());
+	return createIndex(parent_category->row(), 0, parent_category);
 
 }
 
-//bool CategoryListModel::setData(const QModelIndex &index, const QVariant &value, int role)
-//{
-//	if (index.isValid() && role == Qt::EditRole)
-//	{
-//		d_category_list.at(index.row())->setTitle(value.toString());
-//		emit dataChanged(index, index);
-//		return true;
-//	}
-//
-//	return false;
-//}
+bool CategoryListModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (index.isValid() && role == Qt::EditRole)
+	{
+		AbstractCategory* category = static_cast<AbstractCategory*>(index.internalPointer());
+		category->setTitle(value.toString());
+		emit dataChanged(index, index);
+		return true;
+	}
+
+	return false;
+}
 
 bool CategoryListModel::insertRows(int position, int rows, const QModelIndex &index)
 {
-	Q_UNUSED(index);
+	Q_UNUSED(rows);
 
-	beginInsertRows(QModelIndex(), position, position+rows-1);
+	beginInsertRows(index, position, position);
 
-	for (int row = 0; row < rows; ++row)
+	AbstractCategory* category;
+
+	if (index.isValid())
 	{
-		//d_category_list.insert(position, boost::shared_ptr<AbstractCategory>(new DefaultCategory()));
+		category = static_cast<AbstractCategory*>(index.internalPointer());
 	}
+	else
+	{
+		category = d_root_category;
+	}
+
+	category->appendChild(new DefaultCategory("New Category"));
 
 	endInsertRows();
 
@@ -167,39 +189,29 @@ bool CategoryListModel::insertRows(int position, int rows, const QModelIndex &in
 
 bool CategoryListModel::removeRows(int position, int rows, const QModelIndex &index)
 {
-	Q_UNUSED(index);
+	Q_UNUSED(rows);
 
-	beginRemoveRows(QModelIndex(), position, position+rows-1);
+	beginRemoveRows(index, position, position);
 
-	for (int row = 0; row < rows; ++row)
-	{
-		//boost::shared_ptr<AbstractCategory> category = d_category_list.at(position);
+	AbstractCategory* category = static_cast<AbstractCategory*>(index.internalPointer());
 
-		//if (category->resourceList().count() > 0)
-		//{
-		//	QMessageBox::information(NULL, tr("Information"), tr("Please delete all attached resources before deleting this category."));
-		//}
-		//else
-		//{
-		//	d_category_list.removeAt(position);
-		//}
-	}
+	category->parent()->removeChild(category->row());
 
 	endRemoveRows();
 
 	return true;
 }
 
-boost::shared_ptr<AbstractCategory> CategoryListModel::rootCategory()
+AbstractCategory* CategoryListModel::rootCategory()
 {
 	return d_root_category;
 }
 
-boost::shared_ptr<AbstractCategory> CategoryListModel::searchCategory()
+AbstractCategory* CategoryListModel::searchCategory()
 {
-	boost::shared_ptr<AbstractCategory> search_category;
+	AbstractCategory* search_category;
 
-	BOOST_FOREACH(boost::shared_ptr<AbstractCategory> category, d_root_category->children())
+	BOOST_FOREACH(AbstractCategory* category, d_root_category->children())
 	{
 		if (category->type() == AbstractCategory::Search)
 		{

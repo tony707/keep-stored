@@ -18,42 +18,62 @@
 #include <QUrl>
 
 CategoryListView::CategoryListView(QWidget* parent) :
-	QListView(parent)
+	QTreeView(parent)
 {
-	setMinimumWidth(150);
+	setMinimumWidth(100);
 	setMaximumWidth(horizontalScrollBar()->sizeHint().width() + 100);
 	setAcceptDrops(true);
 	setDropIndicatorShown(true);
 	setDragDropMode(QAbstractItemView::DropOnly);
 
 	d_context_menu = new QMenu();
+	d_add_main_action = d_context_menu->addAction(tr("Add main category"));
+	d_add_child_action = d_context_menu->addAction(tr("Add child category"));
 	d_delete_action = d_context_menu->addAction(tr("Delete category"));
+
+	connect(d_add_main_action, SIGNAL(triggered()), this, SLOT(addMainCategory()));
+	connect(d_add_child_action, SIGNAL(triggered()), this, SLOT(addChildCategory()));
 	connect(d_delete_action, SIGNAL(triggered()), this, SLOT(deleteCategory()));
 }
 
 void CategoryListView::contextMenuEvent(QContextMenuEvent*)
 {
+	d_add_child_action->setEnabled(false);
+	d_delete_action->setEnabled(false);
+
 	if (selectionModel()->hasSelection())
 	{
-		int row = selectionModel()->selectedRows().front().row();
-		boost::shared_ptr<AbstractCategory> category = static_cast<CategoryListModel*>(this->model())->rootCategory()->children().at(row);
+		AbstractCategory* category = static_cast<AbstractCategory*>(selectionModel()->currentIndex().internalPointer());
 
 		if (category->type() != AbstractCategory::Search)
 		{
-			d_context_menu->exec(QCursor::pos());
+			d_add_child_action->setEnabled(true);
+			d_delete_action->setEnabled(true);
 		}
 	}
+
+	d_context_menu->exec(QCursor::pos());
 }
 
-void CategoryListView::addCategory()
+void CategoryListView::addMainCategory()
 {
 	model()->insertRows(model()->rowCount(), 1);
 }
 
+void CategoryListView::addChildCategory()
+{
+	QModelIndex index = selectionModel()->currentIndex();
+	AbstractCategory* category = static_cast<AbstractCategory*>(index.internalPointer());
+
+	model()->insertRows(category->childCount(), 1, index);
+}
+
 void CategoryListView::deleteCategory()
 {
-	int row = selectionModel()->selectedRows().front().row();
-	model()->removeRows(row, 1);
+	QModelIndex index = selectionModel()->currentIndex();
+	AbstractCategory* category = static_cast<AbstractCategory*>(index.internalPointer());
+
+	model()->removeRows(category->row(), 1, index);
 }
 
 void CategoryListView::dragEnterEvent(QDragEnterEvent *event)

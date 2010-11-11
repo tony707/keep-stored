@@ -39,8 +39,6 @@ class MainWindow : public QMainWindow
 
 	public slots:
 
-		void showAddMenu();
-
 		void updateResourceList(const QItemSelection & selected, const QItemSelection & deselected);
 
 		void updateResourcePreview(const QItemSelection &, const QItemSelection &);
@@ -66,6 +64,8 @@ class MainWindow : public QMainWindow
 		 void setupActions();
 
 		 void closeEvent(QCloseEvent* event);
+
+		 void findCategoryResources(AbstractCategory* parent_category, QString pattern);
 
 	private:
 
@@ -95,11 +95,6 @@ class MainWindow : public QMainWindow
 		 QStackedWidget* d_resource_preview;
 
 		 /**
-			* \brief The add menu.
-			*/
-		 QMenu* d_add_menu;
-
-		 /**
 			* \brief The configuration.
 			*/
 		 boost::shared_ptr<Configuration> d_configuration;
@@ -112,19 +107,9 @@ class MainWindow : public QMainWindow
 		 /**
 			* \brief The resource view (new/edit).
 			*/
-		 boost::shared_ptr<AbstractCategory> d_search_category;
+		 AbstractCategory* d_search_category;
 
 	private:
-
-		 QAction* d_add_action;
-
-		 QAction* d_add_category;
-
-		 QAction* d_add_resource;
-
-		 QAction* d_edit_action;
-
-		 QAction* d_remove_action;
 
 		 QAction* d_setting_action;
 

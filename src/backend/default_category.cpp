@@ -20,6 +20,12 @@ DefaultCategory::DefaultCategory()
 	d_type = Default;
 }
 
+DefaultCategory::DefaultCategory(QString title)
+{
+	d_type = Default;
+	d_title = title;
+}
+
 DefaultCategory::DefaultCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node) :
 	AbstractCategory(xml_node)
 {

@@ -39,14 +39,14 @@ class Configuration
 		 /**
 			* \brief Load the application configuration.
 			*/
-		 boost::shared_ptr<AbstractCategory> loadConfigurationFile();
+		 AbstractCategory* loadConfigurationFile();
 
-		 void createChildCategory(boost::shared_ptr<systools::xml::XmlNode> category_node, boost::shared_ptr<AbstractCategory> parent);
+		 void createChildCategory(boost::shared_ptr<systools::xml::XmlNode> category_node, AbstractCategory* parent);
 
 		 /**
 			* \brief Load the application configuration.
 			*/
-		 void saveConfigurationFile(boost::shared_ptr<AbstractCategory> root_category);
+		 void saveConfigurationFile(AbstractCategory* root_category);
 
 	private:
 

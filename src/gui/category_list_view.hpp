@@ -7,12 +7,12 @@
 #ifndef KEEP_STORED_CATEGORY_LIST_VIEW_HPP
 #define KEEP_STORED_CATEGORY_LIST_VIEW_HPP
 
-#include <QListView>
+#include <QTreeView>
 
 class QMenu;
 class QAction;
 
-class CategoryListView : public QListView
+class CategoryListView : public QTreeView
 {
 	Q_OBJECT
 
@@ -36,6 +36,10 @@ class CategoryListView : public QListView
 
 		QItemSelectionModel* d_selection_model;
 
+		QAction* d_add_main_action;
+
+		QAction* d_add_child_action;
+
 		QAction* d_delete_action;
 
 		signals:
@@ -44,7 +48,9 @@ class CategoryListView : public QListView
 
 		public slots:
 
-			void addCategory();
+			void addChildCategory();
+
+			void addMainCategory();
 
 			void deleteCategory();
 };

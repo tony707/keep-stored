@@ -35,7 +35,8 @@ void AbstractResourceListModel::prepareResourceAddition(AbstractResourceListMode
 }
 
 AbstractResourceListModel::AbstractResourceListModel(QObject *parent) :
-	QAbstractListModel(parent)
+	QAbstractListModel(parent),
+	d_category(0)
 {
 }
 
@@ -190,12 +191,12 @@ bool AbstractResourceListModel::removeRows(int position, int rows, const QModelI
 	return true;
 }
 
-boost::shared_ptr<AbstractCategory> AbstractResourceListModel::category()
+AbstractCategory* AbstractResourceListModel::category()
 {
 	return d_category;
 }
 
-void AbstractResourceListModel::setCategory(boost::shared_ptr<AbstractCategory> category)
+void AbstractResourceListModel::setCategory(AbstractCategory* category)
 {
 	beginResetModel();
 	d_category = category;

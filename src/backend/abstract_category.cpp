@@ -19,31 +19,31 @@
 
 #include <QDebug>
 
-boost::shared_ptr<AbstractCategory> AbstractCategory::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
+AbstractCategory* AbstractCategory::createFromXmlNode(boost::shared_ptr<systools::xml::XmlNode> xml_node)
 {
 	int int_type;
 	std::istringstream iss(xml_node->xpath()->evaluateAsString("string(ks:type)").toStdString());
 	iss >> int_type;
 	CategoryType type = static_cast<CategoryType>(int_type);
 
-	boost::shared_ptr<AbstractCategory> category;
+	AbstractCategory* category;
 
 	switch(type)
 	{
 		case Default:
-			category.reset(new DefaultCategory(xml_node));
+			category = new DefaultCategory(xml_node);
 			break;
 		case Search:
-			category.reset(new SearchCategory(xml_node));
+			category = new SearchCategory(xml_node);
 			break;
 		default:
-			category.reset(new DefaultCategory(xml_node));
+			category = new DefaultCategory(xml_node);
 			break;
 	}
 	return category;
 }
 
-void AbstractCategory::saveToXml(boost::shared_ptr<AbstractCategory> category, boost::shared_ptr<systools::xml::XmlWriter> xml_writer)
+void AbstractCategory::saveToXml(AbstractCategory* category, boost::shared_ptr<systools::xml::XmlWriter> xml_writer)
 {
 	assert(xml_writer);
 
@@ -66,7 +66,7 @@ void AbstractCategory::saveToXml(boost::shared_ptr<AbstractCategory> category, b
 
 		if (category->hasChildren())
 		{
-			BOOST_FOREACH(boost::shared_ptr<AbstractCategory> child_category, category->children())
+			BOOST_FOREACH(AbstractCategory* child_category, category->children())
 			{
 				saveToXml(child_category, xml_writer);
 			}
@@ -78,15 +78,21 @@ void AbstractCategory::saveToXml(boost::shared_ptr<AbstractCategory> category, b
 
 AbstractCategory::AbstractCategory() :
 	d_resource_list(QList<boost::shared_ptr<AbstractResource> >()),
-	d_children_categories(QList<boost::shared_ptr<AbstractCategory> >()),
-	d_parent_category(boost::weak_ptr<AbstractCategory>())
+	d_children_categories(QList<AbstractCategory*>()),
+	d_parent_category(NULL)
 {
+}
+
+AbstractCategory::~AbstractCategory()
+{
+	qDebug() << "Delete ALL !";
+	qDeleteAll(d_children_categories);
 }
 
 AbstractCategory::AbstractCategory(boost::shared_ptr<systools::xml::XmlNode> xml_node):
 	d_resource_list(QList<boost::shared_ptr<AbstractResource> >()),
-	d_children_categories(QList<boost::shared_ptr<AbstractCategory> >()),
-	d_parent_category(boost::weak_ptr<AbstractCategory>())
+	d_children_categories(QList<AbstractCategory* >()),
+	d_parent_category(NULL)
 {
 	assert(xml_node);
 
@@ -119,17 +125,24 @@ void AbstractCategory::setType(CategoryType type)
 	d_type = type;
 }
 
-void AbstractCategory::prependChild(boost::shared_ptr<AbstractCategory> category)
+void AbstractCategory::prependChild(AbstractCategory* category)
 {
 	d_children_categories.prepend(category);
+	category->setParent(const_cast<AbstractCategory*>(this));
 }
 
-void AbstractCategory::appendChild(boost::shared_ptr<AbstractCategory> category)
+void AbstractCategory::appendChild(AbstractCategory* category)
 {
 	d_children_categories.append(category);
+	category->setParent(const_cast<AbstractCategory*>(this));
 }
 
-boost::shared_ptr<AbstractCategory> AbstractCategory::childAt(int row)
+void AbstractCategory::removeChild(int row)
+{
+	d_children_categories.removeAt(row);
+}
+
+AbstractCategory* AbstractCategory::childAt(int row)
 {
 	return d_children_categories.at(row);
 }
@@ -146,28 +159,24 @@ int AbstractCategory::columnCount()
 
 int AbstractCategory::row()
 {
-	if (boost::shared_ptr<AbstractCategory> parent = d_parent_category.lock())
+	if (d_parent_category != NULL)
 	{
-		if (parent)
-		{
-			return parent->children().indexOf(shared_from_this());
-		}
+		return d_parent_category->children().indexOf(const_cast<AbstractCategory*>(this));
 	}
-
 	return 0;
 }
 
-boost::shared_ptr<AbstractCategory> AbstractCategory::parent()
+AbstractCategory* AbstractCategory::parent()
 {
-	return d_parent_category.lock();
+	return d_parent_category;
 }
 
-QList<boost::shared_ptr<AbstractCategory> > AbstractCategory::children()
+QList<AbstractCategory* > AbstractCategory::children()
 {
 	return d_children_categories;
 }
 
-void AbstractCategory::setParent(boost::weak_ptr<AbstractCategory> parent_category)
+void AbstractCategory::setParent(AbstractCategory* parent_category)
 {
 	d_parent_category = parent_category;
 }
@@ -184,7 +193,10 @@ QList<boost::shared_ptr<AbstractResource> > AbstractCategory::resourceList()
 
 void AbstractCategory::addResource(boost::shared_ptr<AbstractResource> resource)
 {
-	d_resource_list.push_back(resource);
+	if (!d_resource_list.contains(resource))
+	{
+		d_resource_list.push_back(resource);
+	}
 }
 
 void AbstractCategory::removeResource(int row)
