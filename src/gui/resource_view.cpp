@@ -62,7 +62,8 @@ void ResourceView::showEvent(QShowEvent* event)
 
 	appendCategories(d_category_list_model->rootCategory());
 
-	int row = d_combo_category_list->findData(d_resource_list_model->category()->title(), Qt::DisplayRole, Qt::MatchContains);
+	//TODO: category title has to be unique ! (findData with QModelIndex isn't reliable)
+	int row = d_combo_category_list->findText(d_resource_list_model->category()->title());
 	d_combo_category_list->setCurrentIndex(row);
 }
 
@@ -74,7 +75,8 @@ void ResourceView::appendCategories(AbstractCategory* parent_category, const QMo
 
 		d_combo_category_list->addItem(
 				d_category_list_model->data(index, Qt::DecorationRole).value<QIcon>(),
-				d_category_list_model->data(index, Qt::DisplayRole).toString());
+				d_category_list_model->data(index, Qt::DisplayRole).toString(),
+				QVariant::fromValue<QModelIndex>(index));
 
 	appendCategories(category, index);
 	}
@@ -98,12 +100,22 @@ void ResourceView::save()
 	QString taglist = d_taglist_edit->text();
 	QString location = d_location_edit->text();
 
+	QModelIndex selected_index = d_combo_category_list->itemData(d_combo_category_list->currentIndex()).value<QModelIndex>();
+
 	if (d_index.isValid())
 	{
 		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 0), title, Qt::EditRole);
 		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 1), author, Qt::EditRole);
 		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 2), taglist, Qt::EditRole);
 		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 3), location, Qt::EditRole);
+
+		if (d_resource_list_model->categoryIndex() != selected_index)
+		{
+			boost::shared_ptr<AbstractResource> resource = d_resource_list_model->resource(d_index.row());
+			d_resource_list_model->removeRows(d_index.row(), 1);
+			d_resource_list_model->setCategoryIndex(selected_index);
+			d_resource_list_model->addResource(resource);
+		}
 	}
 	else
 	{
@@ -113,6 +125,11 @@ void ResourceView::save()
 		resource->setAuthor(author);
 		resource->setTagList(qStringToQStringList(taglist));
 		resource->setLocation(QUrl::fromUserInput(location));
+
+		if (d_resource_list_model->categoryIndex() != selected_index)
+		{
+			d_resource_list_model->setCategoryIndex(selected_index);
+		}
 
 		d_resource_list_model->addResource(resource);
 	}

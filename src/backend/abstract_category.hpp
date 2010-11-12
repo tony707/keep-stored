@@ -9,6 +9,7 @@
 
 #include <QList>
 #include <QString>
+#include <QMetaType>
 
 #include <boost/smart_ptr.hpp>
 

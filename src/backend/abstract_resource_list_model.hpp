@@ -45,9 +45,14 @@ class AbstractResourceListModel : public QAbstractListModel
 
 		AbstractCategory* category();
 
-		void setCategory(AbstractCategory* category);
+		QModelIndex categoryIndex();
+
+		void setCategoryIndex(QModelIndex category_index);
 
 		boost::shared_ptr<AbstractResource> resource(int row);
+
+signals:
+		void categoryChanged();
 
 	public slots:
 
@@ -61,6 +66,11 @@ class AbstractResourceListModel : public QAbstractListModel
 		 * \brief The category.
 		 */
 		AbstractCategory* d_category;
+
+		/**
+		 * \brief The category index.
+		 */
+		QModelIndex d_category_index;
 
 };
 

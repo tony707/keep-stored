@@ -112,6 +112,8 @@ void MainWindow::setupActions()
 
 	connect(d_search_action, SIGNAL(triggered()), this, SLOT(findResources()));
 
+	connect(d_resource_list_model, SIGNAL(categoryChanged()), this, SLOT(updateCategorySelection()));
+
 	connect(d_category_list_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(updateResourceList(const QItemSelection &, const QItemSelection &)));
 	connect(d_resource_list_view, SIGNAL(resourceAboutToEdit(QModelIndex)), d_resource_view, SLOT(loadResource(QModelIndex)));
 	connect(d_category_list_view, SIGNAL(resourceDropped(const QMimeData*)), d_resource_list_model, SLOT(addResource(const QMimeData*)));
@@ -149,12 +151,20 @@ void MainWindow::updateResourceList(const QItemSelection & selected, const QItem
 
 	if (selected_index.row() >= 0)
 	{
-		d_resource_list_model->setCategory(static_cast<AbstractCategory*>(selected_index.internalPointer()));
-		d_resource_list_view->resizeRowsToContents();
+		d_resource_list_model->setCategoryIndex(selected_index);
+	}
+}
 
+void MainWindow::updateCategorySelection()
+{
+		d_resource_list_view->resizeRowsToContents();
 		static_cast<AbstractResourcePreview*>(d_resource_preview->currentWidget())->reset();
 		d_resource_view->setResourceListModel(d_resource_list_model);
-	}
+
+		if (d_resource_list_model->categoryIndex() != d_category_list_view->currentIndex())
+		{
+			d_category_list_view->setCurrentIndex(d_resource_list_model->categoryIndex());
+		}
 }
 
 void MainWindow::updateResourcePreview(const QItemSelection & selected, const QItemSelection & deselected)
@@ -195,13 +205,15 @@ void MainWindow::findResources()
 	}
 }
 
-void MainWindow::findCategoryResources(AbstractCategory* parent_category, QString pattern)
+void MainWindow::findCategoryResources(AbstractCategory* parent_category, QString pattern, const QModelIndex& parent)
 {
 	if (parent_category->hasChildren())
 	{
 		BOOST_FOREACH(AbstractCategory* category, parent_category->children())
 		{
-			d_resource_list_model->setCategory(category);
+			QModelIndex index = d_category_list_model->index(category->row(), 0, parent);
+
+			d_resource_list_model->setCategoryIndex(index);
 
 			QModelIndexList modelIndexes = d_resource_list_model->match(d_resource_list_model->index(0, 0), Qt::DisplayRole, pattern, -1, Qt::MatchFlags(Qt::MatchContains | Qt::MatchWrap));
 
@@ -210,7 +222,7 @@ void MainWindow::findCategoryResources(AbstractCategory* parent_category, QStrin
 				d_search_category->addResource(d_resource_list_model->resource(index.row()));
 			}
 
-			findCategoryResources(category, pattern);
+			findCategoryResources(category, pattern, index);
 		}
 	}
 }

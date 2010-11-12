@@ -196,11 +196,18 @@ AbstractCategory* AbstractResourceListModel::category()
 	return d_category;
 }
 
-void AbstractResourceListModel::setCategory(AbstractCategory* category)
+QModelIndex AbstractResourceListModel::categoryIndex()
+{
+	return d_category_index;
+}
+
+void AbstractResourceListModel::setCategoryIndex(QModelIndex category_index)
 {
 	beginResetModel();
-	d_category = category;
+	d_category_index = category_index;
+	d_category = static_cast<AbstractCategory*>(category_index.internalPointer());
 	endResetModel();
+	emit categoryChanged();
 }
 
 boost::shared_ptr<AbstractResource> AbstractResourceListModel::resource(int row)

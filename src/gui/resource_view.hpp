@@ -52,12 +52,17 @@ class ResourceView : public QWidget
 		CategoryListModel* d_category_list_model;
 		AbstractResourceListModel* d_resource_list_model;
 
+signals:
+		void categoryChanged();
+
 public slots:
 
 	void save();
 
 	void loadResource(QModelIndex);
 };
+
+Q_DECLARE_METATYPE(QModelIndex);
 
 #endif /* KEEP_STORED_RESOURCE_VIEW_HPP */
 
