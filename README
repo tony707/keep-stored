@@ -1,1 +1,11 @@
+ * Installation *
 
+ You need to install the last development version of libfreelan and all of its dependencies.
+ You can find it at http://sourceforge.net/projects/libfreelan/develop
+
+In order to compile KeepStored follow this instructions
+
+1. run "qmake" (or "qmake -spec macx-g++ -r" on OSX systems)
+2. run "make"
+3. run the application
+4. Have fun :)

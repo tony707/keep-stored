@@ -69,10 +69,10 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-65VPiF/Render</value>
+    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-s7Ka6p/Render</value>
     <value type="QString">CLICOLOR=1</value>
     <value type="QString">COMMAND_MODE=legacy</value>
-    <value type="QString">DISPLAY=/tmp/launch-ZtcjU4/org.x:0</value>
+    <value type="QString">DISPLAY=/tmp/launch-ByZBTM/org.x:0</value>
     <value type="QString">EDITOR=vim</value>
     <value type="QString">HISTCONTROL=ignoredups</value>
     <value type="QString">HOME=/Users/tony</value>
@@ -85,7 +85,7 @@
     <value type="QString">QTDIR=/usr/local/Qt4.6</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=1</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-HogBe2/Listeners</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-CYMpNr/Listeners</value>
     <value type="QString">TERM=xterm-color</value>
     <value type="QString">TERM_PROGRAM=Apple_Terminal</value>
     <value type="QString">TERM_PROGRAM_VERSION=273</value>
@@ -111,10 +111,10 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-65VPiF/Render</value>
+    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-s7Ka6p/Render</value>
     <value type="QString">CLICOLOR=1</value>
     <value type="QString">COMMAND_MODE=legacy</value>
-    <value type="QString">DISPLAY=/tmp/launch-ZtcjU4/org.x:0</value>
+    <value type="QString">DISPLAY=/tmp/launch-ByZBTM/org.x:0</value>
     <value type="QString">EDITOR=vim</value>
     <value type="QString">HISTCONTROL=ignoredups</value>
     <value type="QString">HOME=/Users/tony</value>
@@ -127,7 +127,7 @@
     <value type="QString">QTDIR=/usr/local/Qt4.6</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=1</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-HogBe2/Listeners</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-CYMpNr/Listeners</value>
     <value type="QString">TERM=xterm-color</value>
     <value type="QString">TERM_PROGRAM=Apple_Terminal</value>
     <value type="QString">TERM_PROGRAM_VERSION=273</value>

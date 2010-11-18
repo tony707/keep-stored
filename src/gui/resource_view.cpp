@@ -62,9 +62,12 @@ void ResourceView::showEvent(QShowEvent* event)
 
 	appendCategories(d_category_list_model->rootCategory());
 
-	//TODO: category title has to be unique ! (findData with QModelIndex isn't reliable)
-	int row = d_combo_category_list->findText(d_resource_list_model->category()->title());
-	d_combo_category_list->setCurrentIndex(row);
+	if (d_index.isValid())
+	{
+		//TODO: category title has to be unique ! (findData with QModelIndex isn't reliable)
+		int row = d_combo_category_list->findText(d_resource_list_model->category()->title());
+		d_combo_category_list->setCurrentIndex(row);
+	}
 }
 
 void ResourceView::appendCategories(AbstractCategory* parent_category, const QModelIndex& parent)
@@ -78,7 +81,7 @@ void ResourceView::appendCategories(AbstractCategory* parent_category, const QMo
 				d_category_list_model->data(index, Qt::DisplayRole).toString(),
 				QVariant::fromValue<QModelIndex>(index));
 
-	appendCategories(category, index);
+		appendCategories(category, index);
 	}
 }
 
@@ -109,13 +112,10 @@ void ResourceView::save()
 		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 2), taglist, Qt::EditRole);
 		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 3), location, Qt::EditRole);
 
-		if (d_resource_list_model->categoryIndex() != selected_index)
-		{
-			boost::shared_ptr<AbstractResource> resource = d_resource_list_model->resource(d_index.row());
-			d_resource_list_model->removeRows(d_index.row(), 1);
-			d_resource_list_model->setCategoryIndex(selected_index);
-			d_resource_list_model->addResource(resource);
-		}
+		boost::shared_ptr<AbstractResource> resource = d_resource_list_model->resource(d_index.row());
+		d_resource_list_model->removeRows(d_index.row(), 1);
+		d_resource_list_model->setCategoryIndex(selected_index);
+		d_resource_list_model->addResource(resource);
 	}
 	else
 	{
@@ -126,11 +126,7 @@ void ResourceView::save()
 		resource->setTagList(qStringToQStringList(taglist));
 		resource->setLocation(QUrl::fromUserInput(location));
 
-		if (d_resource_list_model->categoryIndex() != selected_index)
-		{
-			d_resource_list_model->setCategoryIndex(selected_index);
-		}
-
+		d_resource_list_model->setCategoryIndex(selected_index);
 		d_resource_list_model->addResource(resource);
 	}
 
