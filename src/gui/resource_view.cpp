@@ -25,7 +25,7 @@
 
 ResourceView::ResourceView(CategoryListModel* category_list_model, AbstractResourceListModel* resource_list_model, QWidget* parent) :
 	QWidget(parent),
-	d_index(QModelIndex()), //TODO: Check if SIGSEV COMES BECAUSE THE QModelIndex is not correct
+	d_index(QModelIndex()),
 	d_title_edit(new QLineEdit()),
 	d_author_edit(new QLineEdit()),
 	d_taglist_edit(new QLineEdit()),
