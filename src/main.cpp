@@ -8,11 +8,12 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QPlastiqueStyle> 
 
 int main(int argc, char** argv)
 {
 	QApplication application(argc, argv);
-
+	application.setStyle(new QPlastiqueStyle);
 	application.setApplicationName("keep-stored");
 
 	// Create the main window.

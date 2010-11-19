@@ -23,16 +23,17 @@
 
 #include <boost/foreach.hpp>
 
-ResourceView::ResourceView(CategoryListModel* category_list_model, QWidget* parent) :
+ResourceView::ResourceView(CategoryListModel* category_list_model, AbstractResourceListModel* resource_list_model, QWidget* parent) :
 	QWidget(parent),
-	d_index(QModelIndex()),
+	d_index(QModelIndex()), //TODO: Check if SIGSEV COMES BECAUSE THE QModelIndex is not correct
 	d_title_edit(new QLineEdit()),
 	d_author_edit(new QLineEdit()),
 	d_taglist_edit(new QLineEdit()),
 	d_location_edit(new QLineEdit()),
 	d_submit_button(new QPushButton(tr("Submit"))),
 	d_combo_category_list(new QComboBox()),
-	d_category_list_model(category_list_model)
+	d_category_list_model(category_list_model),
+	d_resource_list_model(resource_list_model)
 {
 	setWindowTitle(tr("Add a resource"));
 
@@ -98,13 +99,14 @@ void ResourceView::loadResource(QModelIndex index)
 
 void ResourceView::save()
 {
+	boost::shared_ptr<AbstractResource> resource;
 	QString title = d_title_edit->text();
 	QString author = d_author_edit->text();
 	QString taglist = d_taglist_edit->text();
 	QString location = d_location_edit->text();
 
 	QModelIndex selected_index = d_combo_category_list->itemData(d_combo_category_list->currentIndex()).value<QModelIndex>();
-
+	
 	if (d_index.isValid())
 	{
 		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 0), title, Qt::EditRole);
@@ -112,24 +114,23 @@ void ResourceView::save()
 		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 2), taglist, Qt::EditRole);
 		d_resource_list_model->setData(d_resource_list_model->index(d_index.row(), 3), location, Qt::EditRole);
 
-		boost::shared_ptr<AbstractResource> resource = d_resource_list_model->resource(d_index.row());
+		resource = d_resource_list_model->resource(d_index.row());
 		d_resource_list_model->removeRows(d_index.row(), 1);
-		d_resource_list_model->setCategoryIndex(selected_index);
-		d_resource_list_model->addResource(resource);
 	}
 	else
 	{
-		boost::shared_ptr<AbstractResource> resource(new DefaultResource());
+		resource = boost::shared_ptr<AbstractResource>(new DefaultResource());
 
 		resource->setTitle(title);
 		resource->setAuthor(author);
 		resource->setTagList(qStringToQStringList(taglist));
 		resource->setLocation(QUrl::fromUserInput(location));
-
-		d_resource_list_model->setCategoryIndex(selected_index);
-		d_resource_list_model->addResource(resource);
 	}
+	
+	d_resource_list_model->setCategoryIndex(selected_index);
+	d_resource_list_model->addResource(resource);
 
+	// Clean the input fields for next use
 	d_title_edit->setText("");
 	d_author_edit->setText("");
 	d_taglist_edit->setText("");

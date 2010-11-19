@@ -29,7 +29,7 @@ class ResourceView : public QWidget
 		/**
 		 * \brief Constructor.
 		 */
-		ResourceView(CategoryListModel* category_list_model, QWidget* parent = 0);
+		ResourceView(CategoryListModel* category_list_model, AbstractResourceListModel* resource_list_model, QWidget* parent = 0);
 
 		void setResourceListModel(AbstractResourceListModel* resource_list_model);
 

@@ -59,7 +59,7 @@ void MainWindow::buildWidgets()
 	d_resource_list_view = new ResourceListView();
 	d_resource_list_view->setModel(filterModel);
 
-	d_resource_view = new ResourceView(d_category_list_model);
+	d_resource_view = new ResourceView(d_category_list_model, d_resource_list_model);
 
 	// Put each resource type in stack
 	d_resource_preview = new QStackedWidget;
