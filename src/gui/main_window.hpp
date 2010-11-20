@@ -12,6 +12,7 @@
 
 #include <boost/shared_ptr.hpp>
 
+class ConfigurationWindow;
 class Category;
 class Configuration;
 class QTableView;
@@ -72,6 +73,11 @@ class MainWindow : public QMainWindow
 		void findCategoryResources(AbstractCategory* parent_category, QString pattern, const QModelIndex& parent = QModelIndex());
 
 	private:
+
+		/**
+		 * \brief The configuration window.
+		 */
+		ConfigurationWindow* d_configuration_window;
 
 		/**
 		 * \brief The category list.

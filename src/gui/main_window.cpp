@@ -10,6 +10,7 @@
 #include "resource_view.hpp"
 #include "abstract_resource_preview.hpp"
 #include "default_resource_preview.hpp"
+#include "configuration_window.hpp"
 
 #include "../backend/abstract_resource.hpp"
 #include "../backend/abstract_category.hpp"
@@ -44,6 +45,8 @@ void MainWindow::buildMenuBar()
 
 void MainWindow::buildWidgets()
 {
+	d_configuration_window = new ConfigurationWindow();
+
 	AbstractCategory* root_category = d_configuration->loadConfigurationFile();
 
 	d_category_list_model = new CategoryListModel(root_category);
@@ -109,6 +112,7 @@ void MainWindow::setupActions()
 	connect(d_add_category, SIGNAL(triggered()), d_category_list_view, SLOT(addMainCategory()));
 	connect(d_add_resource, SIGNAL(triggered()), d_resource_view, SLOT(show()));
 	connect(d_add_action, SIGNAL(triggered()), this, SLOT(showAddMenu()));
+	connect(d_setting_action, SIGNAL(triggered()), d_configuration_window, SLOT(exec()));
 
 	connect(d_search_action, SIGNAL(triggered()), this, SLOT(findResources()));
 
@@ -132,7 +136,6 @@ void MainWindow::showAddMenu()
 {
   d_add_menu->exec(QCursor::pos());
 }
-
 
 void MainWindow::updateResourceList(const QItemSelection & selected, const QItemSelection & deselected)
 {
